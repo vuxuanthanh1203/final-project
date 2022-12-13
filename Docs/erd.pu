@@ -5,7 +5,7 @@
         name: varchar(191)
         email: varchar(191)
         password: varchar(191)
-        phoneNumber: varchar(20)
+        phone_number: varchar(20)
         address: varchar(191)
         is_admin: boolean
         created_at: datetime
@@ -39,7 +39,7 @@
         product_id: integer <<FK>>
         value: varchar(191)
         price: decimal
-        qty_in_stock: integer
+        quantity_in_stock: integer
         created_at: datetime
         updated_at: datetime
     }
@@ -85,7 +85,7 @@
         --
         order_id: integer <<FK>>
         product_attr_id: integer <<FK>>
-        qty: integer
+        quantity: integer
         price: decimal
         created_at: datetime
         updated_at: datetime
