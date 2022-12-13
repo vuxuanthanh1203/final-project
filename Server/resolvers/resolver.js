@@ -1,21 +1,39 @@
 const resolver = {
     Query: {
-        categories: async (parent, args, { queryData }) => await queryData.getAllCategory(),
+        categories: async (parent, args, { queryData }) => await queryData.getAllCategories(),
         category: async (parent, { id }, { queryData }) => await queryData.getCategoryById(id),
 
-        orders: async (parent, args, { queryData }) => await queryData.getAllCategory(),
-        orderDetails: async (parent, { id }, { queryData }) => await queryData.getCategoryById(id),
-        orderStatus: async (parent, { id }, { queryData }) => await queryData.getOrderStatus(),
+        order: async (parent, { id }, { queryData }) => await queryData.getOrderById(id),
+        order_status: async (parent, args, { queryData }) => await queryData.getOrderStatus(),
 
         products: async (parent, args, { queryData }) => await queryData.getAllProducts(),
         product: async (parent, { id }, { queryData }) => await queryData.getProductById(id),
-        productAttributes: async (parent, { id }, { queryData }) => await queryData.getProductAttr(id),
+        product_attribute: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
+
 
         users: async (parent, { is_admin }, { queryData }) => await queryData.getAllUsers(is_admin),
         user: async (parent, { id }, { queryData }) => await queryData.getUserById(id),
 
         shipping_methods: async (parent, args, { queryData }) => await queryData.getShippingMethod()
     },
+
+    Category: {
+        products: async ({ id }, args, { queryData }) => await queryData.getAllProducts(id)
+    },
+    Product: {
+        category: async ({ categoryId }, args, { queryData }) => await queryData.getCategoryById(categoryId),
+        productAttr: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
+    },
+    ProductAttr: {
+        productImg: async ({ id }, args, { queryData }) => await queryData.getAllProductImg(id)
+    },
+    User: {
+        orders: async ({ id }, args, { queryData }) => await queryData.getAllOrders(id)
+    },
+    Order: {
+        orderDetail: async ({ id }, args, { queryData }) => await queryData.getOrderDetail(id)
+    },
+
 
     Mutation: {
         createCategory: async (parent, args, { queryData }) => await queryData.createCategory(args),

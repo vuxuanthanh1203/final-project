@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   ShippingMethod.init({
     name: DataTypes.STRING,
-    price: DataTypes.DECIMAL
+    price: DataTypes.FLOAT
   }, {
     sequelize,
     modelName: 'ShippingMethod',

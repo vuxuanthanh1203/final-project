@@ -1,16 +1,18 @@
-const { gql } = require('apollo-server-express')
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-    type Querry {
+    type Query {
         categories: [Category]!
         category (id: Int!): Category!
 
         orders(id: Int!): [Order]!
+        order (id: Int!): Order!
         order_detail(user_id: Int!, order_id: Int!): OrderDetails!
         order_status: [OrderStatus]!
 
         products: [Product]!
         product (id: Int!): Product!
+        product_attribute: [ProductAttr]!
 
         users: [User]!
         user (id: Int!): User!
@@ -28,8 +30,8 @@ const typeDefs = gql`
             product_img: String!, categoryId: Int!): Boolean!
         deleteProduct(id: Int!): Boolean!
         
-        createProductAttr(value: String!, price: Decimal!, quantity_in_stock: Int!, productId:Int!): ProductAttr!
-        updateProductAttr(id: Int!, value:String!, price: Decimal!, quantity_in_stock: Int!): Boolean!
+        createProductAttr(value: String!, price: Float!, quantity_in_stock: Int!, productId:Int!): ProductAttr!
+        updateProductAttr(id: Int!, value:String!, price: Float!, quantity_in_stock: Int!): Boolean!
         deleteProductAttr(id: Int!): Boolean!
 
         createProductImg(url: String!, productId: Int!):ProductImg!
@@ -39,14 +41,14 @@ const typeDefs = gql`
         deleteOrder(id: Int!): Boolean!
 
         createOrderDetails(order_id: Int!, product_attr_id: Int!, quantity: Int!,
-            price: Decimal!): OrderDetails!
-        updateOrderDetails(quantity: Decimail!, quantity: Int!): Boolean!
+            price: Float!): OrderDetails!
+        updateOrderDetails(price: Float!, quantity: Int!): Boolean!
         deleteOrderDetails(id: Int!): Boolean!
 
         createOrderStatus(status: String!): OrderStatus!
         deleteOrderStatus(id: Int!): Boolean!
 
-        createShippingMethod(name: String!, price: Decimal!): ShippingMethod!
+        createShippingMethod(name: String!, price: Float!): ShippingMethod!
         deleteShippingMethod(id: Int!): Boolean!
 
         createUser(name: String!, email: String!, password: String!, phone_number: String!,
@@ -60,7 +62,7 @@ const typeDefs = gql`
         id: Int!
         name: String!
         slug: String!
-        Product: [Product]
+        products: [Product]
     }
 
     type Product {
@@ -69,17 +71,17 @@ const typeDefs = gql`
         slug: String!
         short_description: String!
         product_img: String!
-        Category: Category
-        ProductAttr: [ProductAttr]
+        category: Category
+        productAttr: [ProductAttr]
     }
 
     type ProductAttr {
         id: Int!
         value: String!
-        price: Decimal!
+        price: Float!
         quantity_in_stock: Int!
         Product: [Product]
-        ProductImg: [ProductImg]
+        productImg: [ProductImg]
     }
 
     type ProductImg {
@@ -91,14 +93,14 @@ const typeDefs = gql`
     type Order {
         id: Int!
         User: User
-        OrderDetails: OrderDetail
+        orderDetail: OrderDetails
         OrderStatus: OrderStatus
     }
 
     type OrderDetails {
         id: Int!
         quantity: Int!
-        price: Decimal!
+        price: Float!
         Order: Order
     }
 
@@ -116,13 +118,15 @@ const typeDefs = gql`
         phone_number: String!
         address: String!
         is_admin: Boolean!
-        Order: [Order]
+        orders: [Order]
     }
 
     type ShippingMethod {
         id: Int!
         name: String!
-        price:Decimal!
+        price:Float!
         Order: [Order]
     }
 `
+
+module.exports = typeDefs;

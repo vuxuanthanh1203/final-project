@@ -13,12 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       ProductAttr.belongsTo(models.Product)
       ProductAttr.hasMany(models.ProductImg)
-      ProductAttr.belongsToMany(models.OrderDetail)
+      ProductAttr.belongsTo(models.OrderDetail)
     }
   }
   ProductAttr.init({
     value: DataTypes.STRING,
-    price: DataTypes.DECIMAL,
+    price: DataTypes.FLOAT,
     quantity_in_stock: DataTypes.INTEGER,
     product_id: DataTypes.INTEGER
   }, {
