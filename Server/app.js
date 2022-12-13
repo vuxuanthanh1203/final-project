@@ -8,11 +8,10 @@ const typeDefs = require('./schemas/schema');
 const resolvers = require('./resolvers/resolver');
 
 // Load query method
-const queryData = require('./data/query');
+const queryData = require('./data/queryData');
 
 const startApolloServer = async () => {
-    // const server = new ApolloServer({ typeDefs, resolvers, context: () => ({ queryData }) });
-    const server = new ApolloServer({ typeDefs, resolvers });
+    const server = new ApolloServer({ typeDefs, resolvers, context: () => ({ queryData }) });
     await server.start();
 
     server.applyMiddleware({ app });
