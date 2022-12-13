@@ -1,0 +1,104 @@
+@startuml entity_relationship
+    entity user {
+        ** id: integer <<PK>> **
+        --
+        name: varchar(191)
+        email: varchar(191)
+        password: varchar(191)
+        phoneNumber: varchar(20)
+        address: varchar(191)
+        is_admin: boolean
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity category {
+        ** id: integer <<PK>> **
+        --
+        name: varchar(191) 
+        slug: varchar(255)
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity product {
+        ** id: integer <<PK>> **
+        --
+        category_id: <<FK>>
+        name: varchar(191)
+        slug: varchar(255)
+        short_description: varchar(191)
+        product_img: varchar(191)
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity product_attr {
+        ** id: integer <<PK>> **
+        --
+        product_id: integer <<FK>>
+        value: varchar(191)
+        price: decimal
+        qty_in_stock: integer
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity product_image {
+        ** id: integer <<PK>> **
+        --
+        product_attr_id: integer <<FK>>
+        url: varchar(255)
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity shipping_method {
+        ** id: integer <<PK>> **
+        --
+        name: varchar(191)
+        price: decimal
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity order_status {
+        ** id: integer <<PK>> **
+        --
+        status: varchar(11)
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity order {
+        ** id: integer <<PK>> **
+        --
+        user_id: integer <<FK>>
+        shipping_method_id: integer <<FK>>
+        order_status_id: integer <<FK>>
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    entity order_details {
+        ** id: integer <<PK>> **
+        --
+        order_id: integer <<FK>>
+        product_attr_id: integer <<FK>>
+        qty: integer
+        price: decimal
+        created_at: datetime
+        updated_at: datetime
+    }
+
+    product }|..|| category
+    product_attr }|..|| product
+    product_image }|..|| product
+    order }o..|| user
+    order ||..|| order_details
+    order ||..|| order_status
+    order ||..|| shipping_method
+    product_attr }|..|| order_details
+
+
+@endstart
