@@ -20,10 +20,27 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     phone_number: DataTypes.STRING,
     address: DataTypes.STRING,
-    is_admin: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+    is_admin: DataTypes.BOOLEAN,
+    paranoid: true,
+  },
+    {
+      indexes: [
+        {
+          unique: true,
+          fields: ['email']
+        },
+        {
+          name: 'inactivate_account',
+          fields: ['name', 'email'],
+          where: {
+            paranoid: false
+          }
+        }
+      ]
+    },
+    {
+      sequelize,
+      modelName: 'User',
+    });
   return User;
 };

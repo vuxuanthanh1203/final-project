@@ -7,12 +7,12 @@ const typeDefs = gql`
 
         orders(id: Int!): [Order]!
         order (id: Int!): Order!
-        order_detail(user_id: Int!, order_id: Int!): OrderDetails!
-        order_status: [OrderStatus]!
+        order_detail(user_id: Int!, order_id: Int!): OrderDetail!
+        order_statuses: [OrderStatus]!
 
         products: [Product]!
         product (id: Int!): Product!
-        product_attribute: [ProductAttr]!
+        product_attributes: [ProductAttr]!
 
         users: [User]!
         user (id: Int!): User!
@@ -40,10 +40,10 @@ const typeDefs = gql`
         createOrder(user_id: Int!, shipping_method_id: Int!, order_status_id: Int!): Order!
         deleteOrder(id: Int!): Boolean!
 
-        createOrderDetails(order_id: Int!, product_attr_id: Int!, quantity: Int!,
-            price: Float!): OrderDetails!
-        updateOrderDetails(price: Float!, quantity: Int!): Boolean!
-        deleteOrderDetails(id: Int!): Boolean!
+        createOrderDetail(order_id: Int!, product_attr_id: Int!, quantity: Int!,
+            price: Float!): OrderDetail!
+        updateOrderDetail(price: Float!, quantity: Int!): Boolean!
+        deleteOrderDetail(id: Int!): Boolean!
 
         createOrderStatus(status: String!): OrderStatus!
         deleteOrderStatus(id: Int!): Boolean!
@@ -72,7 +72,7 @@ const typeDefs = gql`
         short_description: String!
         product_img: String!
         category: Category
-        productAttr: [ProductAttr]
+        productAttrs: [ProductAttr]
     }
 
     type ProductAttr {
@@ -80,34 +80,34 @@ const typeDefs = gql`
         value: String!
         price: Float!
         quantity_in_stock: Int!
-        Product: [Product]
-        productImg: [ProductImg]
+        product: Product
+        productImgs: [ProductImg]
     }
 
     type ProductImg {
         id: Int!
         url: String!
-        ProductAttr: ProductAttr
+        productAttr: ProductAttr
     }
 
     type Order {
         id: Int!
         User: User
-        orderDetail: OrderDetails
-        OrderStatus: OrderStatus
+        orderDetail: OrderDetail
+        orderStatus: OrderStatus
     }
 
-    type OrderDetails {
+    type OrderDetail {
         id: Int!
         quantity: Int!
         price: Float!
-        Order: Order
+        order: Order
     }
 
     type OrderStatus {
         id: Int!
         status: String!
-        Order: [Order]
+        orders: [Order]
     }
 
     type User {
@@ -125,7 +125,7 @@ const typeDefs = gql`
         id: Int!
         name: String!
         price:Float!
-        Order: [Order]
+        orders: [Order]
     }
 `
 

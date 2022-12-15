@@ -4,11 +4,11 @@ const resolver = {
         category: async (parent, { id }, { queryData }) => await queryData.getCategoryById(id),
 
         order: async (parent, { id }, { queryData }) => await queryData.getOrderById(id),
-        order_status: async (parent, args, { queryData }) => await queryData.getOrderStatus(),
+        order_statuses: async (parent, args, { queryData }) => await queryData.getOrderStatus(),
 
         products: async (parent, args, { queryData }) => await queryData.getAllProducts(),
         product: async (parent, { id }, { queryData }) => await queryData.getProductById(id),
-        product_attribute: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
+        product_attributes: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
 
 
         users: async (parent, { is_admin }, { queryData }) => await queryData.getAllUsers(is_admin),
@@ -22,10 +22,10 @@ const resolver = {
     },
     Product: {
         category: async ({ categoryId }, args, { queryData }) => await queryData.getCategoryById(categoryId),
-        productAttr: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
+        productAttrs: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
     },
     ProductAttr: {
-        productImg: async ({ id }, args, { queryData }) => await queryData.getAllProductImg(id)
+        productImgs: async ({ id }, args, { queryData }) => await queryData.getAllProductImg(id)
     },
     User: {
         orders: async ({ id }, args, { queryData }) => await queryData.getAllOrders(id)
@@ -60,9 +60,9 @@ const resolver = {
         createOrder: async (parent, args, { queryData }) => await queryData.createOrder(args),
         deleteOrder: async (parent, args, { queryData }) => await queryData.deleteOrder(args),
 
-        createOrderDetails: async (parent, args, { queryData }) => await queryData.createOrderDetails(args),
-        updateOrderDetails: async (parent, args, { queryData }) => await queryData.updateOrderDetails(args),
-        deleteOrderDetails: async (parent, args, { queryData }) => await queryData.deleteOrderDetails(args),
+        createOrderDetail: async (parent, args, { queryData }) => await queryData.createOrderDetail(args),
+        updateOrderDetail: async (parent, args, { queryData }) => await queryData.updateOrderDetail(args),
+        deleteOrderDetail: async (parent, args, { queryData }) => await queryData.deleteOrderDetail(args),
 
         createUser: async (parent, args, { queryData }) => await queryData.createUser(args),
         updateUser: async (parent, args, { queryData }) => await queryData.updateUser(args),

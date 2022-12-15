@@ -125,13 +125,13 @@ const queryData = {
         }
     }),
 
-    createOrderDetails: async (args) => await OrderDetail.create(args),
-    deleteOrderDetails: async (args) => await OrderDetail.destroy({
+    createOrderDetail: async (args) => await OrderDetail.create(args),
+    deleteOrderDetail: async (args) => await OrderDetail.destroy({
         where: {
             id: args.id
         }
     }),
-    updateOrderDetails: async (args) => await OrderDetail.update({
+    updateOrderDetail: async (args) => await OrderDetail.update({
         quantity: args.quantity, price: args.price,
         updated_at: Date.now()
     }, {
