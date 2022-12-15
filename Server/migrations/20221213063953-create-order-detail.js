@@ -21,11 +21,11 @@ module.exports = {
       price: {
         type: Sequelize.DECIMAL
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE(3)
       }

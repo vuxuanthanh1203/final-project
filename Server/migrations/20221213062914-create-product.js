@@ -24,11 +24,15 @@ module.exports = {
       category_id: {
         type: Sequelize.INTEGER
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      updatedAt: {
+      updated_at: {
+        allowNull: false,
+        type: Sequelize.DATE(3)
+      },
+      deleted_at: {
         allowNull: false,
         type: Sequelize.DATE(3)
       }
