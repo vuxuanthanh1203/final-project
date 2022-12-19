@@ -11,7 +11,7 @@ const resolver = {
         product_attributes: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
 
 
-        users: async (parent, { is_admin }, { queryData }) => await queryData.getAllUsers(is_admin),
+        users: async (parent, args, { queryData }) => await queryData.getAllUsers(),
         user: async (parent, { id }, { queryData }) => await queryData.getUserById(id),
 
         shipping_methods: async (parent, args, { queryData }) => await queryData.getShippingMethod()

@@ -10,29 +10,38 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
       slug: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
-      short_description: {
+      shortDescription: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
-      product_img: {
+      paranoid: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },
+      productImg: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
-      category_id: {
+      categoryId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      deleted_at: {
+      deletedAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       }

@@ -9,23 +9,27 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      order_id: {
+      orderId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
-      product_attr_id: {
+      productAttrId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       quantity: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       price: {
+        allowNull: false,
         type: Sequelize.DECIMAL
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       }

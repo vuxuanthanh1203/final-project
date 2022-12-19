@@ -10,36 +10,53 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
       password: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
-      phone_number: {
+      phoneNumber: {
+        allowNull: false,
         type: Sequelize.STRING(11)
       },
       address: {
+        allowNull: false,
         type: Sequelize.STRING(191)
       },
-      is_admin: {
+      isAdmin: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      created_at: {
+      paranoid: {
+        allowNull: false,
+        type: Sequelize.BOOLEAN
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE(3)
+        // field: 'created_at'
+      },
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE(3)
-      },
-      deleted_at: {
+      deletedAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       }
     });
+    await queryInterface.addIndex('Users', ['name', 'email'], {
+      name: 'inactivate_account',
+      where: {
+        paranoid: false
+      }
+    })
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
