@@ -1,37 +1,71 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      User.hasMany(models.Order)
+  const User = sequelize.define('User', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      field: 'id',
+      type: DataTypes.INTEGER
+    },
+    name: {
+      allowNull: false,
+      field: 'name',
+      type: DataTypes.STRING(191)
+    },
+    email: {
+      allowNull: false,
+      field: 'email',
+      type: DataTypes.STRING(191)
+    },
+    password: {
+      allowNull: false,
+      field: 'password',
+      type: DataTypes.STRING(191)
+    },
+    phone_number: {
+      allowNull: false,
+      field: 'phone_number',
+      type: DataTypes.STRING(191)
+    },
+    address: {
+      allowNull: false,
+      field: 'address',
+      type: DataTypes.STRING(191)
+    },
+    is_admin: {
+      allowNull: false,
+      field: 'is_admin',
+      type: DataTypes.BOOLEAN
+    },
+    createdAt: {
+      allowNull: false,
+      field: 'created_at',
+      type: DataTypes.DATE(3)
+    },
+    updatedAt: {
+      allowNull: false,
+      field: 'updated_at',
+      type: DataTypes.DATE(3)
+    },
+    deletedAt: {
+      field: 'deleted_at',
+      type: DataTypes.DATE(3)
     }
+  },
+    {
+      tableName: 'users',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+      deletedAt: 'deleted_at',
+      paranoid: true,
+      timestamps: true,
+      underscored: true
+    }
+  )
+  User.associate = function (models) {
+    User.hasMany(models.Order)
   }
-  User.init({
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
-    address: DataTypes.STRING,
-    is_admin: DataTypes.BOOLEAN,
-  }, {
-    sequelize,
-    paranoid: true,
-    timestamps: false,
-    modelName: 'User',
-  });
 
-  User.addScope('listAdmin', {
-    where: {
-      is_admin: true
-    }
-  })
-  return User;
-};
+  return User
+}
