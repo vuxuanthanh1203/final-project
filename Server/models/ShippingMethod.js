@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     price: DataTypes.FLOAT
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'ShippingMethod',
   });
   return ShippingMethod;
