@@ -21,9 +21,13 @@ const queryData = {
     getProductById: async (id) => await Product.findByPk(id),
     getProductAttribute: async (id) => await ProductAttr.findByPk(id),
 
-    getAllUsers: async (is_admin = true) => {
-        return is_admin === true ? await User.findAll() : "Not Authorized!"
-    },
+    // getAllUsers: async (id) => {
+    //     let user = await User.findByPk(id)
+    //     return user.is_admin === true ? await User.findAll() : "Not Authorized!"
+    //     // return await User.findAll();
+    // },
+    getAllUsers: async () => await User.findAll(),
+
     getUserById: async (id) => await User.findByPk(id),
 
     getShippingMethod: async () => await ShippingMethod.findAll(),

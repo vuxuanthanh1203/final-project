@@ -19,9 +19,9 @@ module.exports = (sequelize, DataTypes) => {
   ProductAttr.init({
     value: DataTypes.STRING,
     price: DataTypes.FLOAT,
-    quantity_in_stock: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER,
-    paranoid: true,
+    quantityInStock: DataTypes.INTEGER,
+    productId: DataTypes.INTEGER,
+    paranoid: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'ProductAttr',

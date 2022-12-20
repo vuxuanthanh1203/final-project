@@ -18,29 +18,19 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    phone_number: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING,
     address: DataTypes.STRING,
-    is_admin: DataTypes.BOOLEAN,
-    paranoid: true,
-  },
-    {
-      indexes: [
-        {
-          unique: true,
-          fields: ['email']
-        },
-        {
-          name: 'inactivate_account',
-          fields: ['name', 'email'],
-          where: {
-            paranoid: false
-          }
-        }
-      ]
-    },
-    {
-      sequelize,
-      modelName: 'User',
-    });
+    isAdmin: DataTypes.BOOLEAN,
+    paranoid: DataTypes.BOOLEAN,
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
+
+  User.addScope('listAdmin', {
+    where: {
+      isAdmin: true
+    }
+  })
   return User;
 };

@@ -69,8 +69,8 @@ const typeDefs = gql`
         id: Int!
         name: String!
         slug: String!
-        short_description: String!
-        product_img: String!
+        shortDescription: String!
+        productImg: String!
         category: Category
         productAttrs: [ProductAttr]
     }
@@ -79,7 +79,7 @@ const typeDefs = gql`
         id: Int!
         value: String!
         price: Float!
-        quantity_in_stock: Int!
+        quantityInStock: Int!
         product: Product
         productImgs: [ProductImg]
     }
@@ -115,9 +115,9 @@ const typeDefs = gql`
         name: String!
         email: String!
         password: String!
-        phone_number: String!
+        phoneNumber: String!
         address: String!
-        is_admin: Boolean!
+        isAdmin: Boolean!
         orders: [Order]
     }
 

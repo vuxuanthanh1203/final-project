@@ -10,19 +10,22 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
-      shipping_method_id: {
+      shippingMethodId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
-      order_status_id: {
+      orderStatusId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE(3)
       }
