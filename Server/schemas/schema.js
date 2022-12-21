@@ -27,7 +27,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        createCategory(name: String!): Category!
+        createCategory(name: String, slug: String): Category!
 
         updateCategory(
             id:Int!,

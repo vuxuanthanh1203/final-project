@@ -56,7 +56,7 @@ const queryData = {
   createCategory: async (args) => await Category.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteCategory: async (args) => await Category.destroy({
     where: {
@@ -94,7 +94,7 @@ const queryData = {
   createUser: async (args) => await User.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteUser: async (args) => await User.destroy({
     where: {
@@ -113,7 +113,7 @@ const queryData = {
   createProductAttr: async (args) => await ProductAttr.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteProductAttr: async (args) => await ProductAttr.destroy({
     where: {
@@ -132,7 +132,7 @@ const queryData = {
   createProductImg: async (args) => await ProductImg.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteProductImg: async (args) => await ProductImg.destroy({
     where: {
@@ -143,7 +143,7 @@ const queryData = {
   createOrder: async (args) => await Order.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteOrder: async (args) => await Order.destroy({
     where: {
@@ -154,7 +154,7 @@ const queryData = {
   createOrderDetail: async (args) => await OrderDetail.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteOrderDetail: async (args) => await OrderDetail.destroy({
     where: {
@@ -173,7 +173,7 @@ const queryData = {
   createOrderStatus: async (args) => await OrderStatus.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteOrderStatus: async (args) => await OrderStatus.destroy({
     where: {
@@ -184,7 +184,7 @@ const queryData = {
   createShippingMethod: async (args) => await ShippingMethod.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteShippingMethod: async (args) => await ShippingMethod.destroy({
     where: {
