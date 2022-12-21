@@ -75,7 +75,7 @@ const queryData = {
   createProduct: async (args) => await Product.create({
     ...args,
     createdAt: new Date(),
-    updateAt: new Date()
+    updatedAt: new Date()
   }),
   deleteProduct: async (args) => await Product.destroy({
     where: {
