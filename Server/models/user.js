@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       field: 'name',
       type: DataTypes.STRING(191)
     },
+    userName: {
+      allowNull: false,
+      field: 'user_name',
+      type: DataTypes.STRING(191)
+    },
     email: {
       allowNull: false,
       field: 'email',
@@ -23,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       field: 'password',
       type: DataTypes.STRING(191)
     },
-    phone_number: {
+    phoneNumber: {
       allowNull: false,
       field: 'phone_number',
       type: DataTypes.STRING(191)
@@ -33,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       field: 'address',
       type: DataTypes.STRING(191)
     },
-    is_admin: {
+    isAdmin: {
       allowNull: false,
       field: 'is_admin',
       type: DataTypes.BOOLEAN
@@ -41,27 +46,30 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     deletedAt: {
       field: 'deleted_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: null
     }
   },
-    {
-      tableName: 'users',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-      paranoid: true,
-      timestamps: true,
-      underscored: true
-    }
+  {
+    tableName: 'users',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
+  }
   )
   User.associate = function (models) {
     User.hasMany(models.Order)

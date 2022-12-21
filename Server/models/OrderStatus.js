@@ -16,27 +16,30 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     deletedAt: {
       field: 'deleted_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: null
     }
   },
-    {
-      tableName: 'orderstatuses',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-      paranoid: true,
-      timestamps: true,
-      underscored: true
-    }
+  {
+    tableName: 'orderstatuses',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
+  }
   )
   OrderStatus.associate = function (models) {
     OrderStatus.belongsTo(models.Order, { foreignKey: 'order_id' })

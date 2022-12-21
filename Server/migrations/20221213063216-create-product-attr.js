@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     await queryInterface.createTable('ProductAttrs', {
       id: {
         allowNull: false,
@@ -20,12 +20,12 @@ module.exports = {
         field: 'price',
         type: Sequelize.FLOAT
       },
-      quantity_in_stock: {
+      quantityInStock: {
         allowNull: false,
         field: 'quantity_in_stock',
         type: Sequelize.INTEGER
       },
-      product_id: {
+      productId: {
         allowNull: false,
         field: 'product_id',
         type: Sequelize.INTEGER
@@ -45,9 +45,9 @@ module.exports = {
         field: 'deleted_at',
         defaultValue: null
       }
-    });
+    })
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('ProductAttrs');
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('ProductAttrs')
   }
-};
+}

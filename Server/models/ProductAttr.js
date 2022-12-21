@@ -18,12 +18,12 @@ module.exports = (sequelize, DataTypes) => {
       field: 'price',
       type: DataTypes.FLOAT
     },
-    quantity_in_stock: {
+    quantityInStock: {
       allowNull: false,
       field: 'quantity_in_stock',
       type: DataTypes.INTEGER
     },
-    product_id: {
+    productId: {
       allowNull: false,
       field: 'product_id',
       type: DataTypes.INTEGER,
@@ -32,27 +32,30 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     deletedAt: {
       field: 'deleted_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: null
     }
   },
-    {
-      tableName: 'productattrs',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-      paranoid: true,
-      timestamps: true,
-      underscored: true
-    }
+  {
+    tableName: 'productattrs',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
+  }
   )
   ProductAttr.associate = function (models) {
     ProductAttr.belongsTo(models.Product, { foreignKey: 'product_id' })

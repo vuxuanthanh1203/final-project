@@ -1,30 +1,3 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class ShippingMethod extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      ShippingMethod.belongsTo(models.Order)
-    }
-  }
-  ShippingMethod.init({
-    name: DataTypes.STRING,
-    price: DataTypes.FLOAT
-  }, {
-    sequelize,
-    timestamps: false,
-    modelName: 'ShippingMethod',
-  });
-  return ShippingMethod;
-};
-
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const ShippingMethod = sequelize.define('ShippingMethod', {
@@ -48,27 +21,30 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     deletedAt: {
       field: 'deleted_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: null
     }
   },
-    {
-      tableName: 'shippingmethods',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-      paranoid: true,
-      timestamps: true,
-      underscored: true
-    }
+  {
+    tableName: 'shippingmethods',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
+  }
   )
   ShippingMethod.associate = function (models) {
     ShippingMethod.belongsTo(models.Order, { foreignKey: 'order_id' })

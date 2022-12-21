@@ -38,16 +38,19 @@ module.exports = (sequelize, DataTypes) => {
       createdAt: {
         allowNull: false,
         field: 'created_at',
-        type: DataTypes.DATE(3)
+        type: DataTypes.DATE(3),
+        defaultValue: new Date()
       },
       updatedAt: {
         allowNull: false,
         field: 'updated_at',
-        type: DataTypes.DATE(3)
+        type: DataTypes.DATE(3),
+        defaultValue: new Date()
       },
       deletedAt: {
         field: 'deleted_at',
-        type: DataTypes.DATE(3)
+        type: DataTypes.DATE(3),
+        defaultValue: null
       }
     },
     {
@@ -61,6 +64,12 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   )
+  Product.addScope('checkStatus', {
+    where: {
+      deleted_at: null
+    }
+  })
+
   Product.associate = function (models) {
     Product.belongsTo(models.Category, { foreignKey: 'category_id' })
     Product.hasMany(models.ProductAttr)

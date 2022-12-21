@@ -8,12 +8,12 @@ module.exports = (sequelize, DataTypes) => {
       field: 'id',
       type: DataTypes.INTEGER
     },
-    order_id: {
+    orderId: {
       allowNull: false,
       field: 'order_id',
       type: DataTypes.INTEGER
     },
-    product_attr_id: {
+    productAttrId: {
       allowNull: false,
       field: 'product_attr_id',
       type: DataTypes.INTEGER
@@ -31,27 +31,30 @@ module.exports = (sequelize, DataTypes) => {
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     deletedAt: {
       field: 'deleted_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: null
     }
   },
-    {
-      tableName: 'orderdetails',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-      paranoid: true,
-      timestamps: true,
-      underscored: true
-    }
+  {
+    tableName: 'orderdetails',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
+  }
   )
   OrderDetail.associate = function (models) {
     OrderDetail.belongsTo(models.Order, { foreignKey: 'order_id' })

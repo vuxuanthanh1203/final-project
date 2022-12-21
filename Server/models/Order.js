@@ -8,45 +8,48 @@ module.exports = (sequelize, DataTypes) => {
       field: 'id',
       type: DataTypes.INTEGER
     },
-    user_id: {
+    userId: {
       allowNull: false,
       field: 'user_id',
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
-    shipping_method_id: {
+    shippingMethodId: {
       allowNull: false,
       field: 'shipping_method_id',
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
-    order_status_id: {
+    orderStatusId: {
       allowNull: false,
       field: 'order_status_id',
-      type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER
     },
     createdAt: {
       allowNull: false,
       field: 'created_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: new Date()
     },
     deletedAt: {
       field: 'deleted_at',
-      type: DataTypes.DATE(3)
+      type: DataTypes.DATE(3),
+      defaultValue: null
     }
   },
-    {
-      tableName: 'orders',
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
-      paranoid: true,
-      timestamps: true,
-      underscored: true
-    }
+  {
+    tableName: 'orders',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
+  }
   )
 
   Order.associate = function (models) {
