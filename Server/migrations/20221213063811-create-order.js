@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     await queryInterface.createTable('Orders', {
       id: {
         allowNull: false,
@@ -10,17 +10,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
+      userId: {
         allowNull: false,
         field: 'user_id',
         type: Sequelize.INTEGER
       },
-      shipping_method_id: {
+      shippingMethodId: {
         allowNull: false,
         field: 'shipping_method_id',
         type: Sequelize.INTEGER
       },
-      order_status_id: {
+      orderStatusId: {
         allowNull: false,
         field: 'order_status_id',
         type: Sequelize.INTEGER
@@ -35,9 +35,9 @@ module.exports = {
         type: Sequelize.DATE(3),
         field: 'updated_at'
       }
-    });
+    })
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Orders');
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('Orders')
   }
-};
+}

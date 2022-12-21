@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
     type Query {
@@ -8,21 +8,22 @@ const typeDefs = gql`
         orders(id: Int!): [Order]!
         order (id: Int!): Order!
 
-        order_detail(
-            user_id: Int!, 
-            order_id: Int!
+        orderDetail(
+            userId: Int!, 
+            orderId: Int!
         ): OrderDetail!
 
-        order_statuses: [OrderStatus]!
+        orderStatuses: [OrderStatus]!
 
         products: [Product]!
         product (id: Int!): Product!
-        product_attributes: [ProductAttr]!
+        productAttributes: [ProductAttr]!
+        productActives: [Product]!
 
         users: [User]!
         user (id: Int!): User!
 
-        shipping_methods: [ShippingMethod]!
+        shippingMethods: [ShippingMethod]!
     }
 
     type Mutation {
@@ -38,57 +39,57 @@ const typeDefs = gql`
         createProduct(
             name:String!, 
             slug:String!, 
-            short_description: String!,
-            product_img: String!, 
-            category_id: Int!
+            shortDescription: String!,
+            productImg: String!, 
+            categoryId: Int!
         ): Product!
 
 
         updateProduct(
-            id: Int!,
-            name:String!, 
-            slug:String!, 
-            short_description: String!,
-            product_img: String!, 
-            category_id: Int!
-        ): Boolean!
+            id: Int,
+            name:String, 
+            slug:String, 
+            shortDescription: String,
+            productImg: String, 
+            categoryId: Int
+        ): Product!
 
         deleteProduct(id: Int!): Boolean!
         
         createProductAttr(
             value: String!, 
             price: Float!, 
-            quantity_in_stock: Int!, 
-            product_id:Int!
+            quantityInStock: Int!, 
+            productId:Int!
         ): ProductAttr!
 
         updateProductAttr(
             id: Int!, 
             value:String!, 
             price: Float!, 
-            quantity_in_stock: Int!
+            quantityInStock: Int!
         ): Boolean!
 
         deleteProductAttr(id: Int!): Boolean!
 
         createProductImg(
             url: String!, 
-            product_id: Int!
+            productId: Int!
         ): ProductImg!
 
         deleteProductImg(id: Int!): Boolean!
 
         createOrder(
-            user_id: Int!, 
-            shipping_method_id: Int!, 
-            order_status_id: Int!
+            userId: Int!, 
+            shippingMethodId: Int!, 
+            orderStatusId: Int!
         ): Order!
 
         deleteOrder(id: Int!): Boolean!
 
         createOrderDetail(
-            order_id: Int!, 
-            product_attr_id: Int!, 
+            orderId: Int!, 
+            productAttrId: Int!, 
             quantity: Int!,
             price: Float!
         ): OrderDetail!
@@ -114,17 +115,18 @@ const typeDefs = gql`
             name: String!, 
             email: String!, 
             password: String!, 
-            phone_number: String!,
+            phoneNumber: String!,
             address: String!, 
-            is_admin: Boolean!
+            isAdmin: Boolean!,
+            userName: String!
         ): User!
 
         updateUser(
             id: Int!, 
             name: String!, 
-            phone_number: String!, 
+            phoneNumber: String!, 
             address: String!,
-            is_admin: Boolean!
+            isAdmin: Boolean!
         ): Boolean!
 
         deleteUser(id: Int!): Boolean!
@@ -141,8 +143,8 @@ const typeDefs = gql`
         id: Int!
         name: String!
         slug: String!
-        short_description: String!
-        product_img: String!
+        shortDescription: String!
+        productImg: String!
         category: Category
         productAttrs: [ProductAttr]
     }
@@ -151,7 +153,7 @@ const typeDefs = gql`
         id: Int!
         value: String!
         price: Float!
-        quantity_in_stock: Int!
+        quantityInStock: Int!
         product: Product
         productImgs: [ProductImg]
     }
@@ -187,9 +189,9 @@ const typeDefs = gql`
         name: String!
         email: String!
         password: String!
-        phone_number: String!
+        phoneNumber: String!
         address: String!
-        is_admin: Boolean!
+        isAdmin: Boolean!
         orders: [Order]
     }
 
@@ -201,4 +203,4 @@ const typeDefs = gql`
     }
 `
 
-module.exports = typeDefs;
+module.exports = typeDefs

@@ -1,7 +1,6 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define(
-    'Product',
+  const Product = sequelize.define('Product',
     {
       id: {
         allowNull: false,
@@ -62,6 +61,12 @@ module.exports = (sequelize, DataTypes) => {
     }
 
   )
+  Product.addScope('checkStatus', {
+    where: {
+      deleted_at: null
+    }
+  })
+
   Product.associate = function (models) {
     Product.belongsTo(models.Category, { foreignKey: 'category_id' })
     Product.hasMany(models.ProductAttr)

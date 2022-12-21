@@ -1,31 +1,64 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
 module.exports = (sequelize, DataTypes) => {
-  class ProductAttr extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      ProductAttr.belongsTo(models.Product)
-      ProductAttr.hasMany(models.ProductImg)
-      ProductAttr.belongsTo(models.OrderDetail)
+  const ProductAttr = sequelize.define('ProductAttr', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      field: 'id',
+      type: DataTypes.INTEGER
+    },
+    value: {
+      allowNull: false,
+      field: 'value',
+      type: DataTypes.STRING(191)
+    },
+    price: {
+      allowNull: false,
+      field: 'price',
+      type: DataTypes.FLOAT
+    },
+    quantityInStock: {
+      allowNull: false,
+      field: 'quantity_in_stock',
+      type: DataTypes.INTEGER
+    },
+    productId: {
+      allowNull: false,
+      field: 'product_id',
+      type: DataTypes.INTEGER,
+      unique: true
+    },
+    createdAt: {
+      allowNull: false,
+      field: 'created_at',
+      type: DataTypes.DATE(3)
+    },
+    updatedAt: {
+      allowNull: false,
+      field: 'updated_at',
+      type: DataTypes.DATE(3)
+    },
+    deletedAt: {
+      field: 'deleted_at',
+      type: DataTypes.DATE(3)
     }
-  }
-  ProductAttr.init({
-    value: DataTypes.STRING,
-    price: DataTypes.FLOAT,
-    quantity_in_stock: DataTypes.INTEGER,
-    product_id: DataTypes.INTEGER,
-  }, {
-    sequelize,
+  },
+  {
+    tableName: 'productattrs',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
     paranoid: true,
-    timestamps: false,
-    modelName: 'ProductAttr',
-  });
-  return ProductAttr;
-};
+    timestamps: true,
+    underscored: true
+  }
+  )
+  ProductAttr.associate = function (models) {
+    ProductAttr.belongsTo(models.Product, { foreignKey: 'product_id' })
+    ProductAttr.hasMany(models.ProductImg)
+    // ProductAttr.belongsTo(models.OrderDetail, { foreignKey: 'order_detail_id' })
+  }
+
+  return ProductAttr
+}

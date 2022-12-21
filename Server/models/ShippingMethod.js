@@ -1,26 +1,51 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
 module.exports = (sequelize, DataTypes) => {
-  class ShippingMethod extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      ShippingMethod.belongsTo(models.Order)
+  const ShippingMethod = sequelize.define('ShippingMethod', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      field: 'id',
+      type: DataTypes.INTEGER
+    },
+    name: {
+      allowNull: false,
+      field: 'name',
+      type: DataTypes.STRING(191)
+    },
+    price: {
+      allowNull: false,
+      field: 'price',
+      type: DataTypes.FLOAT
+    },
+    createdAt: {
+      allowNull: false,
+      field: 'created_at',
+      type: DataTypes.DATE(3)
+    },
+    updatedAt: {
+      allowNull: false,
+      field: 'updated_at',
+      type: DataTypes.DATE(3)
+    },
+    deletedAt: {
+      field: 'deleted_at',
+      type: DataTypes.DATE(3)
     }
+  },
+  {
+    tableName: 'shippingmethods',
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
+    deletedAt: 'deleted_at',
+    paranoid: true,
+    timestamps: true,
+    underscored: true
   }
-  ShippingMethod.init({
-    name: DataTypes.STRING,
-    price: DataTypes.FLOAT
-  }, {
-    sequelize,
-    timestamps: false,
-    modelName: 'ShippingMethod',
-  });
-  return ShippingMethod;
-};
+  )
+  ShippingMethod.associate = function (models) {
+    ShippingMethod.belongsTo(models.Order, { foreignKey: 'order_id' })
+  }
+
+  return ShippingMethod
+}
