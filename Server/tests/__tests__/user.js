@@ -24,7 +24,9 @@ describe('createUser', () => {
       phoneNumber: '0987654321',
       address: 'HN',
       isAdmin: false,
-      userName: 'test'
+      userName: 'test',
+      createdAt: new Date('2022-12-21T05:00:00.000Z'),
+      updatedAt: new Date('2022-12-21T05:00:00.000Z')
     }
 
     const result = await User.create(userTest)

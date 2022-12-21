@@ -23,19 +23,16 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE(3),
-        field: 'created_at',
-        defaultValue: new Date()
+        field: 'created_at'
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE(3),
-        field: 'updated_at',
-        defaultValue: new Date()
+        field: 'updated_at'
       },
       deletedAt: {
         field: 'deleted_at',
-        type: Sequelize.DATE(3),
-        defaultValue: null
+        type: Sequelize.DATE(3)
       }
     })
   },

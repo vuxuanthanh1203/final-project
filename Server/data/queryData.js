@@ -53,32 +53,37 @@ const queryData = {
   }),
 
   // Mutation
-  createCategory: async (args) => await Category.create({ ...args }),
+  createCategory: async (args) => await Category.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteCategory: async (args) => await Category.destroy({
     where: {
       id: args.id
     }
   }),
-  updateCategory: async (args) => await Category.update({
-    ...args,
-    updated_at: new Date()
-  }, {
-    where: {
-      id: args.id
-    }
-  }),
+  updateCategory: async (args) => {
+    await Category.update({ ...args }, {
+      where: {
+        id: args.id
+      }
+    })
+    return Category.findByPk(args.id)
+  },
 
-  createProduct: async (args) => await Product.create({ ...args }),
+  createProduct: async (args) => await Product.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteProduct: async (args) => await Product.destroy({
     where: {
       id: args.id
     }
   }),
   updateProduct: async (args) => {
-    await Product.update({
-      ...args,
-      updated_at: new Date()
-    }, {
+    await Product.update({ ...args }, {
       where: {
         id: args.id
       }
@@ -86,81 +91,101 @@ const queryData = {
     return Product.findByPk(args.id)
   },
 
-  createUser: async (args) => await User.create({ ...args }),
+  createUser: async (args) => await User.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteUser: async (args) => await User.destroy({
     where: {
       id: args.id
     }
   }),
   updateUser: async (args) => {
-    await User.update(
-      {
-        ...args,
-        updated_at: new Date()
-      }, {
-        where: {
-          id: args.id
-        }
-      })
+    await User.update({ ...args }, {
+      where: {
+        id: args.id
+      }
+    })
     return User.findByPk(args.id)
   },
 
-  createProductAttr: async (args) => await ProductAttr.create({ ...args }),
+  createProductAttr: async (args) => await ProductAttr.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteProductAttr: async (args) => await ProductAttr.destroy({
     where: {
       id: args.id
     }
   }),
   updateProductAttr: async (args) => {
-    await ProductAttr.update(
-      {
-        ...args,
-        updated_at: new Date()
-      }, {
-        where: {
-          id: args.id
-        }
-      })
+    await ProductAttr.update({ ...args }, {
+      where: {
+        id: args.id
+      }
+    })
     return ProductAttr.findByPk(args.id)
   },
 
-  createProductImg: async (args) => await ProductImg.create({ ...args }),
+  createProductImg: async (args) => await ProductImg.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteProductImg: async (args) => await ProductImg.destroy({
     where: {
       id: args.id
     }
   }),
 
-  createOrder: async (args) => await Order.create({ ...args }),
+  createOrder: async (args) => await Order.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteOrder: async (args) => await Order.destroy({
     where: {
       id: args.id
     }
   }),
 
-  createOrderDetail: async (args) => await OrderDetail.create({ ...args }),
+  createOrderDetail: async (args) => await OrderDetail.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteOrderDetail: async (args) => await OrderDetail.destroy({
     where: {
       id: args.id
     }
   }),
-  updateOrderDetail: async (args) => await OrderDetail.update({
-    ...args,
-    updated_at: new Date()
-  }, {
-    where: {
-      id: args.id
-    }
-  }),
+  updateOrderDetail: async (args) => {
+    await OrderDetail.update({ ...args }, {
+      where: {
+        id: args.id
+      }
+    })
+    return OrderDetail.findByPk(args.id)
+  },
 
-  createOrderStatus: async (args) => await OrderStatus.create({ ...args }),
+  createOrderStatus: async (args) => await OrderStatus.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteOrderStatus: async (args) => await OrderStatus.destroy({
     where: {
       id: args.id
     }
   }),
 
-  createShippingMethod: async (args) => await ShippingMethod.create({ ...args }),
+  createShippingMethod: async (args) => await ShippingMethod.create({
+    ...args,
+    createdAt: new Date(),
+    updateAt: new Date()
+  }),
   deleteShippingMethod: async (args) => await ShippingMethod.destroy({
     where: {
       id: args.id

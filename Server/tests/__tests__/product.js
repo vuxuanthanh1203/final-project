@@ -22,9 +22,9 @@ describe('createProduct', () => {
       slug: 'product-test-5',
       shortDescription: 'ladlfa;lfda;ldfaldfla',
       productImg: 'https://fakestoreapi.com/img/81fPKd-2AYL.AC_SL1500_.jpg',
-      categoryId: 3
-      // createdAt: new Date(),
-      // updatedAt: new Date()
+      categoryId: 3,
+      createdAt: new Date('2022-12-21T05:00:00.000Z'),
+      updatedAt: new Date('2022-12-21T05:00:00.000Z')
     }
 
     const result = await Product.create(productTest)

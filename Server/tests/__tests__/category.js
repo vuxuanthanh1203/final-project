@@ -19,7 +19,9 @@ describe('createCategory', () => {
   test('Create a new Category', async () => {
     const CategoryTest = {
       name: 'test category',
-      slug: 'test-category'
+      slug: 'test-category',
+      createdAt: new Date('2022-12-21T05:00:00.000Z'),
+      updatedAt: new Date('2022-12-21T05:00:00.000Z')
     }
 
     const result = await Category.create(CategoryTest)

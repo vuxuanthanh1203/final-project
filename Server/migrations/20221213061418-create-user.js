@@ -44,19 +44,16 @@ module.exports = {
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE(3),
-        field: 'created_at',
-        defaultValue: new Date()
+        field: 'created_at'
       },
       updatedAt: {
         allowNull: false,
         field: 'updated_at',
-        type: Sequelize.DATE(3),
-        defaultValue: new Date()
+        type: Sequelize.DATE(3)
       },
       deletedAt: {
         field: 'deleted_at',
-        type: Sequelize.DATE(3),
-        defaultValue: null
+        type: Sequelize.DATE(3)
       }
     })
     await queryInterface.addIndex('users', ['name'], {
