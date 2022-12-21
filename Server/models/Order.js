@@ -11,18 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Order.belongsTo(models.User)
+      Order.belongsTo(models.User, { foreignKey: 'user_id' })
       Order.hasOne(models.OrderDetail)
       Order.hasOne(models.OrderStatus)
       Order.hasOne(models.ShippingMethod)
     }
   }
   Order.init({
-    userId: DataTypes.INTEGER,
-    shippingMethodId: DataTypes.INTEGER,
-    orderStatusId: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER,
+    shipping_method_id: DataTypes.INTEGER,
+    order_status_id: DataTypes.INTEGER
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'Order',
   });
   return Order;

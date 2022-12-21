@@ -17,15 +17,14 @@ const queryData = {
 
     getOrderStatus: async () => await OrderStatus.findAll(),
 
-    getAllProducts: async () => await Product.findAll(),
-    getProductById: async (id) => await Product.findByPk(id),
+    getAllProducts: async () => await Product.findAll({
+        attributes: [`id`, `name`, `slug`, `short_description`, `product_img`, `category_id`]
+    }),
+    getProductById: async (id) => await Product.findByPk(id, {
+        attributes: [`id`, `name`, `slug`, `short_description`, `product_img`, `category_id`]
+    }),
     getProductAttribute: async (id) => await ProductAttr.findByPk(id),
 
-    // getAllUsers: async (id) => {
-    //     let user = await User.findByPk(id)
-    //     return user.is_admin === true ? await User.findAll() : "Not Authorized!"
-    //     // return await User.findAll();
-    // },
     getAllUsers: async () => await User.findAll(),
 
     getUserById: async (id) => await User.findByPk(id),
@@ -56,7 +55,11 @@ const queryData = {
 
 
     // Mutation
-    createCategory: async (args) => await Category.create(args),
+    createCategory: async (args) => await Category.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteCategory: async (args) => await Category.destroy({
         where: {
             id: args.id
@@ -69,15 +72,18 @@ const queryData = {
     }),
 
 
-    createProduct: async (args) => await Product.create(args),
+    createProduct: async (args) => await Product.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteProduct: async (args) => await Product.destroy({
         where: {
             id: args.id
         }
     }),
     updateProduct: async (args) => await Product.update({
-        name: args.name, slug: args.slug,
-        short_description: args.short_description, product_img: args.product_img,
+        ...args,
         updated_at: Date.now()
     }, {
         where: {
@@ -85,7 +91,11 @@ const queryData = {
         }
     }),
 
-    createUser: async (args) => await User.create(args),
+    createUser: async (args) => await User.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteUser: async (args) => await User.destroy({
         where: {
             id: args.id
@@ -100,7 +110,11 @@ const queryData = {
         }
     }),
 
-    createProductAttr: async (args) => await ProductAttr.create(args),
+    createProductAttr: async (args) => await ProductAttr.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteProductAttr: async (args) => await ProductAttr.destroy({
         where: {
             id: args.id
@@ -122,14 +136,22 @@ const queryData = {
         }
     }),
 
-    createOrder: async (args) => await Order.create(args),
+    createOrder: async (args) => await Order.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteOrder: async (args) => await Order.destroy({
         where: {
             id: args.id
         }
     }),
 
-    createOrderDetail: async (args) => await OrderDetail.create(args),
+    createOrderDetail: async (args) => await OrderDetail.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteOrderDetail: async (args) => await OrderDetail.destroy({
         where: {
             id: args.id
@@ -145,7 +167,11 @@ const queryData = {
     }),
 
 
-    createOrderStatus: async (args) => await OrderStatus.create(args),
+    createOrderStatus: async (args) => await OrderStatus.create({
+        ...args,
+        created_at: new Date(),
+        updated_at: new Date()
+    }),
     deleteOrderStatus: async (args) => await OrderStatus.destroy({
         where: {
             id: args.id

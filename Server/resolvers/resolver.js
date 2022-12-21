@@ -21,7 +21,7 @@ const resolver = {
         products: async ({ id }, args, { queryData }) => await queryData.getAllProducts(id)
     },
     Product: {
-        category: async ({ categoryId }, args, { queryData }) => await queryData.getCategoryById(categoryId),
+        category: async ({ category_id }, args, { queryData }) => await queryData.getCategoryById(category_id),
         productAttrs: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
     },
     ProductAttr: {

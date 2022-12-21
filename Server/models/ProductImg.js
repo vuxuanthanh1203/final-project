@@ -16,9 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   ProductImg.init({
     url: DataTypes.STRING,
-    productAttrId: DataTypes.INTEGER
+    product_attr_id: DataTypes.INTEGER
   }, {
     sequelize,
+    timestamps: false,
     modelName: 'ProductImg',
   });
   return ProductImg;
