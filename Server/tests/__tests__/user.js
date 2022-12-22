@@ -51,11 +51,20 @@ describe('createUser', () => {
 
 describe('updateUser', () => {
   test('update User', async () => {
-    const result = await User.update({ name: 'test update00' }, {
-      where: { id: 4 }
+    const userTest = {
+      name: 'test update77',
+      email: 'testuser@example.com',
+      password: '123456',
+      phoneNumber: '0987654321',
+      address: 'HN',
+      isAdmin: false,
+      userName: 'test'
+    }
+    await User.update({ name: 'test update77' }, {
+      where: { id: 5 }
     })
-    const user = await User.findByPk(4)
-    expect(result).toMatchObject(user)
+    const user = await User.findByPk(5)
+    expect(user).toMatchObject(userTest)
   })
 })
 
