@@ -77,17 +77,6 @@ module.exports = (sequelize, DataTypes) => {
         model: models.Category
       }]
     })
-
-    /*
-     ** Scope để lấy ra 1 product + category
-     ** Thì em sẽ truyền ID của product vào chỗ nào trong đoạn scope này ạ
-    */
-    // Product.addScope('getProductWithCategory', {
-    //   include: [{
-    //     model: models.Category
-
-    //   }]
-    // })
   }
 
   return Product

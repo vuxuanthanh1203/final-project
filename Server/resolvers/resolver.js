@@ -18,24 +18,6 @@ const resolver = {
     // Scope
     productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus(),
     productsWithCategory: async (parent, args, { queryData }) => await queryData.getProductsWithCategory()
-    // productWithCategory: async (parent, { id }, { queryData }) => await queryData.getproductWithCategory(id),
-  },
-
-  Category: {
-    products: async ({ id }, args, { queryData }) => await queryData.getAllProducts(id)
-  },
-  Product: {
-    category: async ({ categoryId }, args, { queryData }) => await queryData.getCategoryById(categoryId),
-    productAttrs: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
-  },
-  ProductAttr: {
-    productImgs: async ({ id }, args, { queryData }) => await queryData.getAllProductImg(id)
-  },
-  User: {
-    orders: async ({ id }, args, { queryData }) => await queryData.getAllOrders(id)
-  },
-  Order: {
-    orderDetail: async ({ id }, args, { queryData }) => await queryData.getOrderDetail(id)
   },
 
   Mutation: {

@@ -13,8 +13,6 @@ const queryData = {
   checkProuctStatus: async () => await Product.scope('checkStatus').findAll(),
   getProductsWithCategory: async () => await Product.scope('getProductsWithCategory').findAll(),
 
-  // getProductWithCategory: async (id) => await Product.scope('getProductWithCategory').findByPk(id)(),
-
   // Query
   getAllCategories: async (condition = null) => {
     return condition === null ? await Category.findAll() : await Product.findAll(condition)
