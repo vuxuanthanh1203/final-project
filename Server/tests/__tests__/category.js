@@ -9,30 +9,33 @@ describe('getAllCategories', () => {
 })
 
 describe('getCategoryById', () => {
-  test('get category by id', async () => {
-    const categoryTest = {
+  test('get category by id return object', async () => {
+    const productTest = {
       name: "men's clothing",
       slug: 'men-s-clothing'
     }
-    const result = await queryData.getCategoryById(10)
-    if (result) {
-      expect(result).toMatchObject(categoryTest)
-    }
+    const result = await queryData.getCategoryById(1)
+    expect(result).toMatchObject(productTest)
+  })
+})
+
+describe('getCategoryById', () => {
+  test('get category by id return null', async () => {
+    const result = await queryData.getCategoryById(20)
     expect(result).toBeNull()
   })
 })
 
 describe('createCategory', () => {
-  test('Create a new Category', async () => {
-    const CategoryTest = {
+  test('Create a new category', async () => {
+    const categoryTest = {
       name: 'test category',
-      slug: 'test-category',
-      createdAt: new Date('2022-12-21T05:00:00.000Z'),
-      updatedAt: new Date('2022-12-21T05:00:00.000Z')
+      slug: 'test-category'
     }
 
-    const result = await Category.create(CategoryTest)
-    expect(result).toBeTruthy()
+    await queryData.createCategory(categoryTest)
+    const user = await Category.findByPk(6)
+    expect(user).toMatchObject(categoryTest)
   })
 })
 
@@ -41,7 +44,8 @@ describe('updateCategory', () => {
     const result = await Category.update({ name: 'test update00' }, {
       where: { id: 5 }
     })
-    expect(result).toBeTruthy()
+    const category = await Category.findByPk(5)
+    expect(result).toMatchObject(category)
   })
 })
 

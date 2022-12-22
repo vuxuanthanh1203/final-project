@@ -4,12 +4,12 @@ const Product = require('../../models').Product
 describe('getAllProducts', () => {
   test('get all products', async () => {
     const result = await queryData.getAllProducts()
-    expect(result).toHaveLength(8)
+    expect(result).toHaveLength(18)
   })
 })
 
 describe('getProductById', () => {
-  test('get product by id', async () => {
+  test('get product by id return object', async () => {
     const productTest = {
       name: 'Jallraven - Foldsack No1 Backpack',
       slug: 'jallraven-foldsackNo-1-backpack',
@@ -17,10 +17,14 @@ describe('getProductById', () => {
       productImg: 'https://fakestoreapi.com/img/81fPKd-2AYL.AC_SL1500_.jpg',
       categoryId: 1
     }
-    const result = await queryData.getProductById(10)
-    if (result) {
-      expect(result).toMatchObject(productTest)
-    }
+    const result = await queryData.getProductById(1)
+    expect(result).toMatchObject(productTest)
+  })
+})
+
+describe('getProductById', () => {
+  test('get product by id return null', async () => {
+    const result = await queryData.getProductById(20)
     expect(result).toBeNull()
   })
 })
@@ -28,17 +32,16 @@ describe('getProductById', () => {
 describe('createProduct', () => {
   test('Create a new product', async () => {
     const productTest = {
-      name: 'product test 5',
-      slug: 'product-test-5',
+      name: 'product test 10',
+      slug: 'product-test-10',
       shortDescription: 'ladlfa;lfda;ldfaldfla',
       productImg: 'https://fakestoreapi.com/img/81fPKd-2AYL.AC_SL1500_.jpg',
-      categoryId: 3,
-      createdAt: new Date('2022-12-21T05:00:00.000Z'),
-      updatedAt: new Date('2022-12-21T05:00:00.000Z')
+      categoryId: 3
     }
 
-    const result = await Product.create(productTest)
-    expect(result).toBeTruthy()
+    await queryData.createProduct(productTest)
+    const product = await Product.findByPk(16)
+    expect(product).toMatchObject(productTest)
   })
 })
 
@@ -47,7 +50,8 @@ describe('updateProduct', () => {
     const result = await Product.update({ name: 'test update00' }, {
       where: { id: 9 }
     })
-    expect(result).toBeTruthy()
+    const product = await Product.findByPk(9)
+    expect(result).toMatchObject(product)
   })
 })
 
