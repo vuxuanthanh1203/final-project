@@ -10,12 +10,12 @@ describe('getAllCategories', () => {
 
 describe('getCategoryById', () => {
   test('get category by id return object', async () => {
-    const productTest = {
+    const categoryTest = {
       name: "men's clothing",
       slug: 'men-s-clothing'
     }
     const result = await queryData.getCategoryById(1)
-    expect(result).toMatchObject(productTest)
+    expect(result).toMatchObject(categoryTest)
   })
 })
 
@@ -34,18 +34,22 @@ describe('createCategory', () => {
     }
 
     await queryData.createCategory(categoryTest)
-    const user = await Category.findByPk(6)
-    expect(user).toMatchObject(categoryTest)
+    const category = await Category.findByPk(5)
+    expect(category).toMatchObject(categoryTest)
   })
 })
 
 describe('updateCategory', () => {
   test('update Category', async () => {
-    const result = await Category.update({ name: 'test update00' }, {
+    const categoryTest = {
+      name: 'test update00',
+      slug: 'test-category'
+    }
+    await Category.update({ name: 'test update00' }, {
       where: { id: 5 }
     })
     const category = await Category.findByPk(5)
-    expect(result).toMatchObject(category)
+    expect(category).toMatchObject(categoryTest)
   })
 })
 

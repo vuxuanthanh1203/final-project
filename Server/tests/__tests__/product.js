@@ -40,18 +40,25 @@ describe('createProduct', () => {
     }
 
     await queryData.createProduct(productTest)
-    const product = await Product.findByPk(16)
+    const product = await Product.findByPk(9)
     expect(product).toMatchObject(productTest)
   })
 })
 
 describe('updateProduct', () => {
   test('update Product', async () => {
-    const result = await Product.update({ name: 'test update00' }, {
+    const productTest = {
+      name: 'test update00',
+      slug: 'product-test-10',
+      shortDescription: 'ladlfa;lfda;ldfaldfla',
+      productImg: 'https://fakestoreapi.com/img/81fPKd-2AYL.AC_SL1500_.jpg',
+      categoryId: 3
+    }
+    await Product.update({ name: 'test update00' }, {
       where: { id: 9 }
     })
     const product = await Product.findByPk(9)
-    expect(result).toMatchObject(product)
+    expect(product).toMatchObject(productTest)
   })
 })
 
