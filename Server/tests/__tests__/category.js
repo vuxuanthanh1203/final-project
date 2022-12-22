@@ -61,3 +61,10 @@ describe('deleteCategory', () => {
     expect(result).toBeTruthy()
   })
 })
+
+describe('test get category with all product', () => {
+  test('Select category with all product ', async () => {
+    const result = await queryData.getproductsOfCategory(3)
+    expect(result).toHaveLength(2)
+  })
+})

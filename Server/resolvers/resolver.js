@@ -9,29 +9,15 @@ const resolver = {
     products: async (parent, args, { queryData }) => await queryData.getAllProducts(),
     product: async (parent, { id }, { queryData }) => await queryData.getProductById(id),
     productAttributes: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
-    productActives: async (parent, { id }, { queryData }) => await queryData.checkProuctStatus(),
 
     users: async (parent, args, { queryData }) => await queryData.getAllUsers(),
     user: async (parent, { id }, { queryData }) => await queryData.getUserById(id),
 
-    shippingMethods: async (parent, args, { queryData }) => await queryData.getShippingMethod()
-  },
+    shippingMethods: async (parent, args, { queryData }) => await queryData.getShippingMethod(),
 
-  Category: {
-    products: async ({ id }, args, { queryData }) => await queryData.getAllProducts(id)
-  },
-  Product: {
-    category: async ({ categoryId }, args, { queryData }) => await queryData.getCategoryById(categoryId),
-    productAttrs: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
-  },
-  ProductAttr: {
-    productImgs: async ({ id }, args, { queryData }) => await queryData.getAllProductImg(id)
-  },
-  User: {
-    orders: async ({ id }, args, { queryData }) => await queryData.getAllOrders(id)
-  },
-  Order: {
-    orderDetail: async ({ id }, args, { queryData }) => await queryData.getOrderDetail(id)
+    // Scope
+    productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus(),
+    productsWithCategory: async (parent, args, { queryData }) => await queryData.getProductsWithCategory()
   },
 
   Mutation: {

@@ -74,6 +74,13 @@ describe('deleteProduct', () => {
 describe('testIndex', () => {
   test('Check Product Status', async () => {
     const result = await queryData.checkProuctStatus()
-    expect(result).toHaveLength(8)
+    expect(result).toHaveLength(9)
+  })
+})
+
+describe('test get product with category', () => {
+  test('Select all product with category', async () => {
+    const result = await queryData.getProductsWithCategory()
+    expect(result).toHaveLength(9)
   })
 })
