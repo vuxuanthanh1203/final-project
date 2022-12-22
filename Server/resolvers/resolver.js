@@ -9,12 +9,16 @@ const resolver = {
     products: async (parent, args, { queryData }) => await queryData.getAllProducts(),
     product: async (parent, { id }, { queryData }) => await queryData.getProductById(id),
     productAttributes: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
-    productActives: async (parent, { id }, { queryData }) => await queryData.checkProuctStatus(),
 
     users: async (parent, args, { queryData }) => await queryData.getAllUsers(),
     user: async (parent, { id }, { queryData }) => await queryData.getUserById(id),
 
-    shippingMethods: async (parent, args, { queryData }) => await queryData.getShippingMethod()
+    shippingMethods: async (parent, args, { queryData }) => await queryData.getShippingMethod(),
+
+    // Scope
+    productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus(),
+    productsWithCategory: async (parent, args, { queryData }) => await queryData.getProductsWithCategory()
+    // productWithCategory: async (parent, { id }, { queryData }) => await queryData.getproductWithCategory(id),
   },
 
   Category: {

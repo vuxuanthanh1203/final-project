@@ -19,7 +19,7 @@ const typeDefs = gql`
         product (id: Int!): Product!
         productAttributes: [ProductAttr]!
         productActives: [Product]!
-
+        productsWithCategory: [Product]!
         users: [User]!
         user (id: Int!): User!
 
