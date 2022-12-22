@@ -12,12 +12,12 @@ describe('getUserById', () => {
   test('get user by id return object', async () => {
     const userTest = {
       name: 'admin',
-      user_name: 'admin',
+      userName: 'admin',
       email: 'admin@example.com',
       password: 'admin1234',
-      phone_number: '0987654321',
+      phoneNumber: '0987654321',
       address: 'HN',
-      is_admin: true
+      isAdmin: true
     }
     const result = await queryData.getUserById(1)
     expect(result).toMatchObject(userTest)
