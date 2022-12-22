@@ -9,26 +9,30 @@ describe('getAllUsers', () => {
 })
 
 describe('getUserById', () => {
-  test('get user by id', async () => {
+  test('get user by id return object', async () => {
     const userTest = {
-      name: 'user3',
-      email: 'user3@example.com',
+      name: 'admin',
+      user_name: 'admin',
+      email: 'admin@example.com',
       password: 'admin1234',
-      phone_number: '0987777777',
+      phone_number: '0987654321',
       address: 'HN',
-      is_admin: false,
-      user_name: 'user3'
+      is_admin: true
     }
-    const result = await queryData.getUserById(10)
-    if (result) {
-      expect(result).toMatchObject(userTest)
-    }
+    const result = await queryData.getUserById(1)
+    expect(result).toMatchObject(userTest)
+  })
+})
+
+describe('getUserById', () => {
+  test('get user by id return null', async () => {
+    const result = await queryData.getUserById(20)
     expect(result).toBeNull()
   })
 })
 
 describe('createUser', () => {
-  test('Create a new User', async () => {
+  test('Create a new user', async () => {
     const userTest = {
       name: 'test user11',
       email: 'testuser@example.com',
@@ -36,13 +40,12 @@ describe('createUser', () => {
       phoneNumber: '0987654321',
       address: 'HN',
       isAdmin: false,
-      userName: 'test',
-      createdAt: new Date('2022-12-21T05:00:00.000Z'),
-      updatedAt: new Date('2022-12-21T05:00:00.000Z')
+      userName: 'test'
     }
 
-    const result = await User.create(userTest)
-    expect(result).toBeTruthy()
+    await queryData.createUser(userTest)
+    const user = await User.findByPk(5)
+    expect(user).toMatchObject(userTest)
   })
 })
 
@@ -51,7 +54,8 @@ describe('updateUser', () => {
     const result = await User.update({ name: 'test update00' }, {
       where: { id: 4 }
     })
-    expect(result).toBeTruthy()
+    const user = await User.findByPk(4)
+    expect(result).toMatchObject(user)
   })
 })
 
