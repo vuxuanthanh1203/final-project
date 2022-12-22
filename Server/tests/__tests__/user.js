@@ -9,9 +9,21 @@ describe('getAllUsers', () => {
 })
 
 describe('getUserById', () => {
-  test('get User by id', async () => {
-    const result = await User.findByPk(1)
-    expect(result).toBeTruthy()
+  test('get user by id', async () => {
+    const userTest = {
+      name: 'user3',
+      email: 'user3@example.com',
+      password: 'admin1234',
+      phone_number: '0987777777',
+      address: 'HN',
+      is_admin: false,
+      user_name: 'user3'
+    }
+    const result = await queryData.getUserById(10)
+    if (result) {
+      expect(result).toMatchObject(userTest)
+    }
+    expect(result).toBeNull()
   })
 })
 

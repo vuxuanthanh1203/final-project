@@ -10,8 +10,18 @@ describe('getAllProducts', () => {
 
 describe('getProductById', () => {
   test('get product by id', async () => {
-    const result = await Product.findByPk(1)
-    expect(result).toBeTruthy()
+    const productTest = {
+      name: 'Jallraven - Foldsack No1 Backpack',
+      slug: 'jallraven-foldsackNo-1-backpack',
+      shortDescription: 'Your perfect pack for everyday use and walks in the forest',
+      productImg: 'https://fakestoreapi.com/img/81fPKd-2AYL.AC_SL1500_.jpg',
+      categoryId: 1
+    }
+    const result = await queryData.getProductById(10)
+    if (result) {
+      expect(result).toMatchObject(productTest)
+    }
+    expect(result).toBeNull()
   })
 })
 
@@ -47,5 +57,12 @@ describe('deleteProduct', () => {
       where: { id: 13 }
     })
     expect(result).toBeTruthy()
+  })
+})
+
+describe('testIndex', () => {
+  test('Check Product Status', async () => {
+    const result = await queryData.checkProuctStatus()
+    expect(result).toHaveLength(8)
   })
 })

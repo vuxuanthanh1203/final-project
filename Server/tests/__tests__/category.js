@@ -9,9 +9,16 @@ describe('getAllCategories', () => {
 })
 
 describe('getCategoryById', () => {
-  test('get Category by id', async () => {
-    const result = await Category.findByPk(1)
-    expect(result).toBeTruthy()
+  test('get category by id', async () => {
+    const categoryTest = {
+      name: "men's clothing",
+      slug: 'men-s-clothing'
+    }
+    const result = await queryData.getCategoryById(10)
+    if (result) {
+      expect(result).toMatchObject(categoryTest)
+    }
+    expect(result).toBeNull()
   })
 })
 
