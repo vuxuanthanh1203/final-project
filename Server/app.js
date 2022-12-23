@@ -11,7 +11,6 @@ const resolvers = require('./resolvers/resolver')
 const queryData = require('./data/queryData')
 
 // export data
-const exportData = require('./export/exportData')
 app.use('./public', express.static(__dirname + './public'))
 
 const startApolloServer = async () => {
@@ -22,7 +21,7 @@ const startApolloServer = async () => {
 }
 
 startApolloServer()
-exportData()
+
 app.listen(4000, () => {
   console.log('Server running on port 4000')
 })

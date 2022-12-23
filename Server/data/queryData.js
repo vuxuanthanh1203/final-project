@@ -11,7 +11,6 @@ const User = require('../models').User
 const queryData = {
   // Scope
   checkProuctStatus: async () => await Product.scope('checkStatus').findAll(),
-  // getProductsWithCategory: async () => await Product.scope('getProductsWithCategory').findAll(),
 
   // Query
   getAllCategories: async (condition = null) => {
