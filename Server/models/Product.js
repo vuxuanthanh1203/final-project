@@ -74,7 +74,8 @@ module.exports = (sequelize, DataTypes) => {
 
     Product.addScope('getProductsWithCategory', {
       include: [{
-        model: models.Category
+        model: models.Category,
+        attributes: ['id', 'name']
       }]
     })
   }
