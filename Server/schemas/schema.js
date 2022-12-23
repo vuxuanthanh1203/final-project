@@ -24,9 +24,12 @@ const typeDefs = gql`
         user (id: Int!): User!
 
         shippingMethods: [ShippingMethod]!
-    }
 
+    }
+    
     type Mutation {
+        exportProduct: ExportProduct!
+        
         createCategory(name: String, slug: String): Category!
 
         updateCategory(
@@ -200,6 +203,10 @@ const typeDefs = gql`
         name: String!
         price:Float!
         orders: [Order]
+    }
+
+    type ExportProduct {
+        fileUrl: String!
     }
 `
 

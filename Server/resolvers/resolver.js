@@ -1,3 +1,5 @@
+const exportData = require('../export/exportData')
+
 const resolver = {
   Query: {
     categories: async (parent, args, { queryData }) => await queryData.getAllCategories(),
@@ -18,27 +20,14 @@ const resolver = {
     // Scope
     productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus(),
     productsWithCategory: async (parent, args, { queryData }) => await queryData.getProductsWithCategory()
-    // productWithCategory: async (parent, { id }, { queryData }) => await queryData.getproductWithCategory(id),
-  },
 
-  Category: {
-    products: async ({ id }, args, { queryData }) => await queryData.getAllProducts(id)
-  },
-  Product: {
-    category: async ({ categoryId }, args, { queryData }) => await queryData.getCategoryById(categoryId),
-    productAttrs: async ({ id }, args, { queryData }) => await queryData.getAllProductAttributes(id)
-  },
-  ProductAttr: {
-    productImgs: async ({ id }, args, { queryData }) => await queryData.getAllProductImg(id)
-  },
-  User: {
-    orders: async ({ id }, args, { queryData }) => await queryData.getAllOrders(id)
-  },
-  Order: {
-    orderDetail: async ({ id }, args, { queryData }) => await queryData.getOrderDetail(id)
+    // Export Data
+
   },
 
   Mutation: {
+    exportProduct: exportData,
+
     createCategory: async (parent, args, { queryData }) => await queryData.createCategory(args),
     deleteCategory: async (parent, args, { queryData }) => await queryData.deleteCategory(args),
     updateCategory: async (parent, args, { queryData }) => await queryData.updateCategory(args),
