@@ -28,7 +28,7 @@ const typeDefs = gql`
     }
     
     type Mutation {
-        exportProduct: ExportProduct!
+        exportProduct: String!
         
         createCategory(name: String, slug: String): Category!
 

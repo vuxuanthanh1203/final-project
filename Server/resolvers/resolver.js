@@ -21,11 +21,10 @@ const resolver = {
     productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus(),
     productsWithCategory: async (parent, args, { queryData }) => await queryData.getProductsWithCategory()
 
-    // Export Data
-
   },
 
   Mutation: {
+    // Export Data
     exportProduct: exportData,
 
     createCategory: async (parent, args, { queryData }) => await queryData.createCategory(args),
