@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const fastCsv = require('fast-csv')
 const Product = require('../models').Product
 
@@ -11,7 +12,10 @@ const exportData = async () => {
     return item.dataValues
   })
 
+  const baseDerectory = path.join(__dirname, '../../Server/public/')
+
   const fileName = Date.now() + '_products.csv'
+  const fileUrl = path.join(baseDerectory, fileName)
 
   const ws = fs.createWriteStream(`public/${fileName}`)
 
@@ -21,7 +25,7 @@ const exportData = async () => {
     .on('error', () => console.log('Error!'))
     .pipe(ws)
 
-  return 'Exported file: ' + fileName
+  return fileUrl
 }
 
 module.exports = exportData

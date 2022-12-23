@@ -11,7 +11,7 @@ const resolvers = require('./resolvers/resolver')
 const queryData = require('./data/queryData')
 
 // export data
-app.use('./public', express.static(__dirname + './public'))
+// app.use('./public', express.static(__dirname + './public'))
 
 const startApolloServer = async () => {
   const server = new ApolloServer({ typeDefs, resolvers, context: () => ({ queryData }) })
