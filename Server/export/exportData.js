@@ -1,7 +1,6 @@
 const fs = require('fs')
 const fastCsv = require('fast-csv')
 const Product = require('../models').Product
-const ExportProduct = require('../models').ExportProduct
 
 const exportData = async () => {
   const dataDB = await Product.findAll({
@@ -12,22 +11,17 @@ const exportData = async () => {
     return item.dataValues
   })
 
-  const fileUrl = Date.now() + '_products.csv'
+  const fileName = Date.now() + '_products.csv'
 
-  const ws = fs.createWriteStream(`public/${fileUrl}`)
+  const ws = fs.createWriteStream(`public/${fileName}`)
 
   fastCsv
     .write(dataProduct, { headers: true })
     .on('finish', () => console.log('Exported!'))
+    .on('error', () => console.log('Error!'))
     .pipe(ws)
 
-  await ExportProduct.create({
-    fileUrl,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  })
-
-  return ExportProduct.findByPk(1)
+  return 'Exported file: ' + fileName
 }
 
 module.exports = exportData
