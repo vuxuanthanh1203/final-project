@@ -1,6 +1,6 @@
 const Category = require('../models').Category
 const Order = require('../models').Order
-const OrderDetail = require('../models').OrderDetail
+const OrderProductAttr = require('../models').OrderProductAttr
 const OrderStatus = require('../models').OrderStatus
 const Product = require('../models').Product
 const ProductAttr = require('../models').ProductAttr
@@ -47,7 +47,7 @@ const queryData = {
     }
   }),
   getOrderById: async (id) => await Order.findByPk(id),
-  getOrderDetails: async (id) => await OrderDetail.findOne({
+  getOrderProductAttrs: async (id) => await OrderProductAttr.findOne({
     where: {
       order_id: id
     }
@@ -152,23 +152,23 @@ const queryData = {
     }
   }),
 
-  createOrderDetail: async (args) => await OrderDetail.create({
+  createOrderProductAttr: async (args) => await OrderProductAttr.create({
     ...args,
     createdAt: new Date(),
     updatedAt: new Date()
   }),
-  deleteOrderDetail: async (args) => await OrderDetail.destroy({
+  deleteOrderProductAttr: async (args) => await OrderProductAttr.destroy({
     where: {
       id: args.id
     }
   }),
-  updateOrderDetail: async (args) => {
-    await OrderDetail.update({ ...args }, {
+  updateOrderProductAttr: async (args) => {
+    await OrderProductAttr.update({ ...args }, {
       where: {
         id: args.id
       }
     })
-    return OrderDetail.findByPk(args.id)
+    return OrderProductAttr.findByPk(args.id)
   },
 
   createOrderStatus: async (args) => await OrderStatus.create({

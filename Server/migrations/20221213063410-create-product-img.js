@@ -15,9 +15,9 @@ module.exports = {
         field: 'url',
         type: Sequelize.STRING(191)
       },
-      productAttrId: {
+      productId: {
         allowNull: false,
-        field: 'product_attr_id',
+        field: 'product_id',
         type: Sequelize.INTEGER
       },
       createdAt: {

@@ -5,76 +5,53 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     return queryInterface.bulkInsert('Products', [
       {
-        name: 'Jallraven - Foldsack No1 Backpack',
-        slug: 'jallraven-foldsackNo-1-backpack',
-        short_description: 'Your perfect pack for everyday use and walks in the forest',
-        product_img: 'https://fakestoreapi.com/img/81fPKd-2AYL.AC_SL1500_.jpg',
-        category_id: 1,
-        created_at: new Date('2022-12-21T00:00:00.000Z'),
-        updated_at: new Date('2022-12-21T00:00:00.000Z')
-      },
-      {
-        name: 'Mens Casual Premium Slim Fit T-Shirts',
-        slug: 'mens-casual-premium-slim-fit-t-shirts',
-        short_description: 'Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing.',
-        product_img: 'https://fakestoreapi.com/img/71-3HjGNDUL.AC_SY879._SX._UX._SY._UY_.jpg',
+        name: 'Áo thun Dinosaur 01',
+        slug: 'ao-thun-dinosaur-01',
+        description: 'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!',
+        price: '189000',
         category_id: 1,
         created_at: new Date('2022-12-21T01:00:00.000Z'),
         updated_at: new Date('2022-12-21T01:00:00.000Z')
       },
       {
-        name: 'Solid Gold Petite Micropave',
-        slug: 'solid-gold-petite-micropave',
-        short_description: 'Satisfaction Guaranteed. Return or exchange any order within 30 days',
-        product_img: 'https://fakestoreapi.com/img/61sbMiUnoGL.AC_UL640_QL65_ML3_.jpg',
-        category_id: 2,
+        name: 'Áo thun Dinosaur 02',
+        slug: 'ao-thun-dinosaur-02',
+        description: 'Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng',
+        category_id: 1,
         created_at: new Date('2022-12-21T02:00:00.000Z'),
         updated_at: new Date('2022-12-21T02:00:00.000Z')
       },
       {
-        name: 'White Gold Plated Princess',
-        slug: 'white-gold-plated-princess',
-        short_description: 'Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her.',
-        product_img: 'https://fakestoreapi.com/img/71YAIFU48IL.AC_UL640_QL65_ML3_.jpg',
+        name: 'Áo somi caro 07',
+        slug: 'ao-somi-caro-07',
+        description: 'Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu',
         category_id: 2,
         created_at: new Date('2022-12-21T03:00:00.000Z'),
         updated_at: new Date('2022-12-21T03:00:00.000Z')
       },
       {
-        name: 'WD 2TB Elements Portable External Hard Drive',
-        slug: 'wd-2tb-elements-portable-external-hard-drive',
-        short_description: 'SB 3.0 and USB 2.0 Compatibility Fast data transfers Improve PC Performance High Capacity',
-        product_img: 'https://fakestoreapi.com/img/61IBBVJvSDL.AC_SY879_.jpg',
-        category_id: 3,
+        name: 'Áo somi dài tay 08',
+        slug: 'ao-somi-dai-tay-08',
+        description: 'Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào',
+        category_id: 2,
         created_at: new Date('2022-12-21T04:00:00.000Z'),
         updated_at: new Date('2022-12-21T04:00:00.000Z')
       },
       {
-        name: 'SanDisk SSD PLUS 1TB Internal SSD',
-        slug: 'sandisk-ssd-plus-1tb-internal-ssd',
-        short_description: 'Easy upgrade for faster boot up, shutdown, application load and response',
-        product_img: 'https://fakestoreapi.com/img/61U7T1koQqL.AC_SX679_.jpg',
+        name: 'Quần jean phong cách 10',
+        slug: 'quan-jean-phong-cach-10',
+        description: 'Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào',
         category_id: 3,
         created_at: new Date('2022-12-21T05:00:00.000Z'),
         updated_at: new Date('2022-12-21T05:00:00.000Z')
       },
       {
-        name: 'Rain Jacket Women Windbreaker Striped Climbing Raincoats',
-        slug: 'rain-jacket-women-windbreaker-striped-climbing-raincoats',
-        short_description: 'Lightweight perfet for trip or casual wear---Long sleeve with hooded, adjustable drawstring waist design.',
-        product_img: 'https://fakestoreapi.com/img/71HblAHs5xL.AC_UY879_-2.jpg',
-        category_id: 4,
+        name: 'Quần jean 11',
+        slug: 'quan-jean-11',
+        description: 'Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào',
+        category_id: 3,
         created_at: new Date('2022-12-21T06:00:00.000Z'),
         updated_at: new Date('2022-12-21T06:00:00.000Z')
-      },
-      {
-        name: 'Opna Women\'s Short Sleeve Moisture',
-        slug: 'opna-Women-s-short-sleeve-moisture',
-        short_description: '100% Polyester, Machine wash, 100% cationic polyester interlock, Machine Wash & Pre Shrunk for a Great Fit, Lightweight',
-        product_img: 'https://fakestoreapi.com/img/51eg55uWmdL.AC_UX679_.jpg',
-        category_id: 4,
-        created_at: new Date('2022-12-21T07:00:00.000Z'),
-        updated_at: new Date('2022-12-21T07:00:00.000Z')
       }
     ])
   },

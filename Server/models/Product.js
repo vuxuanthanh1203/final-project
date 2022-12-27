@@ -19,14 +19,14 @@ module.exports = (sequelize, DataTypes) => {
         field: 'slug',
         type: DataTypes.STRING(191)
       },
-      shortDescription: {
+      price: {
         allowNull: false,
-        field: 'short_description',
-        type: DataTypes.STRING(191)
+        field: 'price',
+        type: DataTypes.FLOAT
       },
-      productImg: {
+      description: {
         allowNull: false,
-        field: 'product_img',
+        field: 'description',
         type: DataTypes.STRING(191)
       },
       categoryId: {

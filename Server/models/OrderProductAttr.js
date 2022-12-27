@@ -1,6 +1,6 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
-  const OrderDetail = sequelize.define('OrderDetail', {
+  const OrderProductAttr = sequelize.define('OrderProductAttr', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -37,10 +37,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'updated_at',
       type: DataTypes.DATE(3)
-    },
-    deletedAt: {
-      field: 'deleted_at',
-      type: DataTypes.DATE(3)
     }
   },
   {
@@ -53,10 +49,10 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true
   }
   )
-  OrderDetail.associate = function (models) {
-    OrderDetail.belongsTo(models.Order, { foreignKey: 'order_id' })
-    OrderDetail.hasOne(models.ProductAttr)
+  OrderProductAttr.associate = function (models) {
+    OrderProductAttr.belongsTo(models.Order, { foreignKey: 'order_id' })
+    OrderProductAttr.hasOne(models.ProductAttr)
   }
 
-  return OrderDetail
+  return OrderProductAttr
 }

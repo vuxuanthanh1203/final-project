@@ -18,8 +18,7 @@ const resolver = {
     shippingMethods: async (parent, args, { queryData }) => await queryData.getShippingMethod(),
 
     // Scope
-    productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus(),
-    productsWithCategory: async (parent, args, { queryData }) => await queryData.getProductsWithCategory()
+    productActives: async (parent, args, { queryData }) => await queryData.checkProuctStatus()
 
   },
 
@@ -51,9 +50,9 @@ const resolver = {
     createOrder: async (parent, args, { queryData }) => await queryData.createOrder(args),
     deleteOrder: async (parent, args, { queryData }) => await queryData.deleteOrder(args),
 
-    createOrderDetail: async (parent, args, { queryData }) => await queryData.createOrderDetail(args),
-    updateOrderDetail: async (parent, args, { queryData }) => await queryData.updateOrderDetail(args),
-    deleteOrderDetail: async (parent, args, { queryData }) => await queryData.deleteOrderDetail(args),
+    createOrderProductAttr: async (parent, args, { queryData }) => await queryData.createOrderProductAttr(args),
+    updateOrderProductAttr: async (parent, args, { queryData }) => await queryData.updateOrderProductAttr(args),
+    deleteOrderProductAttr: async (parent, args, { queryData }) => await queryData.deleteOrderProductAttr(args),
 
     createUser: async (parent, args, { queryData }) => await queryData.createUser(args),
     updateUser: async (parent, args, { queryData }) => await queryData.updateUser(args),
