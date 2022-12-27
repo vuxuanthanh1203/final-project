@@ -13,11 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       field: 'value',
       type: DataTypes.STRING(191)
     },
-    price: {
-      allowNull: false,
-      field: 'price',
-      type: DataTypes.FLOAT
-    },
     quantityInStock: {
       allowNull: false,
       field: 'quantity_in_stock',

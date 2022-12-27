@@ -5,21 +5,22 @@ const typeDefs = gql`
         categories: [Category]!
         category (id: Int!): Category!
 
-        orders(id: Int!): [Order]!
+        orders: [Order]!
         order (id: Int!): Order!
 
-        orderDetail(
+        OrderProductAttr(
             userId: Int!, 
             orderId: Int!
-        ): OrderDetail!
+        ): [OrderProductAttr]!
 
         orderStatuses: [OrderStatus]!
 
         products: [Product]!
         product (id: Int!): Product!
+
         productAttributes: [ProductAttr]!
         productActives: [Product]!
-        productsWithCategory: [Product]!
+
         users: [User]!
         user (id: Int!): User!
 
@@ -42,8 +43,8 @@ const typeDefs = gql`
         createProduct(
             name:String!, 
             slug:String!, 
-            shortDescription: String!,
-            productImg: String!, 
+            description: String!,
+            price: Float, 
             categoryId: Int!
         ): Product!
 
@@ -52,8 +53,8 @@ const typeDefs = gql`
             id: Int,
             name:String, 
             slug:String, 
-            shortDescription: String,
-            productImg: String, 
+            price: Float, 
+            description: String,
             categoryId: Int
         ): Product!
 
@@ -61,7 +62,6 @@ const typeDefs = gql`
         
         createProductAttr(
             value: String!, 
-            price: Float!, 
             quantityInStock: Int!, 
             productId:Int!
         ): ProductAttr!
@@ -69,7 +69,6 @@ const typeDefs = gql`
         updateProductAttr(
             id: Int!, 
             value:String!, 
-            price: Float!, 
             quantityInStock: Int!
         ): Boolean!
 
@@ -90,19 +89,19 @@ const typeDefs = gql`
 
         deleteOrder(id: Int!): Boolean!
 
-        createOrderDetail(
+        createOrderProductAttr(
             orderId: Int!, 
             productAttrId: Int!, 
             quantity: Int!,
             price: Float!
-        ): OrderDetail!
+        ): OrderProductAttr!
 
-        updateOrderDetail(
+        updateOrderProductAttr(
             price: Float!, 
             quantity: Int!
         ): Boolean!
 
-        deleteOrderDetail(id: Int!): Boolean!
+        deleteOrderProductAttr(id: Int!): Boolean!
 
         createOrderStatus(status: String!): OrderStatus!
         deleteOrderStatus(id: Int!): Boolean!
@@ -139,52 +138,51 @@ const typeDefs = gql`
         id: Int!
         name: String!
         slug: String!
-        products: [Product]
+        products: [Product]!
     }
 
     type Product {
         id: Int!
         name: String!
         slug: String!
-        shortDescription: String!
-        productImg: String!
-        category: Category
-        productAttrs: [ProductAttr]
+        price: Float!
+        description: String!
+        category: Category!
+        productAttrs: [ProductAttr]!
+        productImgs: [ProductImg]!
     }
 
     type ProductAttr {
         id: Int!
         value: String!
-        price: Float!
         quantityInStock: Int!
-        product: Product
-        productImgs: [ProductImg]
+        product: Product!
     }
 
     type ProductImg {
         id: Int!
         url: String!
-        productAttr: ProductAttr
+        product: Product!
     }
 
     type Order {
         id: Int!
-        User: User
-        orderDetail: OrderDetail
-        orderStatus: OrderStatus
+        User: User!
+        OrderProductAttr: [OrderProductAttr]!
+        orderStatus: OrderStatus!
     }
 
-    type OrderDetail {
+    type OrderProductAttr {
         id: Int!
         quantity: Int!
         price: Float!
-        order: Order
+        productAttr: ProductAttr!
     }
 
     type OrderStatus {
         id: Int!
         status: String!
-        orders: [Order]
+        orders: [Order]!
     }
 
     type User {
@@ -195,14 +193,14 @@ const typeDefs = gql`
         phoneNumber: String!
         address: String!
         isAdmin: Boolean!
-        orders: [Order]
+        orders: [Order]!
     }
 
     type ShippingMethod {
         id: Int!
         name: String!
         price:Float!
-        orders: [Order]
+        orders: [Order]!
     }
 
     type ExportProduct {

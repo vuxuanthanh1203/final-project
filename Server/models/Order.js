@@ -32,10 +32,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'updated_at',
       type: DataTypes.DATE(3)
-    },
-    deletedAt: {
-      field: 'deleted_at',
-      type: DataTypes.DATE(3)
     }
   },
   {
@@ -51,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Order.associate = function (models) {
     Order.belongsTo(models.User, { foreignKey: 'user_id' })
-    Order.hasOne(models.OrderDetail)
+    Order.hasOne(models.OrderProductAttr)
     Order.hasOne(models.OrderStatus)
     Order.hasOne(models.ShippingMethod)
   }

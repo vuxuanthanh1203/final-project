@@ -13,9 +13,9 @@ module.exports = (sequelize, DataTypes) => {
       field: 'url',
       type: DataTypes.STRING(191)
     },
-    productAttrId: {
+    productId: {
       allowNull: false,
-      field: 'product_attr_id',
+      field: 'product_id',
       type: DataTypes.INTEGER,
       unique: true
     },
@@ -27,10 +27,6 @@ module.exports = (sequelize, DataTypes) => {
     updatedAt: {
       allowNull: false,
       field: 'updated_at',
-      type: DataTypes.DATE(3)
-    },
-    deletedAt: {
-      field: 'deleted_at',
       type: DataTypes.DATE(3)
     }
   },

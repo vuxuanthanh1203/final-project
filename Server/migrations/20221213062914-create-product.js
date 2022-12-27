@@ -20,14 +20,14 @@ module.exports = {
         field: 'slug',
         type: Sequelize.STRING(191)
       },
-      shortDescription: {
+      price: {
         allowNull: false,
-        field: 'short_description',
-        type: Sequelize.STRING(191)
+        field: 'price',
+        type: Sequelize.FLOAT
       },
-      productImg: {
+      description: {
         allowNull: false,
-        field: 'product_img',
+        field: 'description',
         type: Sequelize.STRING(191)
       },
       categoryId: {
