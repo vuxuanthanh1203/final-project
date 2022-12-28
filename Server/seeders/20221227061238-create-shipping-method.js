@@ -6,6 +6,7 @@ const TABLE_NAME = 'ShippingMethods'
 
 const seeders = [
   {
+    id: 1,
     name: 'COD',
     price: '15000',
     created_at: new Date('2022-12-27T00:00:00.000Z'),

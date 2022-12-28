@@ -6,18 +6,21 @@ const TABLE_NAME = 'Categories'
 
 const seeders = [
   {
+    id: 1,
     name: 'Áo thun',
     slug: 'ao-thun',
     created_at: new Date('2022-12-21T00:00:00.000Z'),
     updated_at: new Date('2022-12-21T00:00:00.000Z')
   },
   {
+    id: 2,
     name: 'Áo somi',
     slug: 'ao-somi',
     created_at: new Date('2022-12-21T01:00:00.000Z'),
     updated_at: new Date('2022-12-21T01:00:00.000Z')
   },
   {
+    id: 3,
     name: 'Quần jean',
     slug: 'quan-jean',
     created_at: new Date('2022-12-21T02:00:00.000Z'),

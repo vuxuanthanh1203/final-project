@@ -6,6 +6,7 @@ const TABLE_NAME = 'OrderProductAttrs'
 
 const seeders = [
   {
+    id: 1,
     order_id: 1,
     product_attr_id: 1,
     quantity: 3,
@@ -14,6 +15,7 @@ const seeders = [
     updated_at: new Date('2022-12-27T03:00:00.000Z')
   },
   {
+    id: 2,
     order_id: 1,
     product_attr_id: 2,
     quantity: 1,
