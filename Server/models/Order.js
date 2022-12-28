@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     orderStatusId: {
       allowNull: false,
       field: 'order_status_id',
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      defaultValue: 1
     },
     createdAt: {
       allowNull: false,
@@ -38,8 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'orders',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true,
+    paranoid: false,
     timestamps: true,
     underscored: true
   }
@@ -47,9 +47,28 @@ module.exports = (sequelize, DataTypes) => {
 
   Order.associate = function (models) {
     Order.belongsTo(models.User, { foreignKey: 'user_id' })
-    Order.hasOne(models.OrderProductAttr)
-    Order.hasOne(models.OrderStatus)
-    Order.hasOne(models.ShippingMethod)
+    Order.belongsTo(models.OrderStatus, { foreignKey: 'order_status_id' })
+    Order.belongsTo(models.ShippingMethod, { foreignKey: 'shipping_method_id' })
+
+    Order.hasMany(models.OrderProductAttr)
+
+    Order.addScope('+User+ShippingMethod+OrderStatus++orderProductAttrs+++productAttr', () => {
+      return {
+        include: [
+          { model: models.User, require: true },
+          { model: models.ShippingMethod, require: true },
+          { model: models.OrderStatus, require: true },
+          {
+            model: models.OrderProductAttr,
+            include: {
+              model: models.ProductAttr,
+              require: true
+            },
+            require: true
+          }
+        ]
+      }
+    })
   }
 
   return Order

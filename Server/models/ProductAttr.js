@@ -51,8 +51,7 @@ module.exports = (sequelize, DataTypes) => {
   )
   ProductAttr.associate = function (models) {
     ProductAttr.belongsTo(models.Product, { foreignKey: 'product_id' })
-    ProductAttr.hasMany(models.ProductImg)
-    // ProductAttr.belongsTo(models.OrderDetail, { foreignKey: 'order_detail_id' })
+    ProductAttr.hasMany(models.OrderProductAttr)
   }
 
   return ProductAttr

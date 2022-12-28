@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         allowNull: false,
         field: 'description',
-        type: DataTypes.STRING(191)
+        type: DataTypes.TEXT('long')
       },
       categoryId: {
         allowNull: false,
@@ -64,6 +64,7 @@ module.exports = (sequelize, DataTypes) => {
   Product.associate = function (models) {
     Product.belongsTo(models.Category, { foreignKey: 'category_id' })
     Product.hasMany(models.ProductAttr)
+    Product.hasMany(models.ProductImg)
 
     // Scope
     Product.addScope('checkStatus', {
@@ -72,10 +73,9 @@ module.exports = (sequelize, DataTypes) => {
       }
     })
 
-    Product.addScope('getProductsWithCategory', {
+    Product.addScope('+category', {
       include: [{
-        model: models.Category,
-        attributes: ['id', 'name']
+        model: models.Category
       }]
     })
   }
