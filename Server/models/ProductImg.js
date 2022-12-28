@@ -34,14 +34,13 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'productimgs',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true,
+    paranoid: false,
     timestamps: true,
     underscored: true
   }
   )
   ProductImg.associate = function (models) {
-    ProductImg.belongsTo(models.ProductAttr, { foreignKey: 'product_attr_id' })
+    ProductImg.belongsTo(models.Product, { foreignKey: 'product_id' })
   }
 
   return ProductImg

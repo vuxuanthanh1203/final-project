@@ -42,7 +42,7 @@ module.exports = {
       {
         value: 'XL',
         quantity_in_stock: 100,
-        product_id: 1,
+        product_id: 2,
         created_at: new Date('2022-12-21T00:05:00.000Z'),
         updated_at: new Date('2022-12-21T00:05:00.000Z')
       },

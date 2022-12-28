@@ -20,10 +20,24 @@ const queryData = {
 
   getOrderStatus: async () => await OrderStatus.findAll(),
 
-  getAllProducts: async () => await Product.scope('getProductsWithCategory').findAll(),
+  getAllProducts: async () => {
+    const products = await Product.scope('+category').findAll()
+    return products.map((item) => ({
+      id: item.id,
+      name: item.name,
+      slug: item.slug,
+      price: item.price,
+      description: item.description,
+      category: {
+        id: item.Category.id,
+        name: item.Category.name,
+        slug: item.Category.slug
+      }
+    }))
+    // console.log(products)
+  },
 
   getProductById: async (id) => await Product.findByPk(id),
-  getProductAttribute: async (id) => await ProductAttr.findByPk(id),
 
   getAllUsers: async () => await User.findAll(),
 
@@ -36,22 +50,76 @@ const queryData = {
       product_id: id
     }
   }),
-  getAllProductImg: async (id) => await ProductImg.findAll({
+  getAllProductImgs: async (id) => await ProductImg.findAll({
     where: {
-      product_attr_id: id
+      product_id: id
     }
   }),
-  getAllOrders: async (id) => await Order.findAll({
-    where: {
-      user_id: id
+  getAllOrders: async () => {
+    const orders = await Order.scope('+User+ShippingMethod+OrderStatus++orderProductAttrs+++productAttr').findAll()
+    if (orders == null) {
+      throw Error('no data')
     }
-  }),
+    return orders.map((order) => ({
+      id: order.id,
+      user: {
+        id: order.User.id,
+        name: order.User.name,
+        email: order.User.email,
+        phoneNumber: order.User.phoneNumber,
+        address: order.User.address
+      },
+      orderStatus: {
+        id: order.OrderStatus.id,
+        status: order.OrderStatus.status
+      },
+      shippingMethod: {
+        id: order.ShippingMethod.id,
+        name: order.ShippingMethod.name,
+        price: order.ShippingMethod.price
+      },
+      orderProductAttrs: order.OrderProductAttrs.map(orderProductAttr => ({
+        id: orderProductAttr.id,
+        quantity: orderProductAttr.quantity,
+        price: orderProductAttr.price,
+        productAttr: {
+          id: orderProductAttr.ProductAttr.id,
+          value: orderProductAttr.ProductAttr.value,
+          quantityInStock: orderProductAttr.ProductAttr.quantityInStock
+        }
+      }))
+    }))
+    // console.log(typeof (orders))
+  },
+
+  getOrderProductAttr: async (args) => {
+    const orderProductAttrs = await OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', args.userId, args.orderId] }).findAll()
+    if (!orderProductAttrs) {
+      throw new Error('no data')
+    }
+    return orderProductAttrs.map(orderProductAttr =>
+      ({
+        id: orderProductAttr.id,
+        quantity: orderProductAttr.quantity,
+        price: orderProductAttr.price,
+        order: {
+          id: orderProductAttr.Order.id,
+          user: {
+            id: orderProductAttr.Order.User.id,
+            name: orderProductAttr.Order.User.name,
+            email: orderProductAttr.Order.User.email,
+            phoneNumber: orderProductAttr.Order.User.phoneNumber,
+            address: orderProductAttr.Order.User.address
+          }
+        },
+        productAttr: {
+          id: orderProductAttr.ProductAttr.id,
+          value: orderProductAttr.ProductAttr.value
+        }
+      }))
+    // console.log(typeof (orderProductAttrs))
+  },
   getOrderById: async (id) => await Order.findByPk(id),
-  getOrderProductAttrs: async (id) => await OrderProductAttr.findOne({
-    where: {
-      order_id: id
-    }
-  }),
 
   // Mutation
   createCategory: async (args) => await Category.create({

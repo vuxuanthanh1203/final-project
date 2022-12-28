@@ -28,7 +28,7 @@ module.exports = {
       description: {
         allowNull: false,
         field: 'description',
-        type: Sequelize.STRING(191)
+        type: Sequelize.TEXT('long')
       },
       categoryId: {
         allowNull: false,

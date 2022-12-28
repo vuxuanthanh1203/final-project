@@ -5,12 +5,14 @@ const resolver = {
     categories: async (parent, args, { queryData }) => await queryData.getAllCategories(),
     category: async (parent, { id }, { queryData }) => await queryData.getCategoryById(id),
 
-    order: async (parent, { id }, { queryData }) => await queryData.getOrderById(id),
+    orders: async (parent, args, { queryData }) => await queryData.getAllOrders(),
+    orderProductAttr: async (parent, args, { queryData }) => await queryData.getOrderProductAttr(args),
     orderStatuses: async (parent, args, { queryData }) => await queryData.getOrderStatus(),
 
     products: async (parent, args, { queryData }) => await queryData.getAllProducts(),
     product: async (parent, { id }, { queryData }) => await queryData.getProductById(id),
-    productAttributes: async (parent, { id }, { queryData }) => await queryData.getProductAttribute(id),
+    productAttributes: async (parent, { id }, { queryData }) => await queryData.getAllProductAttributes(id),
+    productImgs: async (parent, { id }, { queryData }) => await queryData.getAllProductImgs(id),
 
     users: async (parent, args, { queryData }) => await queryData.getAllUsers(),
     user: async (parent, { id }, { queryData }) => await queryData.getUserById(id),

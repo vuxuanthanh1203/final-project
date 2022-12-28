@@ -28,14 +28,13 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'orderstatuses',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    deletedAt: 'deleted_at',
-    paranoid: true,
+    paranoid: false,
     timestamps: true,
     underscored: true
   }
   )
   OrderStatus.associate = function (models) {
-    OrderStatus.belongsTo(models.Order, { foreignKey: 'order_id' })
+    OrderStatus.hasMany(models.Order)
   }
 
   return OrderStatus

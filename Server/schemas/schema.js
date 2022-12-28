@@ -6,9 +6,8 @@ const typeDefs = gql`
         category (id: Int!): Category!
 
         orders: [Order]!
-        order (id: Int!): Order!
 
-        OrderProductAttr(
+        orderProductAttr(
             userId: Int!, 
             orderId: Int!
         ): [OrderProductAttr]!
@@ -18,8 +17,10 @@ const typeDefs = gql`
         products: [Product]!
         product (id: Int!): Product!
 
-        productAttributes: [ProductAttr]!
+        productAttributes(id: Int!): [ProductAttr]!
         productActives: [Product]!
+
+        productImgs (id: Int!): [ProductImg]!
 
         users: [User]!
         user (id: Int!): User!
@@ -167,9 +168,10 @@ const typeDefs = gql`
 
     type Order {
         id: Int!
-        User: User!
-        OrderProductAttr: [OrderProductAttr]!
+        user: User!
+        orderProductAttrs: [OrderProductAttr]!
         orderStatus: OrderStatus!
+        shippingMethod: ShippingMethod!
     }
 
     type OrderProductAttr {
@@ -177,6 +179,7 @@ const typeDefs = gql`
         quantity: Int!
         price: Float!
         productAttr: ProductAttr!
+        order: Order!
     }
 
     type OrderStatus {

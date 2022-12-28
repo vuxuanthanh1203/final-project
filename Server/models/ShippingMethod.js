@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   )
   ShippingMethod.associate = function (models) {
-    ShippingMethod.belongsTo(models.Order, { foreignKey: 'order_id' })
+    ShippingMethod.hasMany(models.Order)
   }
 
   return ShippingMethod
