@@ -6,7 +6,6 @@ const TABLE_NAME = 'ProductAttrs'
 
 const seeders = [
   {
-    id: 1,
     value: 'S',
     quantity_in_stock: 100,
     product_id: 1,
@@ -14,7 +13,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:00:00.000Z')
   },
   {
-    id: 2,
     value: 'M',
     quantity_in_stock: 100,
     product_id: 1,
@@ -22,7 +20,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:01:00.000Z')
   },
   {
-    id: 3,
     value: 'L',
     quantity_in_stock: 100,
     product_id: 1,
@@ -30,7 +27,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:02:00.000Z')
   },
   {
-    id: 4,
     value: 'M',
     quantity_in_stock: 100,
     product_id: 2,
@@ -38,7 +34,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:03:00.000Z')
   },
   {
-    id: 5,
     value: 'L',
     quantity_in_stock: 100,
     product_id: 2,
@@ -46,7 +41,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:04:00.000Z')
   },
   {
-    id: 6,
     value: 'XL',
     quantity_in_stock: 100,
     product_id: 2,
@@ -54,7 +48,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:05:00.000Z')
   },
   {
-    id: 7,
     value: 'M',
     quantity_in_stock: 100,
     product_id: 3,
@@ -62,7 +55,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:06:00.000Z')
   },
   {
-    id: 8,
     value: 'L',
     quantity_in_stock: 100,
     product_id: 3,
@@ -70,7 +62,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:07:00.000Z')
   },
   {
-    id: 9,
     value: 'XL',
     quantity_in_stock: 100,
     product_id: 3,

@@ -6,7 +6,6 @@ const TABLE_NAME = 'Users'
 
 const seeders = [
   {
-    id: 1,
     name: 'admin',
     email: 'admin@example.com',
     password: 'admin1234',
@@ -18,7 +17,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T00:00:00.000Z')
   },
   {
-    id: 2,
     name: 'user1',
     email: 'user1@example.com',
     password: 'admin1234',
@@ -30,7 +28,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T01:00:00.000Z')
   },
   {
-    id: 3,
     name: 'user2',
     email: 'user2@example.com',
     password: 'admin1234',
@@ -42,7 +39,6 @@ const seeders = [
     updated_at: new Date('2022-12-21T02:00:00.000Z')
   },
   {
-    id: 4,
     name: 'user3',
     email: 'user3@example.com',
     password: 'admin1234',

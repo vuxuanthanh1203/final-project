@@ -15,13 +15,13 @@ const exportData = async () => {
       address: item.user.address,
       orderStatus: item.orderStatus.status,
       shippingMethod: item.shippingMethod.name,
-      productAttr: item.orderProductAttrs.map(orderAttr => {
-        return ({
+      productAttr: item.orderProductAttrs.map(orderAttr =>
+        ({
           quantity: orderAttr.quantity,
           price: orderAttr.price,
           value: orderAttr.productAttr.value
         })
-      })
+      )
     })
   })
 
