@@ -1,31 +1,40 @@
 'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
+
+const TABLE_NAME = 'Categories'
+
+const seeders = [
+  {
+    id: 1,
+    name: 'Áo thun',
+    slug: 'ao-thun',
+    created_at: new Date('2022-12-21T00:00:00.000Z'),
+    updated_at: new Date('2022-12-21T00:00:00.000Z')
+  },
+  {
+    id: 2,
+    name: 'Áo somi',
+    slug: 'ao-somi',
+    created_at: new Date('2022-12-21T01:00:00.000Z'),
+    updated_at: new Date('2022-12-21T01:00:00.000Z')
+  },
+  {
+    id: 3,
+    name: 'Quần jean',
+    slug: 'quan-jean',
+    created_at: new Date('2022-12-21T02:00:00.000Z'),
+    updated_at: new Date('2022-12-21T02:00:00.000Z')
+  }
+]
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Categories', [
-      {
-        name: 'Áo thun',
-        slug: 'ao-thun',
-        created_at: new Date('2022-12-21T00:00:00.000Z'),
-        updated_at: new Date('2022-12-21T00:00:00.000Z')
-      },
-      {
-        name: 'Áo somi',
-        slug: 'ao-somi',
-        created_at: new Date('2022-12-21T01:00:00.000Z'),
-        updated_at: new Date('2022-12-21T01:00:00.000Z')
-      },
-      {
-        name: 'Quần jean',
-        slug: 'quan-jean',
-        created_at: new Date('2022-12-21T02:00:00.000Z'),
-        updated_at: new Date('2022-12-21T02:00:00.000Z')
-      }
-    ])
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkInsert(TABLE_NAME, seeders)
   },
 
-  async down (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Categories', null, {})
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.bulkDelete(TABLE_NAME, {
+      id: seeders.map(item => item.id)
+    })
   }
 }

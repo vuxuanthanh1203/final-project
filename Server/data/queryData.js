@@ -21,7 +21,7 @@ const queryData = {
   getOrderStatus: async () => await OrderStatus.findAll(),
 
   getAllProducts: async () => {
-    const products = await Product.scope('+category').findAll()
+    const products = await Product.scope('+Category').findAll()
     return products.map((item) => ({
       id: item.id,
       name: item.name,
@@ -56,7 +56,7 @@ const queryData = {
     }
   }),
   getAllOrders: async () => {
-    const orders = await Order.scope('+User+ShippingMethod+OrderStatus++orderProductAttrs+++productAttr').findAll()
+    const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findAll()
     if (orders == null) {
       throw Error('no data')
     }
@@ -224,11 +224,6 @@ const queryData = {
     ...args,
     createdAt: new Date(),
     updatedAt: new Date()
-  }),
-  deleteOrderProductAttr: async (args) => await OrderProductAttr.destroy({
-    where: {
-      id: args.id
-    }
   }),
   updateOrderProductAttr: async (args) => {
     await OrderProductAttr.update({ ...args }, {

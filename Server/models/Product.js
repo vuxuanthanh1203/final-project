@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       description: {
         allowNull: false,
         field: 'description',
-        type: DataTypes.TEXT('long')
+        type: DataTypes.TEXT
       },
       categoryId: {
         allowNull: false,
@@ -71,12 +71,6 @@ module.exports = (sequelize, DataTypes) => {
       where: {
         deleted_at: null
       }
-    })
-
-    Product.addScope('+category', {
-      include: [{
-        model: models.Category
-      }]
     })
   }
 
