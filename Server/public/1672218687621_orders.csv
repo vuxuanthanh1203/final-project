@@ -1,5 +1,0 @@
-id,name,email,phoneNumber,address,orderStatus,shippingMethod,productAttr
-1,user1,user1@example.com,0999999999,HN,pending,COD,"[object Object],[object Object],[object Object],[object Object]"
-2,user1,user1@example.com,0999999999,HN,shipping,COD,
-3,user1,user1@example.com,0999999999,HN,success,COD,
-4,user1,user1@example.com,0999999999,HN,cancel,COD,

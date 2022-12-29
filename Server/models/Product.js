@@ -72,6 +72,12 @@ module.exports = (sequelize, DataTypes) => {
         deleted_at: null
       }
     })
+
+    Product.addScope('+Category', {
+      include: [{
+        model: models.Category
+      }]
+    })
   }
 
   return Product

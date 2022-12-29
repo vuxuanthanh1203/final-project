@@ -3,7 +3,7 @@ const ProductImg = require('../../models').ProductImg
 
 describe('getAllProductImages', () => {
   test('get all images of the product', async () => {
-    const result = await queryData.getAllProductImgs()
+    const result = await queryData.getAllProductImgs(1)
     expect(result).toHaveLength(2)
   })
 })

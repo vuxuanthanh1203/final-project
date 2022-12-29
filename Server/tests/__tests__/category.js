@@ -4,15 +4,15 @@ const Category = require('../../models').Category
 describe('getAllCategories', () => {
   test('get all Categories', async () => {
     const result = await queryData.getAllCategories()
-    expect(result).toHaveLength(4)
+    expect(result).toHaveLength(3)
   })
 })
 
 describe('getCategoryById', () => {
   test('get category by id return object', async () => {
     const categoryTest = {
-      name: "men's clothing",
-      slug: 'men-s-clothing'
+      name: 'Áo thun',
+      slug: 'ao-thun'
     }
     const result = await queryData.getCategoryById(1)
     expect(result).toMatchObject(categoryTest)
@@ -34,7 +34,7 @@ describe('createCategory', () => {
     }
 
     await queryData.createCategory(categoryTest)
-    const category = await Category.findByPk(5)
+    const category = await Category.findByPk(4)
     expect(category).toMatchObject(categoryTest)
   })
 })
@@ -46,9 +46,9 @@ describe('updateCategory', () => {
       slug: 'test-category'
     }
     await Category.update({ name: 'test update00' }, {
-      where: { id: 5 }
+      where: { id: 4 }
     })
-    const category = await Category.findByPk(5)
+    const category = await Category.findByPk(4)
     expect(category).toMatchObject(categoryTest)
   })
 })
@@ -56,15 +56,8 @@ describe('updateCategory', () => {
 describe('deleteCategory', () => {
   test('delete Category', async () => {
     const result = await Category.destroy({
-      where: { id: 5 }
+      where: { id: 4 }
     })
     expect(result).toBeTruthy()
-  })
-})
-
-describe('test get category with all product', () => {
-  test('Select category with all product ', async () => {
-    const result = await queryData.getproductsOfCategory(3)
-    expect(result).toHaveLength(2)
   })
 })

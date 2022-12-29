@@ -16,7 +16,7 @@ describe('createShippingMethod', () => {
     }
 
     await queryData.createShippingMethod(shippingMethodTest)
-    const shippingMethod = await ShippingMethod.findByPk(3)
+    const shippingMethod = await ShippingMethod.findByPk(2)
     expect(shippingMethod).toMatchObject(shippingMethodTest)
   })
 })

@@ -3,7 +3,7 @@ const ProductAttr = require('../../models').ProductAttr
 
 describe('getAllProductAttributes', () => {
   test('get all attributes of the product', async () => {
-    const result = await queryData.getAllProductAttributes()
+    const result = await queryData.getAllProductAttributes(1)
     expect(result).toHaveLength(3)
   })
 })

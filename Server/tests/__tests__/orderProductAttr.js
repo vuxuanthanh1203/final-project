@@ -21,7 +21,7 @@ describe('createOrderProductAttr', () => {
     }
 
     await queryData.createOrderProductAttr(orderProductAttrTest)
-    const orderProductAttr = await OrderProductAttr.findByPk(4)
+    const orderProductAttr = await OrderProductAttr.findByPk(3)
     expect(orderProductAttr).toMatchObject(orderProductAttrTest)
   })
 })
@@ -35,9 +35,9 @@ describe('updateOrderProductAttr', () => {
       price: 111111
     }
     await OrderProductAttr.update({ quantity: 4, price: 111111 }, {
-      where: { id: 4 }
+      where: { id: 3 }
     })
-    const orderProductAttr = await OrderProductAttr.findByPk(4)
+    const orderProductAttr = await OrderProductAttr.findByPk(3)
     expect(orderProductAttr).toMatchObject(orderProductAttrTest)
   })
 })
