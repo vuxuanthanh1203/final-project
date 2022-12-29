@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Order.hasMany(models.OrderProductAttr)
 
-    Order.addScope('+User+ShippingMethod+OrderStatus++orderProductAttrs+++productAttr', () => {
+    Order.addScope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr', () => {
       return {
         include: [
           { model: models.User, require: true },

@@ -17,10 +17,10 @@ const typeDefs = gql`
         products: [Product]!
         product (id: Int!): Product!
 
-        productAttributes(id: Int!): [ProductAttr]!
+        productAttributes(productId: Int!): [ProductAttr]!
         productActives: [Product]!
 
-        productImgs (id: Int!): [ProductImg]!
+        productImgs (productId: Int!): [ProductImg]!
 
         users: [User]!
         user (id: Int!): User!
@@ -31,6 +31,8 @@ const typeDefs = gql`
     
     type Mutation {
         exportProduct: String!
+        exportUser: String!
+        exportOrder: String!
         
         createCategory(name: String, slug: String): Category!
 
@@ -207,6 +209,14 @@ const typeDefs = gql`
     }
 
     type ExportProduct {
+        fileUrl: String!
+    }
+
+    type ExportUser {
+        fileUrl: String!
+    }
+
+    type ExportOrder {
         fileUrl: String!
     }
 `

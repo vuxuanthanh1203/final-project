@@ -1,4 +1,6 @@
 const exportData = require('../export/exportData')
+const exportUserData = require('../export/exportUserData')
+const exportOrderData = require('../export/exportOrderData')
 
 const resolver = {
   Query: {
@@ -27,6 +29,8 @@ const resolver = {
   Mutation: {
     // Export Data
     exportProduct: exportData,
+    exportUser: exportUserData,
+    exportOrder: exportOrderData,
 
     createCategory: async (parent, args, { queryData }) => await queryData.createCategory(args),
     deleteCategory: async (parent, args, { queryData }) => await queryData.deleteCategory(args),

@@ -1,28 +1,26 @@
 const fs = require('fs')
 const path = require('path')
 const fastCsv = require('fast-csv')
-// const Product = require('../models').Product
-const queryData = require('../data/queryData')
+const User = require('../models').User
 
 const exportData = async () => {
-  // const dataDB = await Product.findAll({
-  //   attributes: ['id', 'name', 'shortDescription', 'productImg', 'categoryId']
-  // })
-  const dataDB = await queryData.getAllProducts()
+  const dataDB = await User.findAll({
+    attributes: ['id', 'name', 'userName', 'email', 'phoneNumber', 'address']
+  })
 
-  const dataProduct = dataDB.map((item) => {
+  const dataUser = dataDB.map((item) => {
     return item.dataValues
   })
 
   const baseDerectory = path.join(__dirname, '../../Server/public/')
 
-  const fileName = Date.now() + '_products.csv'
+  const fileName = Date.now() + '_users.csv'
   const fileUrl = path.join(baseDerectory, fileName)
 
   const ws = fs.createWriteStream(`public/${fileName}`)
 
   fastCsv
-    .write(dataProduct, { headers: true })
+    .write(dataUser, { headers: true })
     .on('finish', () => console.log('Exported!'))
     .on('error', () => console.log('Error!'))
     .pipe(ws)
