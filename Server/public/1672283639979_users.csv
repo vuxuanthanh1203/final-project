@@ -1,5 +1,0 @@
-id,name,userName,email,phoneNumber,address
-1,admin,admin,admin@example.com,0987654321,HN
-2,user1,user1,user1@example.com,0999999999,HN
-3,user2,user2,user2@example.com,0988888888,HN
-5,test update77,test,testuser@example.com,0987654321,HN
