@@ -41,7 +41,27 @@ module.exports = (sequelize, DataTypes) => {
   )
   ProductImg.associate = function (models) {
     ProductImg.belongsTo(models.Product, { foreignKey: 'product_id' })
+
+    ProductImg.addScope('+Product', {
+      include: [{
+        model: models.Product
+      }]
+    })
   }
 
   return ProductImg
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  url: string
+ *  product: {
+ *    id: number
+ *    name: string
+ *    description: string
+ *  }
+ *  createdAt: date
+ *  updatedAt: date
+ * }} ProductImgEntity
+ */

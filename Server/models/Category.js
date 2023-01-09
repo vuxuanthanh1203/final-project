@@ -48,3 +48,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   return Category
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  name: string
+ *  slug: string
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} CategoryEntity
+ */

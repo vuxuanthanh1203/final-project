@@ -62,3 +62,19 @@ module.exports = (sequelize, DataTypes) => {
 
   return ProductAttr
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  value: string
+ *  quantityInStock: number
+ *  product: {
+ *    id: number
+ *    name: string
+ *    description: string
+ *  }
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} ProductAttrEntity
+ */

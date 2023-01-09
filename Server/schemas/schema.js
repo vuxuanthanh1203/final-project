@@ -4,7 +4,7 @@ const typeDefs = gql`
     type Query {
         categories: [Category]!
 
-        category (id: Int!): Category!
+        category (categoryId: Int!): Category!
 
         orders: [Order]!
 
@@ -14,7 +14,7 @@ const typeDefs = gql`
 
         products: [Product]!
 
-        product (id: Int!): Product!
+        product (productId: Int!): Product!
 
         productAttributes(productId: Int!): [ProductAttr]!
 
@@ -24,7 +24,7 @@ const typeDefs = gql`
 
         users: [User]!
         
-        user (id: Int!): User!
+        user (userId: Int!): User!
 
         shippingMethods: [ShippingMethod]!
 
@@ -39,49 +39,49 @@ const typeDefs = gql`
         
         createCategory(input: CreateCategoryInput): Category!
 
-        updateCategory(id:Int!, input: UpdateCategoryInput): Category!
+        updateCategory(input: UpdateCategoryInput): Category!
         
-        deleteCategory(id:Int!): Boolean!
+        deleteCategory(categoryId:Int!): DeleteCategoryResult!
 
         createProduct(input: CreateProductInput): Product!
 
-        updateProduct(id: Int, input: UpdateProductInput): Product!
+        updateProduct(input: UpdateProductInput): Product!
 
-        deleteProduct(id: Int!): Boolean!
+        deleteProduct(productId: Int!): DeleteProductResult!
         
         createProductAttr(input: CreateProductAttrInput): ProductAttr!
 
-        updateProductAttr(id: Int!, input: UpdateProductAttrInput): ProductAttr!
+        updateProductAttr(input: UpdateProductAttrInput): ProductAttr!
 
-        deleteProductAttr(id: Int!): Boolean!
+        deleteProductAttr(productAttrId: Int!): DeleteProductAttrResult!
 
         createProductImg(input: CreateProductImgInput): ProductImg!
 
-        deleteProductImg(id: Int!): Boolean!
+        deleteProductImg(productImgId: Int!): DeleteProductImgResult!
 
         createOrder(input: CreateOrderInput): Order!
 
-        deleteOrder(id: Int!): Boolean!
+        deleteOrder(orderId: Int!): DeleteOrderResult!
 
-        createOrderProductAttr(input: CreateOrderAttrInput): OrderProductAttr!
+        createOrderProductAttr(input: CreateOrderProductAttrInput): OrderProductAttr!
 
-        updateOrderProductAttr(input: UpdateOrderAttrInput): OrderProductAttr!
+        updateOrderProductAttr(input: UpdateOrderProductAttrInput): OrderProductAttr!
 
-        deleteOrderProductAttr(id: Int!): Boolean!
+        deleteOrderProductAttr(orderProductId: Int!): DeleteOrderProductAttrResult!
 
         createOrderStatus(status: String!): OrderStatus!
 
-        deleteOrderStatus(id: Int!): Boolean!
+        deleteOrderStatus(orderStatusId: Int!): DeleteOrderStatusResult!
 
         createShippingMethod(input: CreateShippingMethodInput): ShippingMethod!
 
-        deleteShippingMethod(id: Int!): Boolean!
+        deleteShippingMethod(shippingMethodId: Int!): DeleteShippingMethodResult!
 
         createUser(input: CreateUserInput): AuthResponse!
 
-        updateUser(id: Int!, input: UpdateUserInput): User!
+        updateUser(input: UpdateUserInput): User!
 
-        deleteUser(id: Int!): Boolean!
+        deleteUser(userId: Int!): DeleteUserResult!
     }
 
     type AuthResponse {
@@ -95,6 +95,10 @@ const typeDefs = gql`
         slug: String!
     }
 
+    type DeleteCategoryResult {
+        success: Boolean!
+    }
+
     type Product {
         id: Int!
         name: String!
@@ -106,6 +110,10 @@ const typeDefs = gql`
         productImgs: [ProductImg]!
     }
 
+    type DeleteProductResult {
+        success: Boolean!
+    }
+
     type ProductAttr {
         id: Int!
         value: String!
@@ -113,10 +121,18 @@ const typeDefs = gql`
         product: Product!
     }
 
+    type DeleteProductAttrResult {
+        success: Boolean!
+    }
+
     type ProductImg {
         id: Int!
         url: String!
         product: Product!
+    }
+
+    type DeleteProductImgResult {
+        success: Boolean!
     }
 
     type Order {
@@ -127,6 +143,10 @@ const typeDefs = gql`
         shippingMethod: ShippingMethod!
     }
 
+    type DeleteOrderResult {
+        success: Boolean!
+    }
+
     type OrderProductAttr {
         id: Int!
         quantity: Int!
@@ -135,10 +155,18 @@ const typeDefs = gql`
         order: Order!
     }
 
+    type DeleteOrderProductAttrResult {
+        success: Boolean!
+    }
+
     type OrderStatus {
         id: Int!
         status: String!
         orders: [Order]!
+    }
+
+    type DeleteOrderStatusResult {
+        success: Boolean!
     }
 
     type User {
@@ -152,11 +180,19 @@ const typeDefs = gql`
         orders: [Order]!
     }
 
+    type DeleteUserResult {
+        success: Boolean!
+    }
+
     type ShippingMethod {
         id: Int!
         name: String!
         price:Float!
         orders: [Order]!
+    }
+
+    type DeleteShippingMethodResult {
+        success: Boolean!
     }
 
     type ExportProduct {
@@ -187,6 +223,7 @@ const typeDefs = gql`
     }
 
     input UpdateUserInput {
+        userId: Int!,
         name: String, 
         phoneNumber: String, 
         address: String,
@@ -199,20 +236,22 @@ const typeDefs = gql`
     }
 
     input UpdateCategoryInput {
+        categoryId: Int!
         name: String!
     }
 
     input CreateProductInput {
-        name:String!, 
-        slug:String!, 
+        name: String!, 
+        slug: String!, 
         description: String!,
         price: Float, 
         categoryId: Int!
     }
 
     input UpdateProductInput {
-        name:String, 
-        slug:String, 
+        productId: Int!,
+        name: String, 
+        slug: String, 
         price: Float, 
         description: String,
         categoryId: Int
@@ -225,6 +264,7 @@ const typeDefs = gql`
     }
 
     input UpdateProductAttrInput {
+        productAttrId: Int!,
         value:String!, 
         quantityInStock: Int!
     }
@@ -240,14 +280,15 @@ const typeDefs = gql`
         orderStatusId: Int!
     }
 
-    input CreateOrderAttrInput {
+    input CreateOrderProductAttrInput {
         orderId: Int!, 
         productAttrId: Int!, 
         quantity: Int!,
         price: Float!
     }
 
-    input UpdateOrderAttrInput {
+    input UpdateOrderProductAttrInput {
+        orderProductAttrId: Int!,
         price: Float!, 
         quantity: Int!
     }
