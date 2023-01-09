@@ -39,3 +39,12 @@ module.exports = (sequelize, DataTypes) => {
 
   return OrderStatus
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  status: string
+ *  createdAt: date
+ *  updatedAt: date
+ * }} OrderStatusEntity
+ */

@@ -52,7 +52,29 @@ module.exports = (sequelize, DataTypes) => {
   ProductAttr.associate = function (models) {
     ProductAttr.belongsTo(models.Product, { foreignKey: 'product_id' })
     ProductAttr.hasMany(models.OrderProductAttr)
+
+    ProductAttr.addScope('+Product', {
+      include: [{
+        model: models.Product
+      }]
+    })
   }
 
   return ProductAttr
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  value: string
+ *  quantityInStock: number
+ *  product: {
+ *    id: number
+ *    name: string
+ *    description: string
+ *  }
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} ProductAttrEntity
+ */

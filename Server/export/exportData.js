@@ -1,18 +1,19 @@
 const fs = require('fs')
 const path = require('path')
 const fastCsv = require('fast-csv')
-// const Product = require('../models').Product
 const queryData = require('../data/queryData')
 
 const exportData = async () => {
-  // const dataDB = await Product.findAll({
-  //   attributes: ['id', 'name', 'shortDescription', 'productImg', 'categoryId']
-  // })
   const dataDB = await queryData.getAllProducts()
 
-  const dataProduct = dataDB.map((item) => {
-    return item.dataValues
-  })
+  const dataProduct = dataDB.map((item) => ({
+    id: item.id,
+    name: item.name,
+    slug: item.slug,
+    price: item.price,
+    description: item.description,
+    categoryName: item.category.name
+  }))
 
   const baseDerectory = path.join(__dirname, '../../Server/public/')
 

@@ -7,7 +7,7 @@ const exportData = async () => {
   const dataDB = await queryData.getAllOrders()
 
   const dataOrder = dataDB.map((item) => {
-    return ({
+    return JSON.stringify({
       id: item.id,
       name: item.user.name,
       email: item.user.email,

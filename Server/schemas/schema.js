@@ -3,27 +3,28 @@ const { gql } = require('apollo-server-express')
 const typeDefs = gql`
     type Query {
         categories: [Category]!
-        category (id: Int!): Category!
+
+        category (categoryId: Int!): Category!
 
         orders: [Order]!
 
-        orderProductAttr(
-            userId: Int!, 
-            orderId: Int!
-        ): [OrderProductAttr]!
+        orderProductAttr(userId: Int!, orderId: Int!): [OrderProductAttr]!
 
         orderStatuses: [OrderStatus]!
 
         products: [Product]!
-        product (id: Int!): Product!
+
+        product (productId: Int!): Product!
 
         productAttributes(productId: Int!): [ProductAttr]!
+
         productActives: [Product]!
 
         productImgs (productId: Int!): [ProductImg]!
 
         users: [User]!
-        user (id: Int!): User!
+        
+        user (userId: Int!): User!
 
         shippingMethods: [ShippingMethod]!
 
@@ -33,115 +34,69 @@ const typeDefs = gql`
         exportProduct: String!
         exportUser: String!
         exportOrder: String!
+
+        login(input: LoginInput): AuthResponse!
         
-        createCategory(name: String, slug: String): Category!
+        createCategory(input: CreateCategoryInput): Category!
 
-        updateCategory(
-            id:Int!,
-            name:String
-        ): Boolean!
+        updateCategory(input: UpdateCategoryInput): Category!
         
-        deleteCategory(id:Int!): Boolean!
+        deleteCategory(categoryId:Int!): DeleteCategoryResult!
 
-        createProduct(
-            name:String!, 
-            slug:String!, 
-            description: String!,
-            price: Float, 
-            categoryId: Int!
-        ): Product!
+        createProduct(input: CreateProductInput): Product!
 
+        updateProduct(input: UpdateProductInput): Product!
 
-        updateProduct(
-            id: Int,
-            name:String, 
-            slug:String, 
-            price: Float, 
-            description: String,
-            categoryId: Int
-        ): Product!
-
-        deleteProduct(id: Int!): Boolean!
+        deleteProduct(productId: Int!): DeleteProductResult!
         
-        createProductAttr(
-            value: String!, 
-            quantityInStock: Int!, 
-            productId:Int!
-        ): ProductAttr!
+        createProductAttr(input: CreateProductAttrInput): ProductAttr!
 
-        updateProductAttr(
-            id: Int!, 
-            value:String!, 
-            quantityInStock: Int!
-        ): Boolean!
+        updateProductAttr(input: UpdateProductAttrInput): ProductAttr!
 
-        deleteProductAttr(id: Int!): Boolean!
+        deleteProductAttr(productAttrId: Int!): DeleteProductAttrResult!
 
-        createProductImg(
-            url: String!, 
-            productId: Int!
-        ): ProductImg!
+        createProductImg(input: CreateProductImgInput): ProductImg!
 
-        deleteProductImg(id: Int!): Boolean!
+        deleteProductImg(productImgId: Int!): DeleteProductImgResult!
 
-        createOrder(
-            userId: Int!, 
-            shippingMethodId: Int!, 
-            orderStatusId: Int!
-        ): Order!
+        createOrder(input: CreateOrderInput): Order!
 
-        deleteOrder(id: Int!): Boolean!
+        deleteOrder(orderId: Int!): DeleteOrderResult!
 
-        createOrderProductAttr(
-            orderId: Int!, 
-            productAttrId: Int!, 
-            quantity: Int!,
-            price: Float!
-        ): OrderProductAttr!
+        createOrderProductAttr(input: CreateOrderProductAttrInput): OrderProductAttr!
 
-        updateOrderProductAttr(
-            price: Float!, 
-            quantity: Int!
-        ): Boolean!
+        updateOrderProductAttr(input: UpdateOrderProductAttrInput): OrderProductAttr!
 
-        deleteOrderProductAttr(id: Int!): Boolean!
+        deleteOrderProductAttr(orderProductId: Int!): DeleteOrderProductAttrResult!
 
         createOrderStatus(status: String!): OrderStatus!
-        deleteOrderStatus(id: Int!): Boolean!
 
-        createShippingMethod(
-            name: String!, 
-            price: Float!
-        ): ShippingMethod!
+        deleteOrderStatus(orderStatusId: Int!): DeleteOrderStatusResult!
 
-        deleteShippingMethod(id: Int!): Boolean!
+        createShippingMethod(input: CreateShippingMethodInput): ShippingMethod!
 
-        createUser(
-            name: String!, 
-            email: String!, 
-            password: String!, 
-            phoneNumber: String!,
-            address: String!, 
-            isAdmin: Boolean!,
-            userName: String!
-        ): User!
+        deleteShippingMethod(shippingMethodId: Int!): DeleteShippingMethodResult!
 
-        updateUser(
-            id: Int!, 
-            name: String!, 
-            phoneNumber: String!, 
-            address: String!,
-            isAdmin: Boolean!
-        ): Boolean!
+        createUser(input: CreateUserInput): AuthResponse!
 
-        deleteUser(id: Int!): Boolean!
+        updateUser(input: UpdateUserInput): User!
+
+        deleteUser(userId: Int!): DeleteUserResult!
+    }
+
+    type AuthResponse {
+        token: String!
+        user: User!
     }
 
     type Category {
         id: Int!
         name: String!
         slug: String!
-        products: [Product]!
+    }
+
+    type DeleteCategoryResult {
+        success: Boolean!
     }
 
     type Product {
@@ -155,6 +110,10 @@ const typeDefs = gql`
         productImgs: [ProductImg]!
     }
 
+    type DeleteProductResult {
+        success: Boolean!
+    }
+
     type ProductAttr {
         id: Int!
         value: String!
@@ -162,10 +121,18 @@ const typeDefs = gql`
         product: Product!
     }
 
+    type DeleteProductAttrResult {
+        success: Boolean!
+    }
+
     type ProductImg {
         id: Int!
         url: String!
         product: Product!
+    }
+
+    type DeleteProductImgResult {
+        success: Boolean!
     }
 
     type Order {
@@ -176,6 +143,10 @@ const typeDefs = gql`
         shippingMethod: ShippingMethod!
     }
 
+    type DeleteOrderResult {
+        success: Boolean!
+    }
+
     type OrderProductAttr {
         id: Int!
         quantity: Int!
@@ -184,10 +155,18 @@ const typeDefs = gql`
         order: Order!
     }
 
+    type DeleteOrderProductAttrResult {
+        success: Boolean!
+    }
+
     type OrderStatus {
         id: Int!
         status: String!
         orders: [Order]!
+    }
+
+    type DeleteOrderStatusResult {
+        success: Boolean!
     }
 
     type User {
@@ -201,11 +180,19 @@ const typeDefs = gql`
         orders: [Order]!
     }
 
+    type DeleteUserResult {
+        success: Boolean!
+    }
+
     type ShippingMethod {
         id: Int!
         name: String!
         price:Float!
         orders: [Order]!
+    }
+
+    type DeleteShippingMethodResult {
+        success: Boolean!
     }
 
     type ExportProduct {
@@ -218,6 +205,97 @@ const typeDefs = gql`
 
     type ExportOrder {
         fileUrl: String!
+    }
+
+    input LoginInput {
+        email:String!,
+        password:String!
+    }
+
+    input CreateUserInput {
+        name: String!, 
+        userName: String!
+        email: String!, 
+        password: String!, 
+        phoneNumber: String!,
+        address: String!, 
+        isAdmin: Boolean,
+    }
+
+    input UpdateUserInput {
+        userId: Int!,
+        name: String, 
+        phoneNumber: String, 
+        address: String,
+        isAdmin: Boolean
+    }
+
+    input CreateCategoryInput {
+        name: String,
+        slug: String
+    }
+
+    input UpdateCategoryInput {
+        categoryId: Int!
+        name: String!
+    }
+
+    input CreateProductInput {
+        name: String!, 
+        slug: String!, 
+        description: String!,
+        price: Float, 
+        categoryId: Int!
+    }
+
+    input UpdateProductInput {
+        productId: Int!,
+        name: String, 
+        slug: String, 
+        price: Float, 
+        description: String,
+        categoryId: Int
+    }
+    
+    input CreateProductAttrInput {
+        value: String!, 
+        quantityInStock: Int!, 
+        productId:Int!
+    }
+
+    input UpdateProductAttrInput {
+        productAttrId: Int!,
+        value:String!, 
+        quantityInStock: Int!
+    }
+
+    input CreateProductImgInput {
+        url: String!, 
+        productId: Int!
+    }
+
+    input CreateOrderInput {
+        userId: Int!, 
+        shippingMethodId: Int!, 
+        orderStatusId: Int!
+    }
+
+    input CreateOrderProductAttrInput {
+        orderId: Int!, 
+        productAttrId: Int!, 
+        quantity: Int!,
+        price: Float!
+    }
+
+    input UpdateOrderProductAttrInput {
+        orderProductAttrId: Int!,
+        price: Float!, 
+        quantity: Int!
+    }
+
+    input CreateShippingMethodInput {
+        name: String!, 
+        price: Float!
     }
 `
 

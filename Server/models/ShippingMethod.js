@@ -49,3 +49,14 @@ module.exports = (sequelize, DataTypes) => {
 
   return ShippingMethod
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  name: string
+ *  price: number
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} ShippingMethodEntity
+ */
