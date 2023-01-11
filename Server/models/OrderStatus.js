@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const OrderStatus = sequelize.define('OrderStatus', {

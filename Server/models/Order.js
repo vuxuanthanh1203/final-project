@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define('Order', {
@@ -55,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     Order.addScope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr', () => {
       return {
         include: [
-          { model: models.User, require: true },
+          { model: models.User.scope('-Password'), require: true },
           { model: models.ShippingMethod, require: true },
           { model: models.OrderStatus, require: true },
           {
@@ -77,31 +78,11 @@ module.exports = (sequelize, DataTypes) => {
 /**
  * @typedef {{
  *  id: number
- *  user: {
- *    id: number
- *    name: string
- *    email: string
- *    phoneNumber: string
- *    address: string
- *  }
- *  shippingMethod: {
- *    id: number
- *    name: string
- *    price: number
- *  }
- *  orderStatus: {
- *    id: number
- *    status: string
- *  }
- *  orderProductAttr: {
- *    id: number
- *    quantity: number
- *    price: number
- *    productAttr: {
- *      id: number
- *      value: string
- *    }
- *  }
+ *
+ *  user: import('./User').UserEntity
+ *  shippingMethod: import('./ShippingMethod').ShippingMethodEntity
+ *  orderStatus: import('./OrderStatus').OrderStatusEntity
+ *  orderProductAttr: import('./OrderProductAttr').OrderProductAttrEntity
  *  createdAt: date
  *  updatedAt: date
  * }} OrderEntity

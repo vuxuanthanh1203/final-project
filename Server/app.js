@@ -7,10 +7,10 @@ const app = express()
 // Load Schemas & resolves & context
 const typeDefs = require('./schemas/schema')
 const resolvers = require('./resolvers/index')
-const context = require('./contexts/context')
+// const context = require('./contexts/context')
 
 const startApolloServer = async () => {
-  const server = new ApolloServer({ typeDefs, resolvers, context: { context } })
+  const server = new ApolloServer({ typeDefs, resolvers })
   await server.start()
 
   server.applyMiddleware({ app })

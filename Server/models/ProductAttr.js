@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const ProductAttr = sequelize.define('ProductAttr', {
@@ -68,11 +69,7 @@ module.exports = (sequelize, DataTypes) => {
  *  id: number
  *  value: string
  *  quantityInStock: number
- *  product: {
- *    id: number
- *    name: string
- *    description: string
- *  }
+ *  product: import('./Product').ProductEntity
  *  createdAt: date
  *  updatedAt: date
  *  deletedAt: date

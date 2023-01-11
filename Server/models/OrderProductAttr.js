@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 
 const { Op } = require('sequelize')
@@ -86,20 +87,8 @@ module.exports = (sequelize, DataTypes) => {
 /**
  * @typedef {{
  *  id: number
- *  order: {
- *    id: number
- *    user: {
- *      id: number
- *      name: string
- *      email: string
- *      phoneNumber: string
- *      address: string
- *    }
- *  }
- *  productAttr: {
- *    id: number
- *    value: string
- *  }
+ *  order: import('./Order').OrderEntity
+ *  productAttr: import('./ProductAttr').ProductAttrEntity
  *  quantity: number
  *  price: number
  *  createdAt: date

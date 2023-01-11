@@ -1,3 +1,6 @@
+// @ts-check
+'use strict'
+
 const Category = require('../models').Category
 const Order = require('../models').Order
 const OrderProductAttr = require('../models').OrderProductAttr

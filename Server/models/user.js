@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
@@ -71,6 +72,12 @@ module.exports = (sequelize, DataTypes) => {
   )
   User.associate = function (models) {
     User.hasMany(models.Order)
+
+    User.addScope('-Password', {
+      attributes: {
+        exclude: ['password']
+      }
+    })
   }
 
   return User

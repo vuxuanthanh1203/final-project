@@ -1,3 +1,8 @@
+// @ts-check
+'use strict'
+
+const ShippingMethod = require('../models').ShippingMethod
+
 const ShippingMethodMutationResolver = {
   Mutation: {
     /**
@@ -5,9 +10,9 @@ const ShippingMethodMutationResolver = {
       * @param {import('../contexts/context')} context - ShippingMethod context
       * @returns {Promise<import('../models/ShippingMethod').ShippingMethodEntity>}
       */
-    async createShippingMethod (parent, args, { context }) {
+    async createShippingMethod (parent, args, context) {
       const data = args.input
-      const shippingMethod = await context.ShippingMethod.create({
+      const shippingMethod = await ShippingMethod.create({
         ...data,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -21,12 +26,16 @@ const ShippingMethodMutationResolver = {
       * @param {import('../contexts/context')} context - ShippingMethod context
       * @returns {Promise<DeleteShippingMethodResult>}
       */
-    async deleteShippingMethod (parent, args, { context }) {
-      return await context.ShippingMethod.destroy({
+    async deleteShippingMethod (parent, args, context) {
+      await ShippingMethod.destroy({
         where: {
           id: args.shippingMethodId
         }
       })
+
+      return {
+        success: true
+      }
     }
   }
 }

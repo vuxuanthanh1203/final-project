@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const ProductImg = sequelize.define('ProductImg', {
@@ -56,11 +57,7 @@ module.exports = (sequelize, DataTypes) => {
  * @typedef {{
  *  id: number
  *  url: string
- *  product: {
- *    id: number
- *    name: string
- *    description: string
- *  }
+ *  product: import('./Product').ProductEntity
  *  createdAt: date
  *  updatedAt: date
  * }} ProductImgEntity

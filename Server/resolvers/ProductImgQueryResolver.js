@@ -1,3 +1,8 @@
+// @ts-check
+'use strict'
+
+const ProductImg = require('../models').ProductImg
+
 const ProductImgQueryResolver = {
   Query: {
     /**
@@ -5,12 +10,13 @@ const ProductImgQueryResolver = {
       * @param {import('../contexts/context')} context - ProductImg context
       * @returns {Array<import('../models/ProductImg')>}
       */
-    async productImgs (parent, args, { context }) {
-      const productImgs = await context.ProductImg.findAll({
+    async productImgs (parent, args, context) {
+      const productImgs = await ProductImg.scope('+Product').findAll({
         where: {
           product_id: args.productId
         }
       })
+      // console.log(productImgs)
       return productImgs.map(item => ({
         id: item.id,
         url: item.url,

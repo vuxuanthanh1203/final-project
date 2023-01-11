@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const ShippingMethod = sequelize.define('ShippingMethod', {

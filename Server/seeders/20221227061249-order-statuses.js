@@ -1,3 +1,4 @@
+// @ts-check
 'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
