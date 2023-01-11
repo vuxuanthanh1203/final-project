@@ -12,8 +12,7 @@ const OrderProductAttrQueryResolver = {
      * @returns {Array<import('../models/OrderProductAttr').OrderProductAttrEntity>}
      */
     async orderProductAttr (parent, args, context) {
-      const data = args.input
-      const orderProductAttrs = await OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', data.userId, data.orderId] }).findAll()
+      const orderProductAttrs = await OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', args.userId, args.orderId] }).findAll()
       if (!orderProductAttrs) {
         throw new Error('no data')
       }

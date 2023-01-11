@@ -55,7 +55,7 @@ const typeDefs = gql`
         
         createProductAttr(input: CreateProductAttrInput): ProductAttr!
 
-        updateProductAttr(ProductAttrId: Int!, input: UpdateProductAttrInput): ProductAttr!
+        updateProductAttr(productAttrId: Int!, input: UpdateProductAttrInput): ProductAttr!
 
         deleteProductAttr(productAttrId: Int!): DeleteProductAttrResult!
 
@@ -69,9 +69,9 @@ const typeDefs = gql`
 
         deleteOrder(orderId: Int!): DeleteOrderResult!
 
-        createOrderProductAttr(input: CreateOrderProductAttrInput): OrderProductAttr!
+        createOrderProductAttr(input: CreateOrderProductAttrInput): OrderProductAttrMutationResult!
 
-        updateOrderProductAttr(orderProductAttrId: Int!, input: UpdateOrderProductAttrInput): OrderProductAttr!
+        updateOrderProductAttr(orderProductAttrId: Int!, input: UpdateOrderProductAttrInput): OrderProductAttrMutationResult!
 
         deleteOrderProductAttr(orderProductAttrId: Int!): DeleteOrderProductAttrResult!
 
@@ -85,7 +85,7 @@ const typeDefs = gql`
 
         createUser(input: CreateUserInput): AuthResponse!
 
-        updateUser(UserId: Int!, input: UpdateUserInput): User!
+        updateUser(userId: Int!, input: UpdateUserInput): User!
 
         deleteUser(userId: Int!): DeleteUserResult!
     }
@@ -168,6 +168,14 @@ const typeDefs = gql`
         order: Order!
     }
 
+    type OrderProductAttrMutationResult {
+        id: Int!
+        orderId: Int!
+        productAttrId: Int!
+        quantity: Int!
+        price: Float!
+    }
+
     type DeleteOrderProductAttrResult {
         success: Boolean!
     }
@@ -175,7 +183,6 @@ const typeDefs = gql`
     type OrderStatus {
         id: Int!
         status: String!
-        orders: [Order]!
     }
 
     input CreateOrderStatusInput {
@@ -206,7 +213,6 @@ const typeDefs = gql`
         id: Int!
         name: String!
         price:Float!
-        orders: [Order]!
     }
 
     type DeleteShippingMethodResult {
