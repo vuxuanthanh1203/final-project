@@ -41,7 +41,8 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: {
       allowNull: false,
       field: 'is_admin',
-      type: DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
     createdAt: {
       allowNull: false,
@@ -74,3 +75,19 @@ module.exports = (sequelize, DataTypes) => {
 
   return User
 }
+
+/**
+ * @typedef {{
+ *  id: number
+ *  name: string
+ *  userName: string
+ *  email: string
+ *  password: string
+ *  phoneNumber: string
+ *  address: string
+ *  isAdmin: boolean
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} UserEntity
+ */
