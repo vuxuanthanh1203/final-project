@@ -6,7 +6,7 @@ const OrderStatus = require('../models').OrderStatus
 const OrderStatusQueryResolver = {
   Query: {
     /**
-      * @returns {Array<import('../models/OrderStatus').OrderStatusEntity>}
+      * @returns {Promise<Array<import('../models/OrderStatus').OrderStatusEntity>>}
       */
     async orderStatuses (parent, args, context) {
       const orderStatuses = await OrderStatus.findAll()

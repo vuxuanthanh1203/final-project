@@ -21,7 +21,9 @@ const OrderStatusMutationResolver = {
     },
 
     /**
-      * @param {number} orderStatusId - Order Status Id
+      * @param {{
+      *   orderStatusId:number
+      * }} args - Args of this resolver
       * @returns {Promise<DeleteOrderStatusResult>}
       */
     async deleteOrderStatus (parent, args, context) {

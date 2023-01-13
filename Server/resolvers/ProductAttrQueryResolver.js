@@ -6,8 +6,10 @@ const ProductAttr = require('../models').ProductAttr
 const ProductAttrQueryResolver = {
   Query: {
     /**
-      * @param {number} productId - Product id
-      * @returns {Array<ProductAttrDetail>}
+      * @param {{
+      *   productId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<Array<ProductAttrDetail>>}
       */
     async productAttributes (parent, args, context) {
       const productAttrs = await ProductAttr.scope('+Product').findAll({
@@ -37,8 +39,5 @@ module.exports = ProductAttrQueryResolver
  *  value: string
  *  quantityInStock: number
  *  product: import('../models/Product').ProductEntity
- *  createdAt: date
- *  updatedAt: date
- *  deletedAt: date
  * }} ProductAttrDetail
  */

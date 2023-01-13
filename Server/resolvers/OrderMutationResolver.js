@@ -21,8 +21,10 @@ const OrderMutationResolver = {
     },
 
     /**
-      * @param {number} orderId - OrderId
-      * @returns {Promise<import('../models/Order')>}
+      * @param {{
+      *   orderId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<DeleteOrderResult>}
       */
     async deleteOrder (parent, args, context) {
       await Order.destroy({
@@ -38,7 +40,7 @@ const OrderMutationResolver = {
 
     /**
       * @param {*} args - Update order input
-      * @returns {Promise<OrderType>}
+      * @returns {Promise<import('../models/Order').OrderEntity>}
       */
     async updateOrder (parent, args, context) {
       const data = args.input

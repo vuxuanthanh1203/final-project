@@ -56,7 +56,7 @@ module.exports = (sequelize, DataTypes) => {
     Order.addScope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr', () => {
       return {
         include: [
-          { model: models.User.scope('-Password'), require: true },
+          { model: models.User, require: true },
           { model: models.ShippingMethod, require: true },
           { model: models.OrderStatus, require: true },
           {
@@ -77,11 +77,9 @@ module.exports = (sequelize, DataTypes) => {
 
 /**
  * @typedef {{
- * id: number
+ *  id: number
  *  userId: number
  *  shippingMethodId: number
  *  orderStatusId: number
- *  createdAt: date
- *  updatedAt: date
  * }} OrderEntity
  */

@@ -12,9 +12,9 @@ describe('getAllOrderStatus', () => {
       { id: 3, status: 'success' },
       { id: 4, status: 'cancel' }
     ]
-    const result = await resolvers.Query.orderStatuses()
-    expect(result).toHaveLength(4)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.orderStatuses()
+    expect(received).toHaveLength(4)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -31,15 +31,15 @@ describe('createOrderStatus', () => {
     }
 
     await resolvers.Mutation.createOrderStatus(parent, args, context)
-    const orderStatus = await OrderStatus.findByPk(5)
+    const received = await OrderStatus.findByPk(5)
 
-    expect(orderStatus).toMatchObject(expected)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteOrderStatus', () => {
   test('delete a order status', async () => {
-    const result = await resolvers.Mutation.deleteOrderStatus(parent, { orderStatusId: 3 }, context)
-    expect(result).toBeTruthy()
+    const received = await resolvers.Mutation.deleteOrderStatus(parent, { orderStatusId: 3 }, context)
+    expect(received).toBeTruthy()
   })
 })

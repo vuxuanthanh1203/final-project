@@ -35,9 +35,9 @@ describe('getAllOrders', () => {
         shippingMethod: { name: 'COD' }
       }
     ]
-    const result = await resolvers.Query.orders()
-    expect(result).toHaveLength(4)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.orders()
+    expect(received).toHaveLength(4)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -59,15 +59,15 @@ describe('getOrderById', () => {
         { id: 2, quantity: 1, price: 189000, productAttr: { value: 'M' } }
       ]
     }
-    const result = await resolvers.Query.order(parent, { orderId: 1 }, context)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.order(parent, { orderId: 1 }, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getOrderById', () => {
   test('get order by id return null', async () => {
-    const result = await resolvers.Query.order(parent, { orderId: 20 }, context)
-    expect(result).toBeNull()
+    const received = await resolvers.Query.order(parent, { orderId: 20 }, context)
+    expect(received).toBeNull()
   })
 })
 
@@ -87,8 +87,8 @@ describe('createOrder', () => {
       OrderStatusId: 1
     }
 
-    const order = await resolvers.Mutation.createOrder(parent, args, context)
-    expect(order).toMatchObject(expected)
+    const received = await resolvers.Mutation.createOrder(parent, args, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -108,14 +108,14 @@ describe('updateOrder', () => {
     }
 
     await resolvers.Mutation.updateOrder(parent, args, context)
-    const order = await Order.findByPk(5)
-    expect(order).toMatchObject(expected)
+    const received = await Order.findByPk(5)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteOrder', () => {
   test('delete order', async () => {
-    const result = await resolvers.Mutation.deleteOrder(parent, { orderId: 5 }, context)
-    expect(result).toBeTruthy()
+    const received = await resolvers.Mutation.deleteOrder(parent, { orderId: 5 }, context)
+    expect(received).toBeTruthy()
   })
 })

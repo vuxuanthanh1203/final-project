@@ -2,8 +2,8 @@ const resolvers = require('../../resolvers/index')
 
 describe('testExportProduct', () => {
   test('test export product data', async () => {
-    const result = await resolvers.Mutation.exportProduct()
+    const received = await resolvers.Mutation.exportProduct()
 
-    expect(result.fileUrl).toMatch(/.csv/)
+    expect(received.fileUrl).toMatch(/.csv/)
   })
 })

@@ -6,7 +6,7 @@ const Order = require('../models').Order
 const OrderQueryResolver = {
   Query: {
     /**
-      * @returns {Array<OrderDetail>}
+      * @returns {Promise<Array<OrderDetail>>}
       */
     async orders (parent, args, context) {
       const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findAll()
@@ -43,7 +43,9 @@ const OrderQueryResolver = {
     },
 
     /**
-     * @param {number} args - orderId
+     * @param {{
+     *  orderId:number
+     * }} args - Args of this resolver
      * @returns {Promise<OrderDetail>}
      */
     async order (parent, args, context) {
@@ -72,7 +74,6 @@ const OrderQueryResolver = {
           name: order.ShippingMethod.name,
           price: order.ShippingMethod.price
         },
-        // @ts-ignore
         orderProductAttrs: order.OrderProductAttrs.map(orderProductAttr => ({
           id: orderProductAttr.id,
           quantity: orderProductAttr.quantity,
@@ -98,7 +99,5 @@ module.exports = OrderQueryResolver
  *  shippingMethod: import('../models/ShippingMethod').ShippingMethodEntity
  *  orderStatus: import('../models/OrderStatus').OrderStatusEntity
  *  orderProductAttr: import('../models/OrderProductAttr').OrderProductAttrEntity
- *  createdAt: date
- *  updatedAt: date
  * }} OrderDetail
  */

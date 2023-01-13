@@ -8,7 +8,7 @@ const OrderProductAttrQueryResolver = {
     /**
      *
      * @param {*} args - userId, orderId
-     * @returns {Array<OrderProductAttrDetail>}
+     * @returns {Promise<Array<OrderProductAttrDetail>>}
      */
     async orderProductAttrs (parent, args, context) {
       const orderProductAttrs = await OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', args.userId, args.orderId] }).findAll()
@@ -48,7 +48,5 @@ module.exports = OrderProductAttrQueryResolver
  *  productAttr: import('../models/ProductAttr').ProductAttrEntity
  *  quantity: number
  *  price: number
- *  createdAt: date
- *  updatedAt: date
  * }} OrderProductAttrDetail
  */

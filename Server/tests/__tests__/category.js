@@ -11,27 +11,27 @@ describe('getAllCategories', () => {
       { id: 2, name: 'Áo somi', slug: 'ao-somi' },
       { id: 3, name: 'Quần jean', slug: 'quan-jean' }
     ]
-    const result = await resolvers.Query.categories()
-    expect(result).toHaveLength(3)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.categories()
+    expect(received).toHaveLength(3)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getCategoryById', () => {
   test('get category by id return object', async () => {
-    const categoryTest = {
+    const expected = {
       name: 'Áo thun',
       slug: 'ao-thun'
     }
-    const result = await resolvers.Query.category(parent, { categoryId: 1 }, context)
-    expect(result).toMatchObject(categoryTest)
+    const received = await resolvers.Query.category(parent, { categoryId: 1 }, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getCategoryById', () => {
   test('get category by id return null', async () => {
-    const result = await resolvers.Query.category(parent, { categoryId: 20 }, context)
-    expect(result).toBeNull()
+    const received = await resolvers.Query.category(parent, { categoryId: 20 }, context)
+    expect(received).toBeNull()
   })
 })
 
@@ -49,8 +49,8 @@ describe('createCategory', () => {
       slug: 'test-category21'
     }
 
-    const category = await resolvers.Mutation.createCategory(parent, args, context)
-    expect(category).toMatchObject(expected)
+    const received = await resolvers.Mutation.createCategory(parent, args, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -69,14 +69,14 @@ describe('updateCategory', () => {
       slug: 'test-category'
     }
     await resolvers.Mutation.updateCategory(parent, args, context)
-    const category = await Category.findByPk(4)
-    expect(category).toMatchObject(expected)
+    const received = await Category.findByPk(4)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteCategory', () => {
   test('delete Category', async () => {
-    const result = await resolvers.Mutation.deleteCategory(parent, { categoryId: 4 }, context)
-    expect(result).toBeTruthy()
+    const received = await resolvers.Mutation.deleteCategory(parent, { categoryId: 4 }, context)
+    expect(received).toBeTruthy()
   })
 })

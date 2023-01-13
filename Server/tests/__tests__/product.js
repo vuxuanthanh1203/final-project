@@ -50,9 +50,9 @@ describe('getAllProducts', () => {
         category: { id: 3, name: 'Quần jean', slug: 'quan-jean' }
       }
     ]
-    const result = await resolvers.Query.products()
-    expect(result).toHaveLength(6)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.products()
+    expect(received).toHaveLength(6)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -65,15 +65,15 @@ describe('getProductById', () => {
       description: 'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!',
       category: { id: 1, name: 'Áo thun', slug: 'ao-thun' }
     }
-    const result = await resolvers.Query.product(parent, { productId: 1 }, context)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.product(parent, { productId: 1 }, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getProductById', () => {
   test('get product by id return null', async () => {
-    const result = await resolvers.Query.product(parent, { productId: 20 }, context)
-    expect(result).toBeNull()
+    const received = await resolvers.Query.product(parent, { productId: 20 }, context)
+    expect(received).toBeNull()
   })
 })
 
@@ -97,8 +97,8 @@ describe('createProduct', () => {
       categoryId: 1
     }
 
-    const product = await resolvers.Mutation.createProduct(parent, args, context)
-    expect(product).toMatchObject(expected)
+    const received = await resolvers.Mutation.createProduct(parent, args, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -119,15 +119,15 @@ describe('updateProduct', () => {
       category_id: 1
     }
     await resolvers.Mutation.updateProduct(parent, args, context)
-    const product = await Product.findByPk(7)
+    const received = await Product.findByPk(7)
 
-    expect(product).toMatchObject(expected)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteProduct', () => {
   test('delete Product', async () => {
-    const result = await resolvers.Mutation.deleteProduct(parent, { productId: 7 }, context)
-    expect(result).toBeTruthy()
+    const received = await resolvers.Mutation.deleteProduct(parent, { productId: 7 }, context)
+    expect(received).toBeTruthy()
   })
 })

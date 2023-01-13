@@ -72,12 +72,6 @@ module.exports = (sequelize, DataTypes) => {
   )
   User.associate = function (models) {
     User.hasMany(models.Order)
-
-    User.addScope('-Password', {
-      attributes: {
-        exclude: ['password']
-      }
-    })
   }
 
   return User
@@ -89,12 +83,8 @@ module.exports = (sequelize, DataTypes) => {
  *  name: string
  *  userName: string
  *  email: string
- *  password: string
  *  phoneNumber: string
  *  address: string
  *  isAdmin: boolean
- *  createdAt: date
- *  updatedAt: date
- *  deletedAt: date
  * }} UserEntity
  */

@@ -21,7 +21,9 @@ const ProductMutationResolver = {
     },
 
     /**
-      * @param {number} ProductId - Product id
+      * @param {{
+      *   productId:number
+      * }} args - Args of this resolver
       * @returns {Promise<DeleteProductResult>}
       */
     async deleteProduct (parent, args, context) {

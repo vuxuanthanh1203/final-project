@@ -21,7 +21,9 @@ const CategoryQueryResolver = {
     },
 
     /**
-      * @param {number} args - categoryId
+      * @param {{
+      *   categoryId: number
+      * }} args - Args of this resolver.
       * @returns {Promise<DeleteCategoryResult>}
       */
     async deleteCategory (parent, args, context) {

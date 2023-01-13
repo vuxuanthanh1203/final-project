@@ -12,9 +12,9 @@ describe('getAllShippingMethod', () => {
         price: 15000
       }
     ]
-    const result = await resolvers.Query.shippingMethods()
-    expect(result).toHaveLength(1)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.shippingMethods()
+    expect(received).toHaveLength(1)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -32,14 +32,14 @@ describe('createShippingMethod', () => {
       price: 15000
     }
 
-    const shippingMethod = await resolvers.Mutation.createShippingMethod(parent, args, context)
-    expect(shippingMethod).toMatchObject(expected)
+    const received = await resolvers.Mutation.createShippingMethod(parent, args, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteShippingMethod', () => {
   test('delete a shipping method', async () => {
-    const result = await resolvers.Mutation.deleteShippingMethod(parent, { shippingMethodId: 2 }, context)
-    expect(result).toBeTruthy()
+    const received = await resolvers.Mutation.deleteShippingMethod(parent, { shippingMethodId: 2 }, context)
+    expect(received).toBeTruthy()
   })
 })

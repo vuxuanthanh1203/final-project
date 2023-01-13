@@ -35,7 +35,9 @@ const UserMutationResolver = {
     },
 
     /**
-      * @param {number} userId - UserId
+      * @param {{
+      *   userId:number
+      * }} args - Args of this resolver
       * @returns {Promise<DeleteUserResult>}
       */
     async deleteUser (parent, args, context) {
@@ -108,7 +110,7 @@ module.exports = UserMutationResolver
 /**
  * @typedef {{
  *  token: string
- *  User: import('../models/User').UserEntity
+ *  user: import('../models/User').UserEntity
  * }} AuthResult
  */
 

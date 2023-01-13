@@ -21,8 +21,10 @@ const ProductImgMutationResolver = {
     },
 
     /**
-      * @param {number} ProductImgId - Product image id
-      * @returns {Promise<import('../models/ProductImg').ProductImgEntity>}
+      * @param {{
+      *   productImgId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<DeleteProductImgResult>}
       */
     async deleteProductImg (parent, args, context) {
       await ProductImg.destroy({

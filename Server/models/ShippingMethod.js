@@ -56,8 +56,5 @@ module.exports = (sequelize, DataTypes) => {
  *  id: number
  *  name: string
  *  price: number
- *  createdAt: date
- *  updatedAt: date
- *  deletedAt: date
  * }} ShippingMethodEntity
  */

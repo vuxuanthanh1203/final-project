@@ -58,7 +58,5 @@ module.exports = (sequelize, DataTypes) => {
  *  id: number
  *  url: string
  *  productId: number
- *  createdAt: date
- *  updatedAt: date
  * }} ProductImgEntity
  */

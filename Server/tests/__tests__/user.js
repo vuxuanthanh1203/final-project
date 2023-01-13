@@ -48,9 +48,9 @@ describe('getAllUsers', () => {
         isAdmin: false
       }
     ]
-    const result = await resolvers.Query.users()
-    expect(result).toHaveLength(4)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.users()
+    expect(received).toHaveLength(4)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -65,15 +65,15 @@ describe('getUserById', () => {
       address: 'HN',
       isAdmin: true
     }
-    const result = await resolvers.Query.user(parent, { userId: 1 }, context)
-    expect(result).toMatchObject(expected)
+    const received = await resolvers.Query.user(parent, { userId: 1 }, context)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getUserById', () => {
   test('get user by id return null', async () => {
-    const result = await resolvers.Query.user(parent, { userId: 20 }, context)
-    expect(result).toBeNull()
+    const received = await resolvers.Query.user(parent, { userId: 20 }, context)
+    expect(received).toBeNull()
   })
 })
 
@@ -101,9 +101,9 @@ describe('createUser', () => {
       isAdmin: false
     }
 
-    const user = await resolvers.Mutation.createUser(parent, args, context)
+    const received = await resolvers.Mutation.createUser(parent, args, context)
 
-    expect(user).toEqual(expect.objectContaining(expected))
+    expect(received).toEqual(expect.objectContaining(expected))
   })
 })
 
@@ -130,14 +130,14 @@ describe('updateUser', () => {
       isAdmin: false
     }
     await resolvers.Mutation.updateUser(parent, args, context)
-    const user = await User.findByPk(args.userId)
-    expect(user).toEqual(expect.objectContaining(expected))
+    const received = await User.findByPk(args.userId)
+    expect(received).toEqual(expect.objectContaining(expected))
   })
 })
 
 describe('deleteUser', () => {
   test('delete User', async () => {
-    const result = await resolvers.Mutation.deleteUser(parent, { userId: 5 }, context)
-    expect(result).toBeTruthy()
+    const received = await resolvers.Mutation.deleteUser(parent, { userId: 5 }, context)
+    expect(received).toBeTruthy()
   })
 })

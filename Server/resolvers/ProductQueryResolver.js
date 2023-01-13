@@ -6,7 +6,7 @@ const Product = require('../models').Product
 const ProductQueryResolver = {
   Query: {
     /**
-      * @returns {Array<ProductDetail>}
+      * @returns {Promise<Array<ProductDetail>>}
       */
     async products (parent, args, context) {
       const products = await Product.scope('+Category').findAll()
@@ -25,7 +25,9 @@ const ProductQueryResolver = {
     },
 
     /**
-      * @param {number} ProductId - product id
+      * @param {{
+      *   productId:number
+      * }} args - Args of this resolver
       * @returns {Promise<ProductDetail>}
       */
     async product (parent, args, context) {
@@ -42,7 +44,6 @@ const ProductQueryResolver = {
         slug: product.slug,
         price: product.price,
         description: product.description,
-        // @ts-ignore
         category: {
           id: product.Category.id,
           name: product.Category.name,
@@ -64,8 +65,5 @@ module.exports = ProductQueryResolver
  *  price: number
  *  description: string
  *  category: import('../models/Category').CategoryEntity
- *  createdAt: date
- *  updatedAt: date
- *  deletedAt: date
  * }} ProductDetail
  */

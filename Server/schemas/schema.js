@@ -146,7 +146,7 @@ const typeDefs = gql`
         user: User!
         orderStatus: OrderStatus!
         shippingMethod: ShippingMethod!
-        orderProductAttrs: [OrderProductAttr]!
+        orderProductAttrs: [OrderProductAttr]
     }
 
     type OrderMutationResult {

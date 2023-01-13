@@ -91,7 +91,5 @@ module.exports = (sequelize, DataTypes) => {
  *  productAttrId: number
  *  quantity: number
  *  price: number
- *  createdAt: date
- *  updatedAt: date
  * }} OrderProductAttrEntity
  */

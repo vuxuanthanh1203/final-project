@@ -22,7 +22,10 @@ const OrderProductAttrMutation = {
     },
 
     /**
-      * @param {number} orderProductAttrId - Order Product Attribute Id
+      * @param {{
+      *   orderProductAttrId:
+      * number
+      * }} args - Args of this resolver
       * @returns {Promise<DeleteOrderProductAttrResult>}
       */
     async deleteOrderProductAttr (parent, args, context) {
