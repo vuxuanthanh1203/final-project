@@ -87,8 +87,8 @@ module.exports = (sequelize, DataTypes) => {
 /**
  * @typedef {{
  *  id: number
- *  order: import('./Order').OrderEntity
- *  productAttr: import('./ProductAttr').ProductAttrEntity
+ *  orderId: number
+ *  productAttrId: number
  *  quantity: number
  *  price: number
  *  createdAt: date

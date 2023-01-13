@@ -6,15 +6,53 @@ const context = null
 
 describe('getAllProducts', () => {
   test('get all products', async () => {
+    const expected = [
+      {
+        name: 'Áo thun Dinosaur 01',
+        slug: 'ao-thun-dinosaur-01',
+        price: 189000,
+        description: 'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!',
+        category: { id: 1, name: 'Áo thun', slug: 'ao-thun' }
+      },
+      {
+        name: 'Áo thun Dinosaur 02',
+        slug: 'ao-thun-dinosaur-02',
+        price: 189000,
+        description: 'Thiết kế đơn giản, form dáng tiện lợi của áo thun PPN4502. Tại sao chỉ với 1 chiếc áo thun nữ basic mà bạn có thể phối với 10 bộ độ khác nhau? Câu trả lời nằm ở chính sự đơn giản của chúng',
+        category: { id: 1, name: 'Áo thun', slug: 'ao-thun' }
+      },
+      {
+        name: 'Áo somi caro 07',
+        slug: 'ao-somi-caro-07',
+        price: 189000,
+        description: 'Tay cáo, form áo cũng không hề cầu kỳ, rất dễ mặc với nhiều thân hình khác nhau. Đặc biệt hơn, màu sắc của chiếc áo phông nữ cổ tròn này cũng rất nhã nhặn, trung tính, trơn màu',
+        category: { id: 2, name: 'Áo somi', slug: 'ao-somi' }
+      },
+      {
+        name: 'Áo somi dài tay 08',
+        slug: 'ao-somi-dai-tay-08',
+        price: 189000,
+        description: 'Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào',
+        category: { id: 2, name: 'Áo somi', slug: 'ao-somi' }
+      },
+      {
+        name: 'Quần jean phong cách 10',
+        slug: 'quan-jean-phong-cach-10',
+        price: 189000,
+        description: 'Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào',
+        category: { id: 3, name: 'Quần jean', slug: 'quan-jean' }
+      },
+      {
+        name: 'Quần jean 11',
+        slug: 'quan-jean-11',
+        price: 189000,
+        description: 'Sự tối giản từ thiết kế, đường may đến bảng màu giúp các chị em không cần đắn đo quá nhiều khi lựa chọn. Chất liệu cotton 95% được xử lý nghiêm ngặt, quy trình và công nghệ hiện đại nên mang tới cho chiếc áo sự thoải mái, mềm mại, thoáng mát ngay khi chạm vào',
+        category: { id: 3, name: 'Quần jean', slug: 'quan-jean' }
+      }
+    ]
     const result = await resolvers.Query.products()
     expect(result).toHaveLength(6)
-  })
-})
-
-describe('getAllProducts', () => {
-  test('get all products return null', async () => {
-    const result = await resolvers.Query.products()
-    expect(result).not.toBeNull()
+    expect(result).toMatchObject(expected)
   })
 })
 
@@ -47,9 +85,7 @@ describe('createProduct', () => {
         slug: 'product-test',
         description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book',
         price: 189000,
-        categoryId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        categoryId: 1
       }
     }
 
@@ -61,8 +97,7 @@ describe('createProduct', () => {
       categoryId: 1
     }
 
-    await Product.create(args.input)
-    const product = await Product.findByPk(7)
+    const product = await resolvers.Mutation.createProduct(parent, args, context)
     expect(product).toMatchObject(expected)
   })
 })
@@ -83,19 +118,16 @@ describe('updateProduct', () => {
       price: 189000,
       category_id: 1
     }
-    await Product.update(args.input, {
-      where: { id: args.productId }
-    })
+    await resolvers.Mutation.updateProduct(parent, args, context)
     const product = await Product.findByPk(7)
+
     expect(product).toMatchObject(expected)
   })
 })
 
 describe('deleteProduct', () => {
   test('delete Product', async () => {
-    const result = await Product.destroy({
-      where: { id: 7 }
-    })
+    const result = await resolvers.Mutation.deleteProduct(parent, { productId: 7 }, context)
     expect(result).toBeTruthy()
   })
 })

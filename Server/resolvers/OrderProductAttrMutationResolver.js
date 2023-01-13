@@ -7,8 +7,8 @@ const OrderProductAttrMutation = {
   Mutation: {
     /**
       * @param {*} args - Create order product attribute input
-      * @param {import('../contexts/context')} context - Order Product Attribute context
-    * @returns {Promise<OrderProductAttrType>}
+      * @returns {Promise<import('../models/OrderProductAttr')>}
+
       */
     async createOrderProductAttr (parent, args, context) {
       const data = args.input
@@ -23,7 +23,6 @@ const OrderProductAttrMutation = {
 
     /**
       * @param {number} orderProductAttrId - Order Product Attribute Id
-      * @param {import('../contexts/context')} context - Order Product Attribute context
       * @returns {Promise<DeleteOrderProductAttrResult>}
       */
     async deleteOrderProductAttr (parent, args, context) {
@@ -40,8 +39,7 @@ const OrderProductAttrMutation = {
 
     /**
       * @param {*} args - Update order product attribute input
-      * @param {import('../contexts/context')} context - Order Product Attribute context
-      * @returns {Promise<OrderProductAttrType>}
+      * @returns {Promise<import('../models/OrderProductAttr')>}
       */
     async updateOrderProductAttr (parent, args, context) {
       // console.log(args)
@@ -64,14 +62,4 @@ module.exports = OrderProductAttrMutation
  * @typedef {{
  *  success: boolean
  * }} DeleteOrderProductAttrResult
- */
-
-/**
- * @typedef {{
- *  id: number
- *  orderId: number
- *  productAttrId: number
- *  quantity: number
- *  price: number
- * }} OrderProductAttrType
  */

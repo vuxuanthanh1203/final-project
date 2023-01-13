@@ -46,6 +46,12 @@ module.exports = (sequelize, DataTypes) => {
   )
   Category.associate = function (models) {
     Category.hasMany(models.Product)
+
+    Category.addScope('-Date', {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'deleteAt']
+      }
+    })
   }
   return Category
 }

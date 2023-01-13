@@ -1,17 +1,20 @@
 const resolvers = require('../../resolvers/index')
-const ShippingMethod = require('../../models').ShippingMethod
+
+const parent = null
+const context = null
 
 describe('getAllShippingMethod', () => {
   test('get all shipping method', async () => {
+    const expected = [
+      {
+        id: 1,
+        name: 'COD',
+        price: 15000
+      }
+    ]
     const result = await resolvers.Query.shippingMethods()
     expect(result).toHaveLength(1)
-  })
-})
-
-describe('getAllShippingMethod', () => {
-  test('get all shipping method return null', async () => {
-    const result = await resolvers.Query.shippingMethods()
-    expect(result).not.toBeNull()
+    expect(result).toMatchObject(expected)
   })
 })
 
@@ -20,9 +23,7 @@ describe('createShippingMethod', () => {
     const args = {
       input: {
         name: 'test-create',
-        price: 15000,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        price: 15000
       }
     }
 
@@ -31,17 +32,14 @@ describe('createShippingMethod', () => {
       price: 15000
     }
 
-    await ShippingMethod.create(args.input)
-    const shippingMethod = await ShippingMethod.findByPk(2)
+    const shippingMethod = await resolvers.Mutation.createShippingMethod(parent, args, context)
     expect(shippingMethod).toMatchObject(expected)
   })
 })
 
 describe('deleteShippingMethod', () => {
   test('delete a shipping method', async () => {
-    const result = await ShippingMethod.destroy({
-      where: { id: 2 }
-    })
+    const result = await resolvers.Mutation.deleteShippingMethod(parent, { shippingMethodId: 2 }, context)
     expect(result).toBeTruthy()
   })
 })

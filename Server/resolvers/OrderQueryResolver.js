@@ -6,16 +6,15 @@ const Order = require('../models').Order
 const OrderQueryResolver = {
   Query: {
     /**
-      * @param {*} args
-      * @param {import('../contexts/context')} context - Order context
-      * @returns {Array<import('../models/Order').OrderEntity>}
+      * @returns {Array<OrderDetail>}
       */
     async orders (parent, args, context) {
       const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findAll()
       if (orders == null) {
         throw Error('no data')
       }
-      return orders.map((order) => ({
+
+      const result = orders.map((order) => ({
         id: order.id,
         user: {
           id: order.User.id,
@@ -24,10 +23,7 @@ const OrderQueryResolver = {
           phoneNumber: order.User.phoneNumber,
           address: order.User.address
         },
-        orderStatus: {
-          id: order.OrderStatus.id,
-          status: order.OrderStatus.status
-        },
+        // orderStatus: order.OrderStatus
         shippingMethod: {
           id: order.ShippingMethod.id,
           name: order.ShippingMethod.name,
@@ -43,13 +39,12 @@ const OrderQueryResolver = {
           }
         }))
       }))
+      return result
     },
 
     /**
-     *
      * @param {number} args - orderId
-     * @param {*} context
-     * @returns {Promise<import('../models/Order').OrderEntity>}
+     * @returns {Promise<OrderDetail>}
      */
     async order (parent, args, context) {
       const order = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findByPk(args.orderId)
@@ -95,3 +90,15 @@ const OrderQueryResolver = {
 }
 
 module.exports = OrderQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  user: import('../models/User').UserEntity
+ *  shippingMethod: import('../models/ShippingMethod').ShippingMethodEntity
+ *  orderStatus: import('../models/OrderStatus').OrderStatusEntity
+ *  orderProductAttr: import('../models/OrderProductAttr').OrderProductAttrEntity
+ *  createdAt: date
+ *  updatedAt: date
+ * }} OrderDetail
+ */

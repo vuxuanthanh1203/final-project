@@ -12,8 +12,32 @@ describe('getAllOrderProductAttr', () => {
         orderId: 1
       }
     }
-    const result = await resolvers.Query.orderProductAttr(parent, args, context)
+
+    const expected = [
+      {
+        id: 1,
+        price: 567000,
+        quantity: 3,
+        order: {
+          id: 1,
+          user: { name: 'user1', email: 'user1@example.com', phoneNumber: '0999999999', address: 'HN' }
+        },
+        productAttr: { id: 1, value: 'S' }
+      },
+      {
+        id: 2,
+        price: 189000,
+        quantity: 1,
+        order: {
+          id: 1,
+          user: { name: 'user1', email: 'user1@example.com', phoneNumber: '0999999999', address: 'HN' }
+        },
+        productAttr: { id: 2, value: 'M' }
+      }
+    ]
+    const result = await resolvers.Query.orderProductAttrs(parent, args.input, context)
     expect(result).toHaveLength(2)
+    expect(result).toMatchObject(expected)
   })
 })
 
@@ -24,9 +48,7 @@ describe('createOrderProductAttr', () => {
         orderId: 1,
         productAttrId: 2,
         quantity: 5,
-        price: 845000,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        price: 845000
       }
     }
 
@@ -37,8 +59,7 @@ describe('createOrderProductAttr', () => {
       price: 845000
     }
 
-    await OrderProductAttr.create(args.input)
-    const orderProductAttr = await OrderProductAttr.findByPk(3)
+    const orderProductAttr = await resolvers.Mutation.createOrderProductAttr(parent, args, context)
     expect(orderProductAttr).toMatchObject(expected)
   })
 })
@@ -59,9 +80,8 @@ describe('updateOrderProductAttr', () => {
       quantity: 4,
       price: 3333
     }
-    await OrderProductAttr.update(args.input, {
-      where: { id: args.orderProductAttrId }
-    })
+
+    await resolvers.Mutation.updateOrderProductAttr(parent, args, context)
     const orderProductAttr = await OrderProductAttr.findByPk(3)
     expect(orderProductAttr).toMatchObject(expected)
   })
@@ -69,9 +89,7 @@ describe('updateOrderProductAttr', () => {
 
 describe('deleteOrderProductAttr', () => {
   test('delete order product attribute', async () => {
-    const result = await OrderProductAttr.destroy({
-      where: { id: 3 }
-    })
+    const result = await resolvers.Mutation.deleteOrderProductAttr(parent, { orderProductAttrId: 3 }, context)
     expect(result).toBeTruthy()
   })
 })

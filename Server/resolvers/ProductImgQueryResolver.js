@@ -7,8 +7,7 @@ const ProductImgQueryResolver = {
   Query: {
     /**
       * @param {number} productId - Product id
-      * @param {import('../contexts/context')} context - ProductImg context
-      * @returns {Array<import('../models/ProductImg')>}
+      * @returns {Array<ProductImgDetail>}
       */
     async productImgs (parent, args, context) {
       const productImgs = await ProductImg.scope('+Product').findAll({
@@ -31,3 +30,13 @@ const ProductImgQueryResolver = {
 }
 
 module.exports = ProductImgQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  url: string
+ *  product: import('../models/Product').ProductEntity
+ *  createdAt: date
+ *  updatedAt: date
+ * }} ProductImgDetail
+ */

@@ -7,7 +7,7 @@ const OrderMutationResolver = {
   Mutation: {
     /**
       * @param {*} args - Create order input
-    * @returns {Promise<OrderType>}
+    * @returns {Promise<import('../models/Order')>}
       */
     async createOrder (parent, args, context) {
       const data = args.input
@@ -22,7 +22,7 @@ const OrderMutationResolver = {
 
     /**
       * @param {number} orderId - OrderId
-      * @returns {Promise<DeleteOrderResult>}
+      * @returns {Promise<import('../models/Order')>}
       */
     async deleteOrder (parent, args, context) {
       await Order.destroy({
@@ -59,13 +59,4 @@ module.exports = OrderMutationResolver
  * @typedef {{
  *  success: boolean
  * }} DeleteOrderResult
- */
-
-/**
- * @typedef {{
- *  id: number
- *  userId: number
- *  shippingMethodId: number
- *  orderStatusId: number
- * }} OrderType
  */

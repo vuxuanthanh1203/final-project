@@ -6,9 +6,7 @@ const Product = require('../models').Product
 const ProductQueryResolver = {
   Query: {
     /**
-      * @param {*} args
-      * @param {import('../contexts/context')} context - Product context
-      * @returns {Array<import('../models/Product').ProductEntity>}
+      * @returns {Array<ProductDetail>}
       */
     async products (parent, args, context) {
       const products = await Product.scope('+Category').findAll()
@@ -28,8 +26,7 @@ const ProductQueryResolver = {
 
     /**
       * @param {number} ProductId - product id
-      * @param {import('../contexts/context')} context - Product context
-      * @returns {Promise<import('../models/Product').ProductEntity>}
+      * @returns {Promise<ProductDetail>}
       */
     async product (parent, args, context) {
       const product = await Product.scope('+Category').findByPk(args.productId)
@@ -58,3 +55,17 @@ const ProductQueryResolver = {
 }
 
 module.exports = ProductQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  name: string
+ *  slug: string
+ *  price: number
+ *  description: string
+ *  category: import('../models/Category').CategoryEntity
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} ProductDetail
+ */

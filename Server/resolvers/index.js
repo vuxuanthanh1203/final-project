@@ -25,6 +25,10 @@ const ProductMutationResolver = require('./ProductMutationResolver')
 const ShippingMethodMutationResolver = require('./ShippingMethodMutationResolver')
 const UserMutationResolver = require('./UserMutationResolver')
 
+const ExportUserMutationResolver = require('./ExportUserMutationResolver')
+const ExportProductMutationResolver = require('./ExportProductMutationResolver')
+const ExportOrderMutationResolver = require('./ExportOrderMutationResolver')
+
 const resolvers = [
   CategoryQueryResolver,
   OrderQueryResolver,
@@ -43,7 +47,11 @@ const resolvers = [
   ProductImgMutationResolver,
   ProductMutationResolver,
   ShippingMethodMutationResolver,
-  UserMutationResolver
+  UserMutationResolver,
+  ExportUserMutationResolver,
+  ExportProductMutationResolver,
+  ExportOrderMutationResolver
 ]
 
+// @ts-ignore
 module.exports = mergeResolvers(resolvers)

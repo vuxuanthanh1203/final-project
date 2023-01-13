@@ -6,7 +6,6 @@ const User = require('../models').User
 const UserQueryResolver = {
   Query: {
     /**
-      * @param {import('../contexts/context')} context - User context
       * @returns {Array<import('../models/User').UserEntity>}
       */
     async users (parent, args, context) {
@@ -16,7 +15,6 @@ const UserQueryResolver = {
 
     /**
       * @param {number} userId - user id
-      * @param {import('../contexts/context')} context - User context
       * @returns {Promise<import('../models/User').UserEntity>}
       */
     async user (parent, args, context) {

@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
  *  id: number
  *  value: string
  *  quantityInStock: number
- *  product: import('./Product').ProductEntity
+ *  productId: number
  *  createdAt: date
  *  updatedAt: date
  *  deletedAt: date

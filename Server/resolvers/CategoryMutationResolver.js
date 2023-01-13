@@ -3,7 +3,7 @@
 
 const Category = require('../models').Category
 
-const Query = {
+const CategoryQueryResolver = {
   Mutation: {
     /**
       * @param {*} args - Create category input
@@ -52,7 +52,7 @@ const Query = {
   }
 }
 
-module.exports = Query
+module.exports = CategoryQueryResolver
 
 /**
  * @typedef {{

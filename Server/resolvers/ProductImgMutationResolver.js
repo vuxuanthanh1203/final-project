@@ -7,8 +7,7 @@ const ProductImgMutationResolver = {
   Mutation: {
     /**
       * @param {*} args - Create product image input
-      * @param {import('../contexts/context')} context - Product Image context
-    * @returns {Promise<ProductImgType>}
+      * @returns {Promise<import('../models/ProductImg').ProductImgEntity>}
       */
     async createProductImg (parent, args, context) {
       const data = args.input
@@ -23,8 +22,7 @@ const ProductImgMutationResolver = {
 
     /**
       * @param {number} ProductImgId - Product image id
-      * @param {import('../contexts/context')} context - Product Image context
-      * @returns {Promise<DeleteProductImgResult>}
+      * @returns {Promise<import('../models/ProductImg').ProductImgEntity>}
       */
     async deleteProductImg (parent, args, context) {
       await ProductImg.destroy({
@@ -46,14 +44,4 @@ module.exports = ProductImgMutationResolver
  * @typedef {{
  *  success: boolean
  * }} DeleteProductImgResult
- */
-
-/**
- * @typedef {{
- * id: number
- *  url: string
- *  productId: number
- *  createdAt: date
- *  updatedAt: date
- * }} ProductImgType
  */

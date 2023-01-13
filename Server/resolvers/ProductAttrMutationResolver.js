@@ -7,8 +7,7 @@ const ProductAttrMutationResolver = {
   Mutation: {
     /**
       * @param {*} args - Create product attribute input
-      * @param {import('../contexts/context')} context - Product Attribute context
-    * @returns {Promise<ProductAttrType>}
+      * @returns {Promise<import('../models/ProductAttr').ProductAttrEntity>}
       */
     async createProductAttr (parent, args, context) {
       const data = args.input
@@ -23,7 +22,6 @@ const ProductAttrMutationResolver = {
 
     /**
       * @param {number} productAttrId - Product Attribute Id
-      * @param {import('../contexts/context')} context - Product Attribute context
       * @returns {Promise<DeleteProductResult>}
       */
     async deleteProductAttr (parent, args, context) {
@@ -40,8 +38,7 @@ const ProductAttrMutationResolver = {
 
     /**
       * @param {*} args - Update product attribute input
-      * @param {import('../contexts/context')} context - Product Attribute context
-      * @returns {Promise<ProductAttrType>}
+      * @returns {Promise<import('../models/ProductAttr').ProductAttrEntity>}
       */
     async updateProductAttr (parent, args, context) {
       const data = args.input
@@ -62,16 +59,4 @@ module.exports = ProductAttrMutationResolver
  * @typedef {{
  *  success: boolean
  * }} DeleteProductResult
- */
-
-/**
- * @typedef {{
-*  id: number
- *  value: string
- *  quantityInStock: number
- *  productId: number
- *  createdAt: date
- *  updatedAt: date
- *  deletedAt: date
- * }} ProductAttrType
  */

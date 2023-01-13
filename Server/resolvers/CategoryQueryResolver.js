@@ -15,7 +15,7 @@ const CategoryQueryResolver = {
 
     /**
       * @param {number} args - categoryId
-      * @returns {Promise<import('../models/Category'.CategoryEntity)>}
+      * @returns {Promise<import('../models/Category').CategoryEntity>}
       */
     async category (parent, args, context) {
       const category = Category.findByPk(args.categoryId)

@@ -1,20 +1,29 @@
 const resolvers = require('../../resolvers/index')
-const ProductImg = require('../../models').ProductImg
 
 const parent = null
 const context = null
 
 describe('getAllProductImages', () => {
   test('get all images of the product', async () => {
+    const expected = [
+      {
+        id: 1,
+        url: '../public/assets/images/products/product-01 (1).jpg',
+        product: {
+          name: 'Áo thun Dinosaur 01'
+        }
+      },
+      {
+        id: 2,
+        url: '../public/assets/images/products/product-01 (2).jpg',
+        product: {
+          name: 'Áo thun Dinosaur 01'
+        }
+      }
+    ]
     const result = await resolvers.Query.productImgs(parent, { productId: 1 }, context)
     expect(result).toHaveLength(2)
-  })
-})
-
-describe('getAllProductImages', () => {
-  test('get all images of the product return null', async () => {
-    const result = await resolvers.Query.productImgs(parent, { productId: 1 }, context)
-    expect(result).not.toBeNull()
+    expect(result).toMatchObject(expected)
   })
 })
 
@@ -23,9 +32,7 @@ describe('createProductImg', () => {
     const args = {
       input: {
         url: '../public/assets/images/products/product-09 (1).jpg',
-        productId: 7,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        productId: 7
       }
     }
     const expected = {
@@ -33,17 +40,14 @@ describe('createProductImg', () => {
       productId: 7
     }
 
-    await ProductImg.create(args.input)
-    const productImg = await ProductImg.findByPk(13)
+    const productImg = await resolvers.Mutation.createProductImg(parent, args, context)
     expect(productImg).toMatchObject(expected)
   })
 })
 
 describe('deleteProductImg', () => {
   test('delete an image of the product', async () => {
-    const result = await ProductImg.destroy({
-      where: { id: 13 }
-    })
+    const result = await resolvers.Mutation.deleteProductImg(parent, { productImgId: 7 }, context)
     expect(result).toBeTruthy()
   })
 })

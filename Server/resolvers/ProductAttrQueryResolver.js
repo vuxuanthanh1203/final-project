@@ -7,8 +7,7 @@ const ProductAttrQueryResolver = {
   Query: {
     /**
       * @param {number} productId - Product id
-      * @param {import('../contexts/context')} context - ProductAttr context
-      * @returns {Array<import('../models/ProductAttr').ProductAttrEntity>}
+      * @returns {Array<ProductAttrDetail>}
       */
     async productAttributes (parent, args, context) {
       const productAttrs = await ProductAttr.scope('+Product').findAll({
@@ -31,3 +30,15 @@ const ProductAttrQueryResolver = {
 }
 
 module.exports = ProductAttrQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  value: string
+ *  quantityInStock: number
+ *  product: import('../models/Product').ProductEntity
+ *  createdAt: date
+ *  updatedAt: date
+ *  deletedAt: date
+ * }} ProductAttrDetail
+ */

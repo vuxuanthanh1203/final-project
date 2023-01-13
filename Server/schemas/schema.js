@@ -12,7 +12,7 @@ const typeDefs = gql`
 
         order (orderId: Int!): Order!
 
-        orderProductAttr(userId: Int!, orderId: Int!): [OrderProductAttr]!
+        orderProductAttrs(userId: Int!, orderId: Int!): [OrderProductAttr]!
 
         orderStatuses: [OrderStatus]!
 
@@ -35,9 +35,9 @@ const typeDefs = gql`
     }
     
     type Mutation {
-        exportProduct: String!
-        exportUser: String!
-        exportOrder: String!
+        exportProduct: ExportProduct!
+        exportUser: ExportUser!
+        exportOrder: ExportOrder!
 
         login(input: LoginInput): AuthResponse!
         
@@ -83,7 +83,7 @@ const typeDefs = gql`
 
         deleteShippingMethod(shippingMethodId: Int!): DeleteShippingMethodResult!
 
-        createUser(input: CreateUserInput): AuthResponse!
+        createUser(input: CreateUserInput): User!
 
         updateUser(userId: Int!, input: UpdateUserInput): User!
 
@@ -248,6 +248,8 @@ const typeDefs = gql`
 
     input UpdateUserInput {
         name: String, 
+        userName: String,
+        password: String,
         phoneNumber: String, 
         address: String,
         isAdmin: Boolean

@@ -6,15 +6,14 @@ const context = null
 
 describe('getAllCategories', () => {
   test('get all Categories', async () => {
+    const expected = [
+      { id: 1, name: 'Áo thun', slug: 'ao-thun' },
+      { id: 2, name: 'Áo somi', slug: 'ao-somi' },
+      { id: 3, name: 'Quần jean', slug: 'quan-jean' }
+    ]
     const result = await resolvers.Query.categories()
     expect(result).toHaveLength(3)
-  })
-})
-
-describe('getAllCategories', () => {
-  test('get all Categories return null', async () => {
-    const result = await resolvers.Query.categories()
-    expect(result).not.toBeNull()
+    expect(result).toMatchObject(expected)
   })
 })
 
@@ -41,9 +40,7 @@ describe('createCategory', () => {
     const args = {
       input: {
         name: 'test category21',
-        slug: 'test-category21',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        slug: 'test-category21'
       }
     }
 
@@ -52,8 +49,7 @@ describe('createCategory', () => {
       slug: 'test-category21'
     }
 
-    await Category.create(args.input)
-    const category = await Category.findByPk(4)
+    const category = await resolvers.Mutation.createCategory(parent, args, context)
     expect(category).toMatchObject(expected)
   })
 })
@@ -72,9 +68,7 @@ describe('updateCategory', () => {
       name: 'test update category',
       slug: 'test-category'
     }
-    await Category.update(args.input, {
-      where: { id: args.categoryId }
-    })
+    await resolvers.Mutation.updateCategory(parent, args, context)
     const category = await Category.findByPk(4)
     expect(category).toMatchObject(expected)
   })
@@ -82,9 +76,7 @@ describe('updateCategory', () => {
 
 describe('deleteCategory', () => {
   test('delete Category', async () => {
-    const result = await Category.destroy({
-      where: { id: 4 }
-    })
+    const result = await resolvers.Mutation.deleteCategory(parent, { categoryId: 4 }, context)
     expect(result).toBeTruthy()
   })
 })
