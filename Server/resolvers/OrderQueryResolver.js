@@ -9,7 +9,8 @@ const OrderQueryResolver = {
       * @returns {Promise<Array<OrderDetail>>}
       */
     async orders (parent, args, context) {
-      const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findAll()
+      const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr')
+        .findAll()
       if (orders == null) {
         throw Error('no data')
       }
@@ -23,7 +24,6 @@ const OrderQueryResolver = {
           phoneNumber: order.User.phoneNumber,
           address: order.User.address
         },
-        // orderStatus: order.OrderStatus
         shippingMethod: {
           id: order.ShippingMethod.id,
           name: order.ShippingMethod.name,
@@ -46,14 +46,13 @@ const OrderQueryResolver = {
      * @param {{
      *  orderId:number
      * }} args - Args of this resolver
-     * @returns {Promise<OrderDetail>}
+     * @returns {Promise<OrderDetail | null>}
      */
     async order (parent, args, context) {
       const order = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr')
         .findByPk(args.orderId)
 
       if (!order) {
-        // @ts-ignore
         return null
       }
 
@@ -62,9 +61,11 @@ const OrderQueryResolver = {
         user: {
           id: order.User.id,
           name: order.User.name,
+          userName: order.User.userName,
           email: order.User.email,
           phoneNumber: order.User.phoneNumber,
-          address: order.User.address
+          address: order.User.address,
+          isAdmin: order.User.isAdmin
         },
         orderStatus: {
           id: order.OrderStatus.id,
@@ -85,7 +86,7 @@ const OrderQueryResolver = {
           }
         }))
       }
-      // @ts-ignore
+
       return result
     }
   }
@@ -99,6 +100,6 @@ module.exports = OrderQueryResolver
  *  user: import('../models/User').UserEntity
  *  shippingMethod: import('../models/ShippingMethod').ShippingMethodEntity
  *  orderStatus: import('../models/OrderStatus').OrderStatusEntity
- *  orderProductAttr: import('../models/OrderProductAttr').OrderProductAttrEntity
+ *  orderProductAttrs: import('../models/OrderProductAttr').OrderProductAttrEntity
  * }} OrderDetail
  */

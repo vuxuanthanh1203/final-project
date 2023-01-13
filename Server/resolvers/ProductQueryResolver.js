@@ -28,13 +28,12 @@ const ProductQueryResolver = {
       * @param {{
       *   productId:number
       * }} args - Args of this resolver
-      * @returns {Promise<ProductDetail>}
+      * @returns {Promise<ProductDetail | null>}
       */
     async product (parent, args, context) {
       const product = await Product.scope('+Category').findByPk(args.productId)
 
       if (!product) {
-        // @ts-ignore
         return null
       }
 

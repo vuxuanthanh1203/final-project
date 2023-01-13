@@ -1,0 +1,5 @@
+id,name,userName,email,phoneNumber,address,isAdmin
+1,admin,admin,admin@example.com,0987654321,HN,true
+2,user1,user1,user1@example.com,0999999999,HN,false
+3,user2,user2,user2@example.com,0988888888,HN,false
+4,user3,user3,user3@example.com,0987777777,HN,false
