@@ -11,7 +11,9 @@ describe('getAllCategories', () => {
       { id: 2, name: 'Áo somi', slug: 'ao-somi' },
       { id: 3, name: 'Quần jean', slug: 'quan-jean' }
     ]
+
     const received = await resolvers.Query.categories()
+
     expect(received).toHaveLength(3)
     expect(received).toMatchObject(expected)
   })
@@ -19,18 +21,29 @@ describe('getAllCategories', () => {
 
 describe('getCategoryById', () => {
   test('get category by id return object', async () => {
+    const args = {
+      categoryId: 1
+    }
+
     const expected = {
       name: 'Áo thun',
       slug: 'ao-thun'
     }
-    const received = await resolvers.Query.category(parent, { categoryId: 1 }, context)
+
+    const received = await resolvers.Query.category(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
 
 describe('getCategoryById', () => {
   test('get category by id return null', async () => {
-    const received = await resolvers.Query.category(parent, { categoryId: 20 }, context)
+    const args = {
+      categoryId: 20
+    }
+
+    const received = await resolvers.Query.category(parent, args, context)
+
     expect(received).toBeNull()
   })
 })
@@ -50,6 +63,7 @@ describe('createCategory', () => {
     }
 
     const received = await resolvers.Mutation.createCategory(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
@@ -69,14 +83,19 @@ describe('updateCategory', () => {
       slug: 'test-category'
     }
     await resolvers.Mutation.updateCategory(parent, args, context)
-    const received = await Category.findByPk(4)
+    const received = await Category.findByPk(args.categoryId)
+
     expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteCategory', () => {
   test('delete Category', async () => {
-    const received = await resolvers.Mutation.deleteCategory(parent, { categoryId: 4 }, context)
+    const args = {
+      categoryId: 4
+    }
+    const received = await resolvers.Mutation.deleteCategory(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })

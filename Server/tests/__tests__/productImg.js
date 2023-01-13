@@ -21,7 +21,9 @@ describe('getAllProductImages', () => {
         }
       }
     ]
+
     const received = await resolvers.Query.productImgs(parent, { productId: 1 }, context)
+
     expect(received).toHaveLength(2)
     expect(received).toMatchObject(expected)
   })
@@ -41,13 +43,19 @@ describe('createProductImg', () => {
     }
 
     const received = await resolvers.Mutation.createProductImg(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteProductImg', () => {
   test('delete an image of the product', async () => {
-    const received = await resolvers.Mutation.deleteProductImg(parent, { productImgId: 7 }, context)
+    const args = {
+      productImgId: 7
+    }
+
+    const received = await resolvers.Mutation.deleteProductImg(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })

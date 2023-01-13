@@ -11,7 +11,9 @@ describe('getAllProductAttributes', () => {
       { id: 2, value: 'M', product: { name: 'Áo thun Dinosaur 01' } },
       { id: 3, value: 'L', product: { name: 'Áo thun Dinosaur 01' } }
     ]
+
     const received = await resolvers.Query.productAttributes(parent, { productId: 1 }, context)
+
     expect(received).toHaveLength(3)
     expect(received).toMatchObject(expected)
   })
@@ -34,6 +36,7 @@ describe('createProductAttr', () => {
     }
 
     const received = await resolvers.Mutation.createProductAttr(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
@@ -53,8 +56,9 @@ describe('updateProductAttr', () => {
       quantityInStock: 30,
       productId: 3
     }
+
     await resolvers.Mutation.updateProductAttr(parent, args, context)
-    const received = await ProductAttr.findByPk(10)
+    const received = await ProductAttr.findByPk(args.productAttrId)
 
     expect(received).toMatchObject(expected)
   })
@@ -62,7 +66,12 @@ describe('updateProductAttr', () => {
 
 describe('deleteProductAttr', () => {
   test('delete an attribute of the product', async () => {
-    const received = resolvers.Mutation.deleteProductAttr(parent, { productAttrId: 10 }, context)
+    const args = {
+      productAttrId: 10
+    }
+
+    const received = resolvers.Mutation.deleteProductAttr(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })

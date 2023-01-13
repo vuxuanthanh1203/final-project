@@ -49,7 +49,8 @@ const OrderQueryResolver = {
      * @returns {Promise<OrderDetail>}
      */
     async order (parent, args, context) {
-      const order = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findByPk(args.orderId)
+      const order = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr')
+        .findByPk(args.orderId)
 
       if (!order) {
         // @ts-ignore

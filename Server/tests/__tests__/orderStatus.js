@@ -1,5 +1,4 @@
 const resolvers = require('../../resolvers/index')
-const OrderStatus = require('../../models').OrderStatus
 
 const parent = null
 const context = null
@@ -13,6 +12,7 @@ describe('getAllOrderStatus', () => {
       { id: 4, status: 'cancel' }
     ]
     const received = await resolvers.Query.orderStatuses()
+
     expect(received).toHaveLength(4)
     expect(received).toMatchObject(expected)
   })
@@ -30,8 +30,7 @@ describe('createOrderStatus', () => {
       status: 'test'
     }
 
-    await resolvers.Mutation.createOrderStatus(parent, args, context)
-    const received = await OrderStatus.findByPk(5)
+    const received = await resolvers.Mutation.createOrderStatus(parent, args, context)
 
     expect(received).toMatchObject(expected)
   })
@@ -39,7 +38,11 @@ describe('createOrderStatus', () => {
 
 describe('deleteOrderStatus', () => {
   test('delete a order status', async () => {
-    const received = await resolvers.Mutation.deleteOrderStatus(parent, { orderStatusId: 3 }, context)
+    const args = {
+      orderStatusId: 3
+    }
+    const received = await resolvers.Mutation.deleteOrderStatus(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })

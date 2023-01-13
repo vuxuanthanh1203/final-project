@@ -58,6 +58,10 @@ describe('getAllProducts', () => {
 
 describe('getProductById', () => {
   test('get product by id return object', async () => {
+    const args = {
+      productId: 1
+    }
+
     const expected = {
       name: 'Áo thun Dinosaur 01',
       slug: 'ao-thun-dinosaur-01',
@@ -65,14 +69,20 @@ describe('getProductById', () => {
       description: 'Sự hiện diện của những chiếc áo thun basic cổ tròn trong tủ đồ của bạn chính là chìa khóa giúp cho bạn có thêm nhiều outfit thú vị mà lại không cần đến quá nhiều món đồ. Áo thun nữ cotton cổ tròn basic chính là vũ khí tiện dụng cho các chị em trong trang phục hàng ngày!',
       category: { id: 1, name: 'Áo thun', slug: 'ao-thun' }
     }
-    const received = await resolvers.Query.product(parent, { productId: 1 }, context)
+    const received = await resolvers.Query.product(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
 
 describe('getProductById', () => {
   test('get product by id return null', async () => {
-    const received = await resolvers.Query.product(parent, { productId: 20 }, context)
+    const args = {
+      productId: 20
+    }
+
+    const received = await resolvers.Query.product(parent, args, context)
+
     expect(received).toBeNull()
   })
 })
@@ -98,6 +108,7 @@ describe('createProduct', () => {
     }
 
     const received = await resolvers.Mutation.createProduct(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
@@ -118,8 +129,9 @@ describe('updateProduct', () => {
       price: 189000,
       category_id: 1
     }
+
     await resolvers.Mutation.updateProduct(parent, args, context)
-    const received = await Product.findByPk(7)
+    const received = await Product.findByPk(args.productId)
 
     expect(received).toMatchObject(expected)
   })
@@ -127,7 +139,12 @@ describe('updateProduct', () => {
 
 describe('deleteProduct', () => {
   test('delete Product', async () => {
-    const received = await resolvers.Mutation.deleteProduct(parent, { productId: 7 }, context)
+    const args = {
+      productId: 7
+    }
+
+    const received = await resolvers.Mutation.deleteProduct(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })

@@ -48,7 +48,9 @@ describe('getAllUsers', () => {
         isAdmin: false
       }
     ]
+
     const received = await resolvers.Query.users()
+
     expect(received).toHaveLength(4)
     expect(received).toMatchObject(expected)
   })
@@ -56,6 +58,10 @@ describe('getAllUsers', () => {
 
 describe('getUserById', () => {
   test('get user by id return object', async () => {
+    const args = {
+      userId: 1
+    }
+
     const expected = {
       name: 'admin',
       userName: 'admin',
@@ -65,14 +71,21 @@ describe('getUserById', () => {
       address: 'HN',
       isAdmin: true
     }
-    const received = await resolvers.Query.user(parent, { userId: 1 }, context)
+
+    const received = await resolvers.Query.user(parent, args, context)
+
     expect(received).toMatchObject(expected)
   })
 })
 
 describe('getUserById', () => {
   test('get user by id return null', async () => {
-    const received = await resolvers.Query.user(parent, { userId: 20 }, context)
+    const args = {
+      userId: 20
+    }
+
+    const received = await resolvers.Query.user(parent, args, context)
+
     expect(received).toBeNull()
   })
 })
@@ -129,15 +142,22 @@ describe('updateUser', () => {
       address: 'HN',
       isAdmin: false
     }
+
     await resolvers.Mutation.updateUser(parent, args, context)
     const received = await User.findByPk(args.userId)
+
     expect(received).toEqual(expect.objectContaining(expected))
   })
 })
 
 describe('deleteUser', () => {
   test('delete User', async () => {
-    const received = await resolvers.Mutation.deleteUser(parent, { userId: 5 }, context)
+    const args = {
+      userId: 5
+    }
+
+    const received = await resolvers.Mutation.deleteUser(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })

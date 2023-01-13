@@ -35,7 +35,9 @@ describe('getAllOrderProductAttr', () => {
         productAttr: { id: 2, value: 'M' }
       }
     ]
+
     const received = await resolvers.Query.orderProductAttrs(parent, args.input, context)
+
     expect(received).toHaveLength(2)
     expect(received).toMatchObject(expected)
   })
@@ -60,6 +62,7 @@ describe('createOrderProductAttr', () => {
     }
 
     const orderProductAttr = await resolvers.Mutation.createOrderProductAttr(parent, args, context)
+
     expect(orderProductAttr).toMatchObject(expected)
   })
 })
@@ -83,13 +86,19 @@ describe('updateOrderProductAttr', () => {
 
     await resolvers.Mutation.updateOrderProductAttr(parent, args, context)
     const received = await OrderProductAttr.findByPk(3)
+
     expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteOrderProductAttr', () => {
   test('delete order product attribute', async () => {
-    const received = await resolvers.Mutation.deleteOrderProductAttr(parent, { orderProductAttrId: 3 }, context)
+    const args = {
+      orderProductAttrId: 3
+    }
+
+    const received = await resolvers.Mutation.deleteOrderProductAttr(parent, args, context)
+
     expect(received).toBeTruthy()
   })
 })
