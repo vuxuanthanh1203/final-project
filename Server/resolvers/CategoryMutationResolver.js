@@ -1,13 +1,17 @@
+// @ts-check
+'use strict'
+
+const Category = require('../models').Category
+
 const Query = {
   Mutation: {
     /**
       * @param {*} args - Create category input
-      * @param {import('../contexts/context')} context - Category context
       * @returns {Promise<import('../models/Category').CategoryEntity>}
       */
-    async createCategory (parent, args, { context }) {
+    async createCategory (parent, args, context) {
       const data = args.input
-      const category = await context.Category.create({
+      const category = await Category.create({
         ...data,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -17,32 +21,33 @@ const Query = {
     },
 
     /**
-      * @param {number} categoryId - Category id
-      * @param {import('../contexts/context')} context - Category context
+      * @param {number} args - categoryId
       * @returns {Promise<DeleteCategoryResult>}
       */
-    async deleteCategory (parent, args, { context }) {
-      return await context.Category.destroy({
+    async deleteCategory (parent, args, context) {
+      await Category.destroy({
         where: {
           id: args.categoryId
         }
       })
+      return {
+        success: true
+      }
     },
 
     /**
       * @param {*} args - Update category input
-      * @param {import('../contexts/context')} context - Category context
       * @returns {Promise<import('../models/Category').CategoryEntity>}
       */
-    async updateCategory (parent, args, { context }) {
+    async updateCategory (parent, args, context) {
       const data = args.input
 
-      await context.Category.update({ ...data }, {
+      await Category.update({ ...data }, {
         where: {
           id: args.categoryId
         }
       })
-      return context.Category.findByPk(args.categoryId)
+      return Category.findByPk(args.categoryId)
     }
   }
 }

@@ -1,3 +1,8 @@
+// @ts-check
+'use strict'
+
+const OrderProductAttr = require('../models').OrderProductAttr
+
 const OrderProductAttrQueryResolver = {
   Query: {
     /**
@@ -6,8 +11,8 @@ const OrderProductAttrQueryResolver = {
      * @param {import('../contexts/context')} context - OrderProductAttr context
      * @returns {Array<import('../models/OrderProductAttr').OrderProductAttrEntity>}
      */
-    async orderProductAttr (parent, args, { context }) {
-      const orderProductAttrs = await context.OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', args.userId, args.orderId] }).findAll()
+    async orderProductAttr (parent, args, context) {
+      const orderProductAttrs = await OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', args.userId, args.orderId] }).findAll()
       if (!orderProductAttrs) {
         throw new Error('no data')
       }

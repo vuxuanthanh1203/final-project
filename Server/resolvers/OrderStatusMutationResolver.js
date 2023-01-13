@@ -1,3 +1,8 @@
+// @ts-check
+'use strict'
+
+const OrderStatus = require('../models').OrderStatus
+
 const OrderStatusMutationResolver = {
   Mutation: {
     /**
@@ -5,9 +10,9 @@ const OrderStatusMutationResolver = {
       * @param {import('../contexts/context')} context - Order Status context
       * @returns {Promise<import('../models/OrderStatus').OrderStatusEntity>}
       */
-    async createOrderStatus (parent, args, { context }) {
+    async createOrderStatus (parent, args, context) {
       const data = args.input
-      const orderStatus = await context.OrderStatus.create({
+      const orderStatus = await OrderStatus.create({
         ...data,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -21,12 +26,16 @@ const OrderStatusMutationResolver = {
       * @param {import('../contexts/context')} context - Order Status context
       * @returns {Promise<DeleteOrderStatusResult>}
       */
-    async deleteOrderStatus (parent, args, { context }) {
-      return await context.OrderStatus.destroy({
+    async deleteOrderStatus (parent, args, context) {
+      await OrderStatus.destroy({
         where: {
           id: args.orderStatusId
         }
       })
+
+      return {
+        success: true
+      }
     }
   }
 }

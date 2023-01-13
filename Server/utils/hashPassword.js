@@ -1,3 +1,6 @@
+// @ts-check
+'use strict'
+
 const bcrypt = require('bcrypt')
 
 function hashPassword (password) {

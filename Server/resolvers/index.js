@@ -1,3 +1,6 @@
+// @ts-check
+'use strict'
+
 const { mergeResolvers } = require('@graphql-tools/merge')
 
 // Import Query

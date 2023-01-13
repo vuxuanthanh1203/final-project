@@ -1,3 +1,8 @@
+// @ts-check
+'use strict'
+
+const ProductAttr = require('../models').ProductAttr
+
 const ProductAttrQueryResolver = {
   Query: {
     /**
@@ -5,8 +10,8 @@ const ProductAttrQueryResolver = {
       * @param {import('../contexts/context')} context - ProductAttr context
       * @returns {Array<import('../models/ProductAttr').ProductAttrEntity>}
       */
-    async productAttributes (parent, args, { context }) {
-      const productAttrs = await context.ProductAttr.scope('+Product').findAll({
+    async productAttributes (parent, args, context) {
+      const productAttrs = await ProductAttr.scope('+Product').findAll({
         where: {
           product_id: args.productId
         }

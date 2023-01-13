@@ -1,3 +1,6 @@
+// @ts-check
+'use strict'
+
 const jwt = require('jsonwebtoken')
 
 function generateToken (userId) {
