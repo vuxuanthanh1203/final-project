@@ -6,7 +6,7 @@ const Category = require('../models').Category
 const CategoryQueryResolver = {
   Query: {
     /**
-      * @returns {Array<import('../models/Category').CategoryEntity>}
+      * @returns {Promise<Array<import('../models/Category').CategoryEntity>>}
       */
     async categories (parent, args, context) {
       const categories = await Category.findAll()
@@ -14,8 +14,10 @@ const CategoryQueryResolver = {
     },
 
     /**
-      * @param {number} args - categoryId
-      * @returns {Promise<import('../models/Category'.CategoryEntity)>}
+      * @param {{
+      *   categoryId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<import('../models/Category').CategoryEntity>}
       */
     async category (parent, args, context) {
       const category = Category.findByPk(args.categoryId)

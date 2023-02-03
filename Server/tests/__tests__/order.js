@@ -6,20 +6,48 @@ const context = null
 
 describe('getAllOrders', () => {
   test('get all Orders', async () => {
-    const result = await resolvers.Query.orders()
-    expect(result).toHaveLength(4)
-  })
-})
+    const expected = [
+      {
+        id: 1,
+        user: { name: 'user1', address: 'HN' },
+        orderProductAttrs: [
+          { id: 1, quantity: 3, price: 567000, productAttr: { id: 1, value: 'S' } },
+          { id: 2, quantity: 1, price: 189000, productAttr: { id: 2, value: 'M' } }
+        ],
+        shippingMethod: { name: 'COD' }
+      },
+      {
+        id: 2,
+        user: { name: 'user1', address: 'HN' },
+        orderProductAttrs: [],
+        shippingMethod: { name: 'COD' }
+      },
+      {
+        id: 3,
+        user: { name: 'user1', address: 'HN' },
+        orderProductAttrs: [],
+        shippingMethod: { name: 'COD' }
+      },
+      {
+        id: 4,
+        user: { name: 'user1', address: 'HN' },
+        orderProductAttrs: [],
+        shippingMethod: { name: 'COD' }
+      }
+    ]
+    const received = await resolvers.Query.orders()
 
-describe('getAllOrders', () => {
-  test('get all orders return null', async () => {
-    const result = await resolvers.Query.orders()
-    expect(result).not.toBeNull()
+    expect(received).toHaveLength(4)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getOrderById', () => {
   test('get order by id return object', async () => {
+    const args = {
+      orderId: 1
+    }
+
     const expected = {
       id: 1,
       user: {
@@ -36,15 +64,22 @@ describe('getOrderById', () => {
         { id: 2, quantity: 1, price: 189000, productAttr: { value: 'M' } }
       ]
     }
-    const result = await resolvers.Query.order(parent, { orderId: 1 }, context)
-    expect(result).toMatchObject(expected)
+
+    const received = await resolvers.Query.order(parent, args, context)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getOrderById', () => {
   test('get order by id return null', async () => {
-    const result = await resolvers.Query.order(parent, { orderId: 20 }, context)
-    expect(result).toBeNull()
+    const args = {
+      orderId: 20
+    }
+
+    const received = await resolvers.Query.order(parent, args, context)
+
+    expect(received).toBeNull()
   })
 })
 
@@ -54,8 +89,7 @@ describe('createOrder', () => {
       input: {
         userId: 3,
         shippingMethodId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        OrderStatusId: 1
       }
     }
 
@@ -65,9 +99,9 @@ describe('createOrder', () => {
       OrderStatusId: 1
     }
 
-    await Order.create(args.input)
-    const order = await Order.findByPk(5)
-    expect(order).toMatchObject(expected)
+    const received = await resolvers.Mutation.createOrder(parent, args, context)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -86,21 +120,21 @@ describe('updateOrder', () => {
       orderStatusId: 3
     }
 
-    await Order.update(args.input, {
-      where: { id: args.orderId }
-    })
-    const order = await Order.findByPk(5)
-    expect(order).toMatchObject(expected)
+    await resolvers.Mutation.updateOrder(parent, args, context)
+    const received = await Order.findByPk(5)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteOrder', () => {
   test('delete order', async () => {
-    const result = await Order.destroy({
-      where: {
-        id: 5
-      }
-    })
-    expect(result).toBeTruthy()
+    const args = {
+      orderId: 5
+    }
+
+    const received = await resolvers.Mutation.deleteOrder(parent, args, context)
+
+    expect(received).toBeTruthy()
   })
 })

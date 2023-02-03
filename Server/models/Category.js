@@ -55,8 +55,5 @@ module.exports = (sequelize, DataTypes) => {
  *  id: number
  *  name: string
  *  slug: string
- *  createdAt: date
- *  updatedAt: date
- *  deletedAt: date
  * }} CategoryEntity
  */

@@ -6,33 +6,45 @@ const context = null
 
 describe('getAllCategories', () => {
   test('get all Categories', async () => {
-    const result = await resolvers.Query.categories()
-    expect(result).toHaveLength(3)
-  })
-})
+    const expected = [
+      { id: 1, name: 'Áo thun', slug: 'ao-thun' },
+      { id: 2, name: 'Áo somi', slug: 'ao-somi' },
+      { id: 3, name: 'Quần jean', slug: 'quan-jean' }
+    ]
 
-describe('getAllCategories', () => {
-  test('get all Categories return null', async () => {
-    const result = await resolvers.Query.categories()
-    expect(result).not.toBeNull()
+    const received = await resolvers.Query.categories()
+
+    expect(received).toHaveLength(3)
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getCategoryById', () => {
   test('get category by id return object', async () => {
-    const categoryTest = {
+    const args = {
+      categoryId: 1
+    }
+
+    const expected = {
       name: 'Áo thun',
       slug: 'ao-thun'
     }
-    const result = await resolvers.Query.category(parent, { categoryId: 1 }, context)
-    expect(result).toMatchObject(categoryTest)
+
+    const received = await resolvers.Query.category(parent, args, context)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('getCategoryById', () => {
   test('get category by id return null', async () => {
-    const result = await resolvers.Query.category(parent, { categoryId: 20 }, context)
-    expect(result).toBeNull()
+    const args = {
+      categoryId: 20
+    }
+
+    const received = await resolvers.Query.category(parent, args, context)
+
+    expect(received).toBeNull()
   })
 })
 
@@ -41,9 +53,7 @@ describe('createCategory', () => {
     const args = {
       input: {
         name: 'test category21',
-        slug: 'test-category21',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        slug: 'test-category21'
       }
     }
 
@@ -52,9 +62,9 @@ describe('createCategory', () => {
       slug: 'test-category21'
     }
 
-    await Category.create(args.input)
-    const category = await Category.findByPk(4)
-    expect(category).toMatchObject(expected)
+    const received = await resolvers.Mutation.createCategory(parent, args, context)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -72,19 +82,20 @@ describe('updateCategory', () => {
       name: 'test update category',
       slug: 'test-category'
     }
-    await Category.update(args.input, {
-      where: { id: args.categoryId }
-    })
-    const category = await Category.findByPk(4)
-    expect(category).toMatchObject(expected)
+    await resolvers.Mutation.updateCategory(parent, args, context)
+    const received = await Category.findByPk(args.categoryId)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteCategory', () => {
   test('delete Category', async () => {
-    const result = await Category.destroy({
-      where: { id: 4 }
-    })
-    expect(result).toBeTruthy()
+    const args = {
+      categoryId: 4
+    }
+    const received = await resolvers.Mutation.deleteCategory(parent, args, context)
+
+    expect(received).toBeTruthy()
   })
 })

@@ -7,7 +7,6 @@ const ShippingMethodMutationResolver = {
   Mutation: {
     /**
       * @param {*} args - Create shipping method input
-      * @param {import('../contexts/context')} context - ShippingMethod context
       * @returns {Promise<import('../models/ShippingMethod').ShippingMethodEntity>}
       */
     async createShippingMethod (parent, args, context) {
@@ -22,8 +21,9 @@ const ShippingMethodMutationResolver = {
     },
 
     /**
-      * @param {number} shippingMethodId - Shipping Method Id
-      * @param {import('../contexts/context')} context - ShippingMethod context
+      * @param {{
+      *   shippingMethodId:number
+      * }} args - Args of this resolver
       * @returns {Promise<DeleteShippingMethodResult>}
       */
     async deleteShippingMethod (parent, args, context) {

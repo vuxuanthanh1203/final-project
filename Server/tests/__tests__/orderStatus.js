@@ -1,17 +1,20 @@
 const resolvers = require('../../resolvers/index')
-const OrderStatus = require('../../models').OrderStatus
+
+const parent = null
+const context = null
 
 describe('getAllOrderStatus', () => {
   test('get all order status', async () => {
-    const result = await resolvers.Query.orderStatuses()
-    expect(result).toHaveLength(4)
-  })
-})
+    const expected = [
+      { id: 1, status: 'pending' },
+      { id: 2, status: 'shipping' },
+      { id: 3, status: 'success' },
+      { id: 4, status: 'cancel' }
+    ]
+    const received = await resolvers.Query.orderStatuses()
 
-describe('getAllOrderStatus', () => {
-  test('get all order status return null', async () => {
-    const result = await resolvers.Query.orders()
-    expect(result).not.toBeNull()
+    expect(received).toHaveLength(4)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -19,9 +22,7 @@ describe('createOrderStatus', () => {
   test('Create a new order status', async () => {
     const args = {
       input: {
-        status: 'test',
-        createdAt: new Date(),
-        updatedAt: new Date()
+        status: 'test'
       }
     }
 
@@ -29,17 +30,19 @@ describe('createOrderStatus', () => {
       status: 'test'
     }
 
-    await OrderStatus.create(args.input)
-    const orderStatus = await OrderStatus.findByPk(5)
-    expect(orderStatus).toMatchObject(expected)
+    const received = await resolvers.Mutation.createOrderStatus(parent, args, context)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteOrderStatus', () => {
   test('delete a order status', async () => {
-    const result = await OrderStatus.destroy({
-      where: { id: 5 }
-    })
-    expect(result).toBeTruthy()
+    const args = {
+      orderStatusId: 3
+    }
+    const received = await resolvers.Mutation.deleteOrderStatus(parent, args, context)
+
+    expect(received).toBeTruthy()
   })
 })

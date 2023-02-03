@@ -6,9 +6,10 @@ const ProductImg = require('../models').ProductImg
 const ProductImgQueryResolver = {
   Query: {
     /**
-      * @param {number} productId - Product id
-      * @param {import('../contexts/context')} context - ProductImg context
-      * @returns {Array<import('../models/ProductImg')>}
+      * @param {{
+      *   productId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<Array<ProductImgDetail>>}
       */
     async productImgs (parent, args, context) {
       const productImgs = await ProductImg.scope('+Product').findAll({
@@ -16,7 +17,6 @@ const ProductImgQueryResolver = {
           product_id: args.productId
         }
       })
-      // console.log(productImgs)
       return productImgs.map(item => ({
         id: item.id,
         url: item.url,
@@ -31,3 +31,11 @@ const ProductImgQueryResolver = {
 }
 
 module.exports = ProductImgQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  url: string
+ *  product: import('../models/Product').ProductEntity
+ * }} ProductImgDetail
+ */

@@ -6,9 +6,7 @@ const Product = require('../models').Product
 const ProductQueryResolver = {
   Query: {
     /**
-      * @param {*} args
-      * @param {import('../contexts/context')} context - Product context
-      * @returns {Array<import('../models/Product').ProductEntity>}
+      * @returns {Promise<Array<ProductDetail>>}
       */
     async products (parent, args, context) {
       const products = await Product.scope('+Category').findAll()
@@ -27,15 +25,15 @@ const ProductQueryResolver = {
     },
 
     /**
-      * @param {number} ProductId - product id
-      * @param {import('../contexts/context')} context - Product context
-      * @returns {Promise<import('../models/Product').ProductEntity>}
+      * @param {{
+      *   productId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<ProductDetail | null>}
       */
     async product (parent, args, context) {
       const product = await Product.scope('+Category').findByPk(args.productId)
 
       if (!product) {
-        // @ts-ignore
         return null
       }
 
@@ -45,7 +43,6 @@ const ProductQueryResolver = {
         slug: product.slug,
         price: product.price,
         description: product.description,
-        // @ts-ignore
         category: {
           id: product.Category.id,
           name: product.Category.name,
@@ -58,3 +55,14 @@ const ProductQueryResolver = {
 }
 
 module.exports = ProductQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  name: string
+ *  slug: string
+ *  price: number
+ *  description: string
+ *  category: import('../models/Category').CategoryEntity
+ * }} ProductDetail
+ */

@@ -57,8 +57,6 @@ module.exports = (sequelize, DataTypes) => {
  * @typedef {{
  *  id: number
  *  url: string
- *  product: import('./Product').ProductEntity
- *  createdAt: date
- *  updatedAt: date
+ *  productId: number
  * }} ProductImgEntity
  */

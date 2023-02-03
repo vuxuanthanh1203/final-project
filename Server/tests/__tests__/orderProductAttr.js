@@ -12,8 +12,34 @@ describe('getAllOrderProductAttr', () => {
         orderId: 1
       }
     }
-    const result = await resolvers.Query.orderProductAttr(parent, args, context)
-    expect(result).toHaveLength(2)
+
+    const expected = [
+      {
+        id: 1,
+        price: 567000,
+        quantity: 3,
+        order: {
+          id: 1,
+          user: { name: 'user1', email: 'user1@example.com', phoneNumber: '0999999999', address: 'HN' }
+        },
+        productAttr: { id: 1, value: 'S' }
+      },
+      {
+        id: 2,
+        price: 189000,
+        quantity: 1,
+        order: {
+          id: 1,
+          user: { name: 'user1', email: 'user1@example.com', phoneNumber: '0999999999', address: 'HN' }
+        },
+        productAttr: { id: 2, value: 'M' }
+      }
+    ]
+
+    const received = await resolvers.Query.orderProductAttrs(parent, args.input, context)
+
+    expect(received).toHaveLength(2)
+    expect(received).toMatchObject(expected)
   })
 })
 
@@ -24,9 +50,7 @@ describe('createOrderProductAttr', () => {
         orderId: 1,
         productAttrId: 2,
         quantity: 5,
-        price: 845000,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        price: 845000
       }
     }
 
@@ -37,8 +61,8 @@ describe('createOrderProductAttr', () => {
       price: 845000
     }
 
-    await OrderProductAttr.create(args.input)
-    const orderProductAttr = await OrderProductAttr.findByPk(3)
+    const orderProductAttr = await resolvers.Mutation.createOrderProductAttr(parent, args, context)
+
     expect(orderProductAttr).toMatchObject(expected)
   })
 })
@@ -59,19 +83,22 @@ describe('updateOrderProductAttr', () => {
       quantity: 4,
       price: 3333
     }
-    await OrderProductAttr.update(args.input, {
-      where: { id: args.orderProductAttrId }
-    })
-    const orderProductAttr = await OrderProductAttr.findByPk(3)
-    expect(orderProductAttr).toMatchObject(expected)
+
+    await resolvers.Mutation.updateOrderProductAttr(parent, args, context)
+    const received = await OrderProductAttr.findByPk(3)
+
+    expect(received).toMatchObject(expected)
   })
 })
 
 describe('deleteOrderProductAttr', () => {
   test('delete order product attribute', async () => {
-    const result = await OrderProductAttr.destroy({
-      where: { id: 3 }
-    })
-    expect(result).toBeTruthy()
+    const args = {
+      orderProductAttrId: 3
+    }
+
+    const received = await resolvers.Mutation.deleteOrderProductAttr(parent, args, context)
+
+    expect(received).toBeTruthy()
   })
 })

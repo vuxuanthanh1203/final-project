@@ -6,9 +6,10 @@ const ProductAttr = require('../models').ProductAttr
 const ProductAttrQueryResolver = {
   Query: {
     /**
-      * @param {number} productId - Product id
-      * @param {import('../contexts/context')} context - ProductAttr context
-      * @returns {Array<import('../models/ProductAttr').ProductAttrEntity>}
+      * @param {{
+      *   productId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<Array<ProductAttrDetail>>}
       */
     async productAttributes (parent, args, context) {
       const productAttrs = await ProductAttr.scope('+Product').findAll({
@@ -31,3 +32,12 @@ const ProductAttrQueryResolver = {
 }
 
 module.exports = ProductAttrQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  value: string
+ *  quantityInStock: number
+ *  product: import('../models/Product').ProductEntity
+ * }} ProductAttrDetail
+ */

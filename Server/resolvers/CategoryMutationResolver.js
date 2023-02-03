@@ -3,7 +3,7 @@
 
 const Category = require('../models').Category
 
-const Query = {
+const CategoryQueryResolver = {
   Mutation: {
     /**
       * @param {*} args - Create category input
@@ -21,7 +21,9 @@ const Query = {
     },
 
     /**
-      * @param {number} args - categoryId
+      * @param {{
+      *   categoryId: number
+      * }} args - Args of this resolver.
       * @returns {Promise<DeleteCategoryResult>}
       */
     async deleteCategory (parent, args, context) {
@@ -52,7 +54,7 @@ const Query = {
   }
 }
 
-module.exports = Query
+module.exports = CategoryQueryResolver
 
 /**
  * @typedef {{

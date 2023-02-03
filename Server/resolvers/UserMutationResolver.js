@@ -11,8 +11,7 @@ const UserMutationResolver = {
   Mutation: {
     /**
       * @param {*} args - Create user input
-      * @param {import('../contexts/context')} context - User context
-    * @returns {Promise<AuthResult>}
+      * @returns {Promise<AuthResult>}
       */
     async createUser (parent, args, context) {
       const data = args.input
@@ -32,15 +31,13 @@ const UserMutationResolver = {
         updatedAt: new Date()
       })
 
-      return {
-        user,
-        token: generateToken(user.id)
-      }
+      return user
     },
 
     /**
-      * @param {number} userId - UserId
-      * @param {import('../contexts/context')} context - User context
+      * @param {{
+      *   userId:number
+      * }} args - Args of this resolver
       * @returns {Promise<DeleteUserResult>}
       */
     async deleteUser (parent, args, context) {
@@ -57,13 +54,13 @@ const UserMutationResolver = {
 
     /**
       * @param {*} args - Update user input
-      * @param {import('../contexts/context')} context - User context
       * @returns {Promise<import('../models/User').UserEntity>}
       */
     async updateUser (parent, args, context) {
       const data = args.input
+      const password = await hashPassword(data.password)
 
-      await User.update({ ...data }, {
+      await User.update({ ...data, password }, {
         where: {
           id: args.userId
         }
@@ -73,7 +70,6 @@ const UserMutationResolver = {
 
     /**
       * @param {*} args - login input
-      * @param {import('../contexts/context')} context - User context
       * @returns {Promise<AuthResult>}
       */
     async login (parent, args, context) {
@@ -114,7 +110,7 @@ module.exports = UserMutationResolver
 /**
  * @typedef {{
  *  token: string
- *  User: <import('../models/User').UserEntity
+ *  user: import('../models/User').UserEntity
  * }} AuthResult
  */
 

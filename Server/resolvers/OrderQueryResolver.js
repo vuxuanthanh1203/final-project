@@ -6,16 +6,16 @@ const Order = require('../models').Order
 const OrderQueryResolver = {
   Query: {
     /**
-      * @param {*} args
-      * @param {import('../contexts/context')} context - Order context
-      * @returns {Array<import('../models/Order').OrderEntity>}
+      * @returns {Promise<Array<OrderDetail>>}
       */
     async orders (parent, args, context) {
-      const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findAll()
+      const orders = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr')
+        .findAll()
       if (orders == null) {
         throw Error('no data')
       }
-      return orders.map((order) => ({
+
+      const result = orders.map((order) => ({
         id: order.id,
         user: {
           id: order.User.id,
@@ -23,10 +23,6 @@ const OrderQueryResolver = {
           email: order.User.email,
           phoneNumber: order.User.phoneNumber,
           address: order.User.address
-        },
-        orderStatus: {
-          id: order.OrderStatus.id,
-          status: order.OrderStatus.status
         },
         shippingMethod: {
           id: order.ShippingMethod.id,
@@ -43,19 +39,20 @@ const OrderQueryResolver = {
           }
         }))
       }))
+      return result
     },
 
     /**
-     *
-     * @param {number} args - orderId
-     * @param {*} context
-     * @returns {Promise<import('../models/Order').OrderEntity>}
+     * @param {{
+     *  orderId:number
+     * }} args - Args of this resolver
+     * @returns {Promise<OrderDetail | null>}
      */
     async order (parent, args, context) {
-      const order = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr').findByPk(args.orderId)
+      const order = await Order.scope('+User+ShippingMethod+OrderStatus++OrderProductAttrs+++ProductAttr')
+        .findByPk(args.orderId)
 
       if (!order) {
-        // @ts-ignore
         return null
       }
 
@@ -64,9 +61,11 @@ const OrderQueryResolver = {
         user: {
           id: order.User.id,
           name: order.User.name,
+          userName: order.User.userName,
           email: order.User.email,
           phoneNumber: order.User.phoneNumber,
-          address: order.User.address
+          address: order.User.address,
+          isAdmin: order.User.isAdmin
         },
         orderStatus: {
           id: order.OrderStatus.id,
@@ -77,7 +76,6 @@ const OrderQueryResolver = {
           name: order.ShippingMethod.name,
           price: order.ShippingMethod.price
         },
-        // @ts-ignore
         orderProductAttrs: order.OrderProductAttrs.map(orderProductAttr => ({
           id: orderProductAttr.id,
           quantity: orderProductAttr.quantity,
@@ -88,10 +86,20 @@ const OrderQueryResolver = {
           }
         }))
       }
-      // @ts-ignore
+
       return result
     }
   }
 }
 
 module.exports = OrderQueryResolver
+
+/**
+ * @typedef {{
+ *  id: number
+ *  user: import('../models/User').UserEntity
+ *  shippingMethod: import('../models/ShippingMethod').ShippingMethodEntity
+ *  orderStatus: import('../models/OrderStatus').OrderStatusEntity
+ *  orderProductAttrs: import('../models/OrderProductAttr').OrderProductAttrEntity
+ * }} OrderDetail
+ */

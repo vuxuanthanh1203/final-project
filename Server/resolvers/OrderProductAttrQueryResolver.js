@@ -7,11 +7,10 @@ const OrderProductAttrQueryResolver = {
   Query: {
     /**
      *
-     * @param {*} args
-     * @param {import('../contexts/context')} context - OrderProductAttr context
-     * @returns {Array<import('../models/OrderProductAttr').OrderProductAttrEntity>}
+     * @param {*} args - userId, orderId
+     * @returns {Promise<Array<OrderProductAttrDetail>>}
      */
-    async orderProductAttr (parent, args, context) {
+    async orderProductAttrs (parent, args, context) {
       const orderProductAttrs = await OrderProductAttr.scope({ method: ['+Order+ProductAttr?userId?orderId', args.userId, args.orderId] }).findAll()
       if (!orderProductAttrs) {
         throw new Error('no data')
@@ -41,3 +40,13 @@ const OrderProductAttrQueryResolver = {
 }
 
 module.exports = OrderProductAttrQueryResolver
+
+/**
+ * @typedef {{
+ * id: number
+ *  order: import('../models/Order').OrderEntity
+ *  productAttr: import('../models/ProductAttr').ProductAttrEntity
+ *  quantity: number
+ *  price: number
+ * }} OrderProductAttrDetail
+ */
