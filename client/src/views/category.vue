@@ -94,13 +94,18 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-// import { reactive } from "vue";
+import { reactive } from "vue";
 import { ref } from "vue";
-import { GET_ALL_CATEGORIES, DELETE_CATEGORY } from "@/constants/";
+import {
+  TITLE_DATA_CATEGORY,
+  GET_ALL_CATEGORIES,
+  DELETE_CATEGORY,
+} from "@/constants/";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
   setup() {
+    const titleItems = reactive(TITLE_DATA_CATEGORY);
     const route = useRoute();
     const router = useRouter();
     const message = ref("");
@@ -126,6 +131,7 @@ export default {
     return {
       meta: computed(() => route.meta),
       goToRoute,
+      titleItems,
       result,
       loading,
       error,

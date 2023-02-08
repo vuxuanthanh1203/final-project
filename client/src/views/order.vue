@@ -92,9 +92,6 @@
                     <span>{{ order.shippingMethod.name }}</span>
                   </td>
                   <td class="data-value">
-                    <span>{{ order.orderStatus.status }}</span>
-                  </td>
-                  <td class="data-value">
                     <div class="btn btn-sm btn-clean btn-icon mr-2">
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </div>

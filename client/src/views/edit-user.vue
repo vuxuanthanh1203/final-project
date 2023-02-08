@@ -244,7 +244,9 @@ export default {
       formData.name = "";
       formData.userName = "";
       formData.password = "";
+      formData.confirmPassword = "";
       formData.phoneNumber = "";
+      formData.address = "";
       formData.message = "User Updated !";
     });
 

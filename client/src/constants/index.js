@@ -54,9 +54,6 @@ export const TITLE_DATA_ORDER = [
   {
     title: "Shipping Method",
   },
-  {
-    title: "Order Status",
-  },
 ];
 export const TITLE_DATA_PRODUCT = [
   {
@@ -142,9 +139,6 @@ export const GET_ALL_ORDERS = gql`
       }
       shippingMethod {
         name
-      }
-      orderStatus {
-        status
       }
     }
   }
