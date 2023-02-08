@@ -14,6 +14,7 @@ const ProductQueryResolver = {
         id: item.id,
         name: item.name,
         slug: item.slug,
+        image: item.image,
         price: item.price,
         description: item.description,
         category: {
@@ -41,6 +42,7 @@ const ProductQueryResolver = {
         id: product.id,
         name: product.name,
         slug: product.slug,
+        image: product.image,
         price: product.price,
         description: product.description,
         category: {
@@ -61,6 +63,7 @@ module.exports = ProductQueryResolver
  *  id: number
  *  name: string
  *  slug: string
+ *  image: string
  *  price: number
  *  description: string
  *  category: import('../models/Category').CategoryEntity

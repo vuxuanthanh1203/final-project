@@ -1,0 +1,5 @@
+name,userName,email,password,phoneNumber,address,isAdmin
+admin,admin,admin@example.com,$2b$10$IJZ./3UpBWPmScD8l7kGLOdBm0F3i6O/bXHeC/imS2Yo3gVsWPRgu,0987654321,HN,true
+user1,user1,user1@example.com,$2b$10$IJZ./3UpBWPmScD8l7kGLOdBm0F3i6O/bXHeC/imS2Yo3gVsWPRgu,0999999999,HN,false
+user2,user2,user2@example.com,$2b$10$IJZ./3UpBWPmScD8l7kGLOdBm0F3i6O/bXHeC/imS2Yo3gVsWPRgu,0988888888,HN,false
+user3,user3,user3@example.com,$2b$10$IJZ./3UpBWPmScD8l7kGLOdBm0F3i6O/bXHeC/imS2Yo3gVsWPRgu,0987777777,HN,false

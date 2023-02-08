@@ -4,22 +4,23 @@
 const User = require('../models').User
 
 const bcrypt = require('bcrypt')
-const generateToken = require('../utils/generateToken')
+const jwt = require('jsonwebtoken')
 const hashPassword = require('../utils/hashPassword')
 
 const UserMutationResolver = {
   Mutation: {
     /**
       * @param {*} args - Create user input
-      * @returns {Promise<AuthResult>}
+      * @returns {Promise<import ('../models/User').UserEntity>}
       */
     async createUser (parent, args, context) {
       const data = args.input
+      console.log(data)
 
       const existingUser = await User.findOne({ where: { email: data.email } })
 
       if (existingUser) {
-        throw new Error('Dupplicated user')
+        throw new Error('Email already exists')
       }
 
       const password = await hashPassword(data.password)
@@ -70,7 +71,7 @@ const UserMutationResolver = {
 
     /**
       * @param {*} args - login input
-      * @returns {Promise<AuthResult>}
+      * @returns {Promise<AuthResponse>}
       */
     async login (parent, args, context) {
       const data = args.input
@@ -97,9 +98,19 @@ const UserMutationResolver = {
         isAdmin: result.isAdmin
       }
 
+      if (result.isAdmin === false) {
+        throw new Error('Authorization Error!')
+      }
+
+      const token = jwt.sign(
+        { data: { userId: user.id, email: user.email } },
+        process.env.SECRET_TOKEN,
+        { expiresIn: '1h' }
+      )
+
       return {
         user,
-        token: generateToken(user.id)
+        token
       }
     }
   }
@@ -111,7 +122,7 @@ module.exports = UserMutationResolver
  * @typedef {{
  *  token: string
  *  user: import('../models/User').UserEntity
- * }} AuthResult
+ * }} AuthResponse
  */
 
 /**

@@ -85,7 +85,7 @@ describe('updateOrderProductAttr', () => {
     }
 
     await resolvers.Mutation.updateOrderProductAttr(parent, args, context)
-    const received = await OrderProductAttr.findByPk(3)
+    const received = await OrderProductAttr.findByPk(args.orderProductAttrId)
 
     expect(received).toMatchObject(expected)
   })

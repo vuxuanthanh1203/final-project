@@ -121,7 +121,7 @@ describe('updateOrder', () => {
     }
 
     await resolvers.Mutation.updateOrder(parent, args, context)
-    const received = await Order.findByPk(5)
+    const received = await Order.findByPk(args.orderId)
 
     expect(received).toMatchObject(expected)
   })
