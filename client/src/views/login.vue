@@ -22,7 +22,7 @@
             <div class="login-form login-signin">
               <form
                 class="form fv-plugins-bootstrap fv-plugins-framework"
-                @submit.prevent="onSubmit"
+                @submit.prevent="login"
               >
                 <div class="pb-13 pt-lg-0 pt-5">
                   <h3
@@ -41,7 +41,7 @@
                   <input
                     class="form-control form-control-solid h-auto py-6 px-6 rounded-lg"
                     type="text"
-                    name="email"
+                    v-model="formData.email"
                     id="email"
                     placeholder="someone@example.com"
                     autocomplete="off"
@@ -65,7 +65,7 @@
                     <input
                       class="form-control form-control-solid h-auto py-6 px-6 rounded-lg"
                       type="password"
-                      name="password"
+                      v-model="formData.password"
                       id="password"
                       placeholder="Password ..."
                       autocomplete="off"
@@ -81,8 +81,7 @@
                 </div>
                 <div class="pb-lg-0 pb-5">
                   <button
-                    @click="login"
-                    type="reset"
+                    type="submit"
                     id="kt_login_signin_submit"
                     class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
                   >
@@ -101,11 +100,10 @@
 
 <script>
 import { computed } from "@vue/runtime-core";
-import { reactive } from "vue";
+import { watch, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-
 import { LOGIN } from "@/constants";
-import { useMutation } from "@vue/apollo-composable";
+import { useQuery } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 
@@ -116,6 +114,7 @@ export default {
       email: "",
       password: "",
     });
+    const fetchEnabled = ref(false);
 
     const rules = computed(() => {
       return {
@@ -124,41 +123,34 @@ export default {
       };
     });
     const v$ = useVuelidate(rules, formData);
-    console.log(formData.email);
-    console.log(formData.password);
-    async function login() {
-      let email = document.getElementById("email").value;
-      let password = document.getElementById("password").value;
-      await v$.value.$validate();
-      if (email === "admin@example.com" && password === "admin1234") {
-        router.push({ name: "Overview", params: {} });
-      } else {
-        alert("email or password is incorrect");
-      }
-    }
-    const {
-      mutate: loginn,
-      onError,
-      onDone,
-    } = useMutation(LOGIN, () => ({
-      variables: {
+
+    const { result, onError } = useQuery(
+      LOGIN,
+      () => ({
         input: {
           email: formData.email,
           password: formData.password,
         },
-      },
-    }));
+      }),
+      { enabled: fetchEnabled }
+    );
 
-    onError(async () => {
-      await v$.value.$validate();
-    });
-    onDone(() => {
+    onError((error) => {
+      alert(error.graphQLErrors[0].message);
       formData.email = "";
       formData.password = "";
-      router.push("/overview");
     });
 
-    return { formData, v$, login, loginn };
+    watch(result, (value) => {
+      localStorage.setItem("apollo-token", value.login.token);
+      router.push({ name: "Dashboard", params: {} });
+    });
+
+    function login() {
+      fetchEnabled.value = true;
+    }
+
+    return { formData, v$, login };
   },
 };
 </script>

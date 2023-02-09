@@ -8,7 +8,7 @@ const routes = [
       layout: "auth",
     },
     component: () =>
-      import(/* webpackChunkName: "login" */ "../views/login.vue"),
+      import(/* webpackChunkName: "login" */ "@/views/login.vue"),
   },
   {
     path: "/error",
@@ -16,16 +16,17 @@ const routes = [
     meta: {
       layout: "error",
     },
-    component: () => import(/* webpackChunkName: "error" */ "../views/404.vue"),
+    component: () => import(/* webpackChunkName: "error" */ "@/views/404.vue"),
   },
   {
     path: "/overview",
-    name: "Overview",
+    name: "Dashboard",
     meta: {
       title: "Dashboard",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "overview" */ "../views/overview.vue"),
+      import(/* webpackChunkName: "overview" */ "@/views/overview.vue"),
   },
   {
     path: "/category",
@@ -33,9 +34,10 @@ const routes = [
     meta: {
       title: "Category",
       des: "All of the categories",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "category" */ "../views/category.vue"),
+      import(/* webpackChunkName: "category" */ "@/views/category.vue"),
   },
   {
     path: "/category/new-category",
@@ -43,9 +45,10 @@ const routes = [
     meta: {
       title: "Add New Category",
       des: "Fill in new category information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "category" */ "../views/new-category.vue"),
+      import(/* webpackChunkName: "category" */ "@/views/new-category.vue"),
   },
   {
     path: "/category/:id",
@@ -53,9 +56,10 @@ const routes = [
     meta: {
       title: "Edit Category",
       des: "Fill in category new information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "category" */ "../views/edit-category.vue"),
+      import(/* webpackChunkName: "category" */ "@/views/edit-category.vue"),
   },
   {
     path: "/category/delete/:id",
@@ -63,9 +67,10 @@ const routes = [
     meta: {
       title: "Edit Category",
       des: "Fill in category information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "category" */ "../views/category.vue"),
+      import(/* webpackChunkName: "category" */ "@/views/category.vue"),
   },
   {
     path: "/order",
@@ -73,9 +78,10 @@ const routes = [
     meta: {
       title: "Order",
       des: "All of the orders",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "order" */ "../views/order.vue"),
+      import(/* webpackChunkName: "order" */ "@/views/order.vue"),
   },
   {
     path: "/product",
@@ -83,9 +89,10 @@ const routes = [
     meta: {
       title: "Product",
       des: "All of the products",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "product" */ "../views/product.vue"),
+      import(/* webpackChunkName: "product" */ "@/views/product.vue"),
   },
   {
     path: "/product/new-product",
@@ -93,9 +100,10 @@ const routes = [
     meta: {
       title: "Add New Product",
       des: "Fill in new product information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "product" */ "../views/new-product.vue"),
+      import(/* webpackChunkName: "product" */ "@/views/new-product.vue"),
   },
   {
     path: "/product/:id",
@@ -103,9 +111,10 @@ const routes = [
     meta: {
       title: "Add New Product",
       des: "Fill in new product information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "product" */ "../views/edit-product.vue"),
+      import(/* webpackChunkName: "product" */ "@/views/edit-product.vue"),
   },
   {
     path: "/shipping",
@@ -113,9 +122,10 @@ const routes = [
     meta: {
       title: "Shipping",
       des: "All of the shipping methods",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "shipping" */ "../views/shipping.vue"),
+      import(/* webpackChunkName: "shipping" */ "@/views/shipping.vue"),
   },
   {
     path: "/shipping/new-shipping",
@@ -123,9 +133,10 @@ const routes = [
     meta: {
       title: "Add New Shipping Method",
       des: "Fill in new shipping method information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "product" */ "../views/new-shipping.vue"),
+      import(/* webpackChunkName: "product" */ "@/views/new-shipping.vue"),
   },
   {
     path: "/user",
@@ -133,8 +144,9 @@ const routes = [
     meta: {
       title: "User",
       des: "All of the users",
+      requiresAuth: true,
     },
-    component: () => import(/* webpackChunkName: "user" */ "../views/user.vue"),
+    component: () => import(/* webpackChunkName: "user" */ "@/views/user.vue"),
   },
   {
     path: "/user/new-user",
@@ -142,9 +154,10 @@ const routes = [
     meta: {
       title: "Add New User",
       des: "Fill in new user information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "product" */ "../views/new-user.vue"),
+      import(/* webpackChunkName: "product" */ "@/views/new-user.vue"),
   },
   {
     path: "/user/:id",
@@ -152,9 +165,10 @@ const routes = [
     meta: {
       title: "Update User",
       des: "Fill in user new information",
+      requiresAuth: true,
     },
     component: () =>
-      import(/* webpackChunkName: "user" */ "../views/edit-user.vue"),
+      import(/* webpackChunkName: "user" */ "@/views/edit-user.vue"),
   },
 ];
 
@@ -162,6 +176,16 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
   linkActiveClass: "menu-item-active",
+});
+
+router.beforeEach((to) => {
+  const isLoggedIn = localStorage.getItem("apollo-token") || null;
+
+  if (to.meta.requiresAuth && !isLoggedIn) {
+    return {
+      path: "/",
+    };
+  }
 });
 
 export default router;
