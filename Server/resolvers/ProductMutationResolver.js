@@ -11,6 +11,7 @@ const ProductMutationResolver = {
       */
     async createProduct (parent, args, context) {
       const data = args.input
+
       const product = await Product.create({
         ...data,
         createdAt: new Date(),

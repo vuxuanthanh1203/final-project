@@ -20,8 +20,7 @@ const UserQueryResolver = {
       * @returns {Promise<import('../models/User').UserEntity>}
       */
     async user (parent, args, context) {
-      const user = await User.findByPk(args.userId)
-      return user
+      return context.auth_user
     }
   }
 }

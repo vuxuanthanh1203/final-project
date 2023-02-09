@@ -3,6 +3,8 @@
 const { gql } = require('apollo-server-express')
 
 const typeDefs = gql`
+    scalar Upload
+
     type Query {
         categories: [Category]!
 
@@ -28,7 +30,7 @@ const typeDefs = gql`
 
         users: [User]!
         
-        user (userId: Int!): User!
+        user: User
 
         shippingMethods: [ShippingMethod]!
 
@@ -39,60 +41,64 @@ const typeDefs = gql`
         exportUser: ExportUser!
         exportOrder: ExportOrder!
 
-        login(input: LoginInput): AuthResponse!
-        
-        createCategory(input: CreateCategoryInput): Category!
+        importUser (fileName: String!): ImportResult!
+        importProduct (fileName: String!): ImportResult!
+        importOrder (fileName: String!): ImportResult!
 
-        updateCategory(categoryId:Int!, input: UpdateCategoryInput): Category!
+        login(input: LoginInput!): AuthResponse!
+        
+        createCategory(input: CreateCategoryInput!): Category!
+
+        updateCategory(categoryId:Int!, input: UpdateCategoryInput!): Category!
         
         deleteCategory(categoryId:Int!): DeleteCategoryResult!
 
-        createProduct(input: CreateProductInput): Product!
+        createProduct(input: CreateProductInput!): Product!
 
-        updateProduct(productId: Int!, input: UpdateProductInput): Product!
+        updateProduct(productId: Int!, input: UpdateProductInput!): Product!
 
         deleteProduct(productId: Int!): DeleteProductResult!
         
-        createProductAttr(input: CreateProductAttrInput): ProductAttr!
+        createProductAttr(input: CreateProductAttrInput!): ProductAttr!
 
-        updateProductAttr(productAttrId: Int!, input: UpdateProductAttrInput): ProductAttr!
+        updateProductAttr(productAttrId: Int!, input: UpdateProductAttrInput!): ProductAttr!
 
         deleteProductAttr(productAttrId: Int!): DeleteProductAttrResult!
 
-        createProductImg(input: CreateProductImgInput): ProductImg!
+        createProductImg(input: CreateProductImgInput!): ProductImg!
 
         deleteProductImg(productImgId: Int!): DeleteProductImgResult!
 
-        createOrder(input: CreateOrderInput): OrderMutationResult!
+        createOrder(input: CreateOrderInput!): OrderMutationResult!
 
-        updateOrder(orderId: Int, input: UpdateOrderInput): OrderMutationResult!
+        updateOrder(orderId: Int, input: UpdateOrderInput!): OrderMutationResult!
 
         deleteOrder(orderId: Int!): DeleteOrderResult!
 
-        createOrderProductAttr(input: CreateOrderProductAttrInput): OrderProductAttrMutationResult!
+        createOrderProductAttr(input: CreateOrderProductAttrInput!): OrderProductAttrMutationResult!
 
         updateOrderProductAttr(orderProductAttrId: Int!, input: UpdateOrderProductAttrInput): OrderProductAttrMutationResult!
 
         deleteOrderProductAttr(orderProductAttrId: Int!): DeleteOrderProductAttrResult!
 
-        createOrderStatus(input: CreateOrderStatusInput): OrderStatus!
+        createOrderStatus(input: CreateOrderStatusInput!): OrderStatus!
 
         deleteOrderStatus(orderStatusId: Int!): DeleteOrderStatusResult!
 
-        createShippingMethod(input: CreateShippingMethodInput): ShippingMethod!
+        createShippingMethod(input: CreateShippingMethodInput!): ShippingMethod!
 
         deleteShippingMethod(shippingMethodId: Int!): DeleteShippingMethodResult!
 
-        createUser(input: CreateUserInput): User!
+        createUser(input: CreateUserInput!): User!
 
-        updateUser(userId: Int!, input: UpdateUserInput): User!
+        updateUser(userId: Int!, input: UpdateUserInput!): User!
 
         deleteUser(userId: Int!): DeleteUserResult!
     }
 
     type AuthResponse {
-        token: String!
         user: User!
+        token: String!
     }
 
     type Category {
@@ -112,8 +118,6 @@ const typeDefs = gql`
         price: Float!
         description: String!
         category: Category!
-        productAttrs: [ProductAttr]!
-        productImgs: [ProductImg]!
     }
 
     type DeleteProductResult {
@@ -229,6 +233,10 @@ const typeDefs = gql`
 
     type ExportOrder {
         fileUrl: String!
+    }
+
+    type ImportResult {
+        message: String!
     }
 
     input LoginInput {

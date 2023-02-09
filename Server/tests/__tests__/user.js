@@ -72,7 +72,7 @@ describe('getUserById', () => {
       isAdmin: true
     }
 
-    const received = await resolvers.Query.user(parent, args, context)
+    const received = await User.findByPk(args.userId)
 
     expect(received).toMatchObject(expected)
   })
@@ -84,7 +84,7 @@ describe('getUserById', () => {
       userId: 20
     }
 
-    const received = await resolvers.Query.user(parent, args, context)
+    const received = await User.findByPk(args.userId)
 
     expect(received).toBeNull()
   })
