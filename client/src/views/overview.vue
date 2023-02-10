@@ -82,8 +82,7 @@
                   <div
                     class="total-right text-warning font-weight-bold font-size-h1"
                   >
-                    <!-- {{ dataOrder.orders.length }} -->
-                    7
+                    {{ orders }}
                   </div>
                 </div>
               </router-link>
@@ -136,7 +135,7 @@
                   <div
                     class="total-right text-primary font-weight-bold font-size-h1 mt-2"
                   >
-                    {{ users.value }}
+                    {{ users }}
                   </div>
                 </div>
               </router-link>
@@ -186,12 +185,11 @@
                   <div
                     class="total-right text-danger font-weight-bold font-size-h1 mt-2"
                   >
-                    <!-- {{ dataProduct.products.length }} -->
-                    7
+                    {{ products }}
                   </div>
                 </div>
               </router-link>
-              <router-link
+              <!-- <router-link
                 :to="{ name: 'NewShipping', params: {} }"
                 class="col bg-light-success px-6 py-8 rounded-xl"
               >
@@ -200,7 +198,6 @@
                     <span
                       class="svg-icon svg-icon-3x svg-icon-success d-block my-2"
                     >
-                      <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Urgent-mail.svg-->
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -227,7 +224,6 @@
                           ></path>
                         </g>
                       </svg>
-                      <!--end::Svg Icon-->
                     </span>
                     <div
                       class="text-success font-weight-bold font-size-h6 mt-2"
@@ -238,11 +234,10 @@
                   <div
                     class="total-right text-success font-weight-bold font-size-h1 mt-2"
                   >
-                    <!-- {{ result.users.length }} -->
-                    7
+                    {{ users }}
                   </div>
                 </div>
-              </router-link>
+              </router-link> -->
             </div>
             <!--end::Row-->
           </div>
@@ -323,29 +318,12 @@ export default {
     const { result: dataOrder } = useQuery(GET_ALL_ORDERS);
     const { result: dataProduct } = useQuery(GET_ALL_PRODUCT);
 
-    // watch(dataUser, (value) => {
-    //   const users = computed(() => value.users.length);
-    //   count.userLength = users.value;
-    // });
-
-    // const users = computed(() => dataUser.value?.users.length);
-    console.log(computed(() => route.meta));
-
-    // const users = computed(dataUser.value?.users.length);
-    // const orders = computed(() => dataOrder.value?.users.length);
-    // const products = computed(() => dataProduct.value?.users.length);
-    // onUserResult(() => {
-    //   const users = computed(() => dataUser.value?.users.length);
-    //   userLength = users.value;
-    // });
-    // console.log(users.value);
-    // count.orderLength = orders.value;
-    // count.productLength = products.value;
-
     return {
       titleItems,
       meta: computed(() => route.meta),
       users: computed(() => dataUser.value?.users.length),
+      orders: computed(() => dataOrder.value?.orders.length),
+      products: computed(() => dataProduct.value?.products.length),
       count,
       dataUser,
       dataOrder,

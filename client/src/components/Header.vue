@@ -57,7 +57,7 @@ export default {
     const router = useRouter();
 
     function logout() {
-      localStorage.removeItem("apollo-token");
+      localStorage.clear();
       router.push({ name: "Login", params: {} });
     }
     return {

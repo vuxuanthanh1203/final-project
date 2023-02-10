@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+// import { parseJwt } from "./getExpiredToken";
 
 const routes = [
   {
@@ -179,7 +180,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const isLoggedIn = localStorage.getItem("apollo-token") || null;
+  const isLoggedIn = localStorage.getItem("token") || null;
 
   if (to.meta.requiresAuth && !isLoggedIn) {
     return {

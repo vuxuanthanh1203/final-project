@@ -17,6 +17,18 @@ const UserQueryResolver = {
     },
 
     /**
+      * @returns {Promise<Array<import('../models/User').UserEntity>>}
+      */
+    async staff (parent, args, context) {
+      const users = await User.findAll({
+        where: {
+          isAdmin: true
+        }
+      })
+      return users
+    },
+
+    /**
       * @param {{
       *   userId:number
       * }} args - Args of this resolver

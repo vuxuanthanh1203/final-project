@@ -22,7 +22,7 @@
             <div class="login-form login-signin">
               <form
                 class="form fv-plugins-bootstrap fv-plugins-framework"
-                @submit.prevent="login"
+                @submit.prevent
               >
                 <div class="pb-13 pt-lg-0 pt-5">
                   <h3
@@ -82,6 +82,7 @@
                 <div class="pb-lg-0 pb-5">
                   <button
                     type="submit"
+                    @click="login"
                     id="kt_login_signin_submit"
                     class="btn btn-primary font-weight-bolder font-size-h6 px-8 py-4 my-3 mr-3"
                   >
@@ -135,14 +136,17 @@ export default {
       { enabled: fetchEnabled }
     );
 
-    onError((error) => {
+    onError(async (error) => {
+      // await v$.value.$validate();
       alert(error.graphQLErrors[0].message);
       formData.email = "";
       formData.password = "";
+      fetchEnabled.value = false;
     });
 
     watch(result, (value) => {
-      localStorage.setItem("apollo-token", value.login.token);
+      localStorage.setItem("token", value.login.token);
+      localStorage.setItem("userName", value.login.user.userName);
       router.push({ name: "Dashboard", params: {} });
     });
 

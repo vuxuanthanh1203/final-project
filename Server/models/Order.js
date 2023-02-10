@@ -70,6 +70,14 @@ module.exports = (sequelize, DataTypes) => {
         ]
       }
     })
+
+    Order.addScope('+User', () => {
+      return {
+        include: [
+          { model: models.User, require: true }
+        ]
+      }
+    })
   }
 
   return Order

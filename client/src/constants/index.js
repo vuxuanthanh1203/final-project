@@ -93,9 +93,6 @@ export const TITLE_DATA_USER = [
   {
     title: "Phone Number",
   },
-  {
-    title: "IsAdmin",
-  },
 ];
 
 export const GET_ALL_CATEGORIES = gql`
@@ -240,6 +237,19 @@ export const GET_ALL_USERS = gql`
     }
   }
 `;
+export const GET_ALL_STAFF = gql`
+  query {
+    staff {
+      id
+      name
+      userName
+      email
+      phoneNumber
+      address
+      isAdmin
+    }
+  }
+`;
 
 export const CREATE_CATEGORY = gql`
   mutation ($input: CreateCategoryInput!) {
@@ -364,6 +374,14 @@ export const UPDATE_PRODUCT = gql`
       slug
       description
       price
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation ($userId: Int!) {
+    deleteUser(userId: $userId) {
+      success
     }
   }
 `;
