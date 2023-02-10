@@ -34,11 +34,38 @@
             </span>
           </div>
         </div>
+        <div
+          @click="logout"
+          class="topbar-item"
+          data-offset="10px,0px"
+          aria-expanded="false"
+        >
+          <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
+            <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+          </div>
+        </div>
       </div>
     </div>
   </div>
   <!-- End Header -->
 </template>
+<script>
+import { useRouter } from "vue-router";
+
+export default {
+  setup() {
+    const router = useRouter();
+
+    function logout() {
+      localStorage.removeItem("apollo-token");
+      router.push({ name: "Login", params: {} });
+    }
+    return {
+      logout,
+    };
+  },
+};
+</script>
 
 <style scoped>
 .subheader-separator.subheader-separator-ver {

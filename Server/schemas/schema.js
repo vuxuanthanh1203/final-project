@@ -6,6 +6,8 @@ const typeDefs = gql`
     scalar Upload
 
     type Query {
+        login(input: LoginInput!): AuthResponse!
+        
         categories: [Category]!
 
         category (categoryId: Int!): Category!
@@ -44,8 +46,6 @@ const typeDefs = gql`
         importUser (fileName: String!): ImportResult!
         importProduct (fileName: String!): ImportResult!
         importOrder (fileName: String!): ImportResult!
-
-        login(input: LoginInput!): AuthResponse!
         
         createCategory(input: CreateCategoryInput!): Category!
 

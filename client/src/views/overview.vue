@@ -82,7 +82,7 @@
                   <div
                     class="total-right text-warning font-weight-bold font-size-h1"
                   >
-                    <!-- {{ result.users.length }} -->
+                    <!-- {{ dataOrder.orders.length }} -->
                     7
                   </div>
                 </div>
@@ -136,8 +136,7 @@
                   <div
                     class="total-right text-primary font-weight-bold font-size-h1 mt-2"
                   >
-                    <!-- {{ result.users.length }} -->
-                    7
+                    {{ users.value }}
                   </div>
                 </div>
               </router-link>
@@ -187,7 +186,7 @@
                   <div
                     class="total-right text-danger font-weight-bold font-size-h1 mt-2"
                   >
-                    <!-- {{ result.users.length }} -->
+                    <!-- {{ dataProduct.products.length }} -->
                     7
                   </div>
                 </div>
@@ -249,7 +248,7 @@
           </div>
           <!-- End Data Table -->
           <!-- Start Data Table -->
-          <div
+          <!-- <div
             class="datatable datatable-bordered datatable-head-custom datatable-default datatable-loaded"
           >
             <h3>Top User</h3>
@@ -266,12 +265,9 @@
                 </tr>
               </thead>
               <tbody class="datatable-body">
-                <p v-if="error">{{ error }}</p>
-                <p v-if="loading">Loading...</p>
                 <tr
                   class="datatable-row"
-                  v-else
-                  v-for="user in result.users"
+                  v-for="user in dataUser.users"
                   :key="user.id"
                 >
                   <td class="data-value">
@@ -292,7 +288,7 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+          </div> -->
           <!-- End Data Table -->
         </div>
       </div>
@@ -303,24 +299,57 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
+// import { reactive, watch } from "vue";
 import { reactive } from "vue";
-import { TITLE_DATA_USER, GET_ALL_USERS } from "@/constants";
+import {
+  TITLE_DATA_USER,
+  GET_ALL_USERS,
+  GET_ALL_ORDERS,
+  GET_ALL_PRODUCT,
+} from "@/constants";
 import { useQuery } from "@vue/apollo-composable";
-// GET_ALL_ORDERS,
-// GET_ALL_PRODUCT,
 
 export default {
   setup() {
     const titleItems = reactive(TITLE_DATA_USER);
     const route = useRoute();
+    const count = reactive({
+      userLength: 0,
+      productLength: 0,
+      orderLength: 0,
+    });
 
-    const { result, loading, error } = useQuery(GET_ALL_USERS);
+    const { result: dataUser } = useQuery(GET_ALL_USERS);
+    const { result: dataOrder } = useQuery(GET_ALL_ORDERS);
+    const { result: dataProduct } = useQuery(GET_ALL_PRODUCT);
+
+    // watch(dataUser, (value) => {
+    //   const users = computed(() => value.users.length);
+    //   count.userLength = users.value;
+    // });
+
+    // const users = computed(() => dataUser.value?.users.length);
+    console.log(computed(() => route.meta));
+
+    // const users = computed(dataUser.value?.users.length);
+    // const orders = computed(() => dataOrder.value?.users.length);
+    // const products = computed(() => dataProduct.value?.users.length);
+    // onUserResult(() => {
+    //   const users = computed(() => dataUser.value?.users.length);
+    //   userLength = users.value;
+    // });
+    // console.log(users.value);
+    // count.orderLength = orders.value;
+    // count.productLength = products.value;
+
     return {
       titleItems,
       meta: computed(() => route.meta),
-      result,
-      loading,
-      error,
+      users: computed(() => dataUser.value?.users.length),
+      count,
+      dataUser,
+      dataOrder,
+      dataProduct,
     };
   },
 };

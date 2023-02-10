@@ -327,7 +327,7 @@ export const EXPORT_PRODUCT = gql`
 `;
 
 export const LOGIN = gql`
-  mutation ($input: LoginInput!) {
+  query ($input: LoginInput!) {
     login(input: $input) {
       token
       user {
