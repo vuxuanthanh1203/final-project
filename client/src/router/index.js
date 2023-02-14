@@ -52,7 +52,7 @@ const routes = [
       import(/* webpackChunkName: "category" */ "@/views/new-category.vue"),
   },
   {
-    path: "/category/:id",
+    path: "/category/edit/:id",
     name: "EditCategory",
     meta: {
       title: "Edit Category",
@@ -61,17 +61,6 @@ const routes = [
     },
     component: () =>
       import(/* webpackChunkName: "category" */ "@/views/edit-category.vue"),
-  },
-  {
-    path: "/category/delete/:id",
-    name: "DeleteCategory",
-    meta: {
-      title: "Edit Category",
-      des: "Fill in category information",
-      requiresAuth: true,
-    },
-    component: () =>
-      import(/* webpackChunkName: "category" */ "@/views/category.vue"),
   },
   {
     path: "/order",
@@ -107,15 +96,26 @@ const routes = [
       import(/* webpackChunkName: "product" */ "@/views/new-product.vue"),
   },
   {
-    path: "/product/:id",
+    path: "/product/edit/:id",
     name: "Edit Product",
     meta: {
-      title: "Add New Product",
+      title: "Edit Product",
       des: "Fill in new product information",
       requiresAuth: true,
     },
     component: () =>
       import(/* webpackChunkName: "product" */ "@/views/edit-product.vue"),
+  },
+  {
+    path: "/product/:id",
+    name: "Product Detail",
+    meta: {
+      title: "Product Detail",
+      des: "Infomation of the product",
+      requiresAuth: true,
+    },
+    component: () =>
+      import(/* webpackChunkName: "product" */ "@/views/product-detail.vue"),
   },
   {
     path: "/shipping",
@@ -161,7 +161,7 @@ const routes = [
       import(/* webpackChunkName: "product" */ "@/views/new-user.vue"),
   },
   {
-    path: "/user/:id",
+    path: "/user/edit/:id",
     name: "UpdateUser",
     meta: {
       title: "Update User",
@@ -170,6 +170,17 @@ const routes = [
     },
     component: () =>
       import(/* webpackChunkName: "user" */ "@/views/edit-user.vue"),
+  },
+  {
+    path: "/user/profile",
+    name: "Profile",
+    meta: {
+      title: "Profile",
+      des: "Your Infomation",
+      requiresAuth: true,
+    },
+    component: () =>
+      import(/* webpackChunkName: "user" */ "@/views/profile.vue"),
   },
 ];
 

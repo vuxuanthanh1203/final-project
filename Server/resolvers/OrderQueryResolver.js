@@ -93,7 +93,7 @@ const OrderQueryResolver = {
 
       return result
     }
-  },
+  }
 
   // async topOrder (parent, args, context) {
   //   const topOrder = Order.findAll({

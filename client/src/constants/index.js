@@ -185,11 +185,10 @@ export const GET_ALL_PRODUCT = gql`
 
 export const GET_PRODUCT = gql`
   query ($productId: Int!) {
-    products(productId: $productId) {
+    product(productId: $productId) {
       id
       name
       slug
-      image
       price
       description
       category {
@@ -212,8 +211,8 @@ export const GET_ALL_SHIPPING = gql`
 `;
 
 export const GET_USER = gql`
-  query {
-    users {
+  query ($userId: Int!) {
+    user(userId: $userId) {
       id
       name
       userName
@@ -382,6 +381,20 @@ export const DELETE_USER = gql`
   mutation ($userId: Int!) {
     deleteUser(userId: $userId) {
       success
+    }
+  }
+`;
+export const PROFILE = gql`
+  query {
+    me {
+      id
+      name
+      userName
+      email
+      password
+      phoneNumber
+      address
+      isAdmin
     }
   }
 `;

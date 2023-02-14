@@ -182,7 +182,7 @@
 import { computed, watch } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { GET_USER, UPDATE_USER } from "@/constants";
+import { PROFILE, UPDATE_USER } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
@@ -222,15 +222,13 @@ export default {
 
     const v$ = useVuelidate(rules, formData);
 
-    const { result: dataUser } = useQuery(GET_USER, {
-      userId: parseInt(route.params.id),
-    });
+    const { result: dataUser } = useQuery(PROFILE);
 
-    watch(dataUser, (value) => {
-      formData.name = value.user.name;
-      formData.userName = value.user.userName;
-      formData.phoneNumber = value.user.phoneNumber;
-      formData.address = value.user.phoneNumber;
+    watch(dataUser, () => {
+      // formData.name = value.user.name;
+      // formData.userName = value.user.userName;
+      // formData.phoneNumber = value.user.phoneNumber;
+      // formData.address = value.user.phoneNumber;
     });
 
     const {

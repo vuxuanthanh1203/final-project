@@ -41,63 +41,7 @@
               </button>
             </div>
           </div>
-          <form @submit.prevent>
-            <div class="card-body">
-              <div class="form-group">
-                <label>Category Name <span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Enter the name of the new category"
-                  v-model="formData.name"
-                />
-                <span
-                  class="form-text text-muted text-err"
-                  v-for="error in v$.name.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}
-                </span>
-              </div>
-              <div class="form-group">
-                <label>
-                  Category Slug
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="form-control input-disable"
-                  placeholder="The slug of the category"
-                  disabled="disabled"
-                  :value="renderSlug()"
-                />
-                <span
-                  class="form-text text-muted text-err"
-                  v-for="error in v$.slug.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}
-                </span>
-              </div>
-            </div>
-            <div class="card-footer">
-              <button
-                type="reset"
-                class="btn btn-primary mr-2"
-                @click="updateCategory"
-              >
-                Submit
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="backToRoute"
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-          <!-- End Form -->
+          <h1>product details</h1>
         </div>
       </div>
     </div>
@@ -154,6 +98,7 @@ export default {
     });
 
     watch(result, (value) => {
+      console.log(value);
       formData.name = value.category.name;
       formData.slug = value.category.slug;
     });

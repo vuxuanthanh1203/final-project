@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="topbar">
-        <div class="topbar-item">
+        <div class="topbar-item" @click="goToRoute">
           <div
             class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2"
           >
@@ -25,11 +25,12 @@
             <span
               class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3"
             >
-              Thanh
+              {{ userName }}
             </span>
             <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
               <span class="symbol-label font-size-h5 font-weight-bold">
-                T
+                <!-- {{ charText }} -->
+                A
               </span>
             </span>
           </div>
@@ -55,6 +56,12 @@ import { useRouter } from "vue-router";
 export default {
   setup() {
     const router = useRouter();
+    const userName = localStorage.getItem("userName");
+    // const charText = userName.toString().charAt(0).toUpperCase();
+
+    function goToRoute() {
+      router.push({ name: "Profile", params: {} });
+    }
 
     function logout() {
       localStorage.clear();
@@ -62,6 +69,9 @@ export default {
     }
     return {
       logout,
+      goToRoute,
+      userName,
+      // charText,
     };
   },
 };

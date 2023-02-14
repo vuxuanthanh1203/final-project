@@ -20,8 +20,6 @@ const typeDefs = gql`
 
         orderStatuses: [OrderStatus]!
 
-        topOrder: [TopOrder]!
-
         products: [Product]!
 
         product (productId: Int!): Product!
@@ -36,7 +34,9 @@ const typeDefs = gql`
         
         staff: [User]!
         
-        user: User
+        user (userId: Int!): User!
+        
+        me: User
 
         shippingMethods: [ShippingMethod]!
 
@@ -334,14 +334,6 @@ const typeDefs = gql`
     input CreateShippingMethodInput {
         name: String!, 
         price: Float!
-    }
-
-    type TopOrder {
-        name: String!,
-        email: String,
-        address: String!,
-        phoneNumber: String!,
-        noo: Int
     }
 `
 

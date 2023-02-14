@@ -146,6 +146,7 @@ export default {
 
     watch(result, (value) => {
       localStorage.setItem("token", value.login.token);
+      localStorage.setItem("userId", value.login.user.id);
       localStorage.setItem("userName", value.login.user.userName);
       router.push({ name: "Dashboard", params: {} });
     });

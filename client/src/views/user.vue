@@ -81,8 +81,12 @@
                   </th>
                 </tr>
               </thead>
-              <tbody v-if="users" class="datatable-body">
-                <tr class="datatable-row" v-for="user in users" :key="user.id">
+              <tbody
+                v-for="user in users"
+                :key="user.id"
+                class="datatable-body"
+              >
+                <tr class="datatable-row" v-if="auth_user != user.id">
                   <td class="data-value">
                     <span>{{ user.id }}</span>
                   </td>
@@ -101,15 +105,19 @@
                     </div>
                     <router-link
                       v-if="!user.isAdmin"
-                      :to="`/user/${user.id}`"
+                      :to="`/user/edit/${user.id}`"
                       class="btn btn-sm btn-clean btn-icon mr-2"
+                      data-toggle="tooltip"
+                      title="Edit"
                     >
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
                     <div
-                      v-if="!user.isAdmin"
                       @click="deleteItem({ userId: user.id })"
+                      v-if="!user.isAdmin"
                       class="btn btn-sm btn-clean btn-icon"
+                      data-toggle="tooltip"
+                      title="Delete"
                     >
                       <font-awesome-icon :icon="['fas', 'trash']" />
                     </div>
@@ -143,6 +151,8 @@ export default {
     const route = useRoute();
     const router = useRouter();
 
+    const auth_user = localStorage.getItem("userId");
+
     const formData = reactive({
       message: "",
       isShow: true,
@@ -174,6 +184,7 @@ export default {
     // });
 
     // Export Item
+
     const { mutate: exportUser, onDone } = useMutation(EXPORT_USER);
 
     onDone(() => {
@@ -186,6 +197,7 @@ export default {
       users,
       goToRoute,
       formData,
+      auth_user,
       exportUser,
       deleteItem,
     };
