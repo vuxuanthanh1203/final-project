@@ -105,7 +105,8 @@
 </template>
 
 <script>
-import { computed, watch } from "@vue/runtime-core";
+// import { computed, watch } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
 import { GET_CATEGORY, UPDATE_CATEGORY } from "@/constants/";
@@ -149,14 +150,19 @@ export default {
       return formData.slug;
     }
 
-    const { result } = useQuery(GET_CATEGORY, {
+    const { result, onResult } = useQuery(GET_CATEGORY, {
       categoryId: parseInt(route.params.id),
     });
 
-    watch(result, (value) => {
-      formData.name = value.category.name;
-      formData.slug = value.category.slug;
+    onResult((queryResult) => {
+      formData.name = queryResult.data.category.name;
+      formData.slug = queryResult.data.category.slug;
     });
+
+    // watch(result, (value) => {
+    //   formData.name = value?.category?.name;
+    //   formData.slug = value?.category?.slug;
+    // });
 
     const { mutate: updateCategory, onDone } = useMutation(
       UPDATE_CATEGORY,

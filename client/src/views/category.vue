@@ -57,8 +57,8 @@
                 <tr
                   class="datatable-row"
                   v-else
-                  v-for="category in result.categories"
-                  :key="category.id"
+                  v-for="category in result?.categories"
+                  :key="category?.id"
                 >
                   <td class="data-value">
                     <span>{{ category.id }}</span>
@@ -71,7 +71,7 @@
                   </td>
                   <td class="data-value">
                     <router-link
-                      :to="`/category/edit/${category.id}`"
+                      :to="`/category/edit/${category?.id}`"
                       class="btn btn-sm btn-clean btn-icon mr-2"
                       data-toggle="tooltip"
                       title="Edit"

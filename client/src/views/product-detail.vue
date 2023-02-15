@@ -4,44 +4,131 @@
       <div class="container">
         <div class="card card-custom">
           <!-- Start Card Header -->
-          <div class="card-header flex-wrap border-0 pt-6 pb-0">
+          <!-- <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title flex-column">
               <h3 class="card-label">{{ meta.title }}</h3>
               <span class="text-muted pt-2 font-size-sm d-block">
                 {{ meta.des }}
               </span>
             </div>
-
-            <!-- End Card Header -->
-          </div>
+          </div> -->
           <!-- End Card Header -->
           <!-- -------------------------- -->
           <!-- Begin Form -->
-          <div
-            class="alert alert-custom alert-notice alert-light-primary fade show mb-5"
-            role="alert"
-            v-if="formData.message"
-            v-show="formData.isShow"
-          >
-            <div class="alert-icon">
-              <font-awesome-icon :icon="['fas', 'check']" />
-            </div>
-            <div class="alert-text">{{ formData.message }}</div>
-            <div class="alert-close">
-              <button
-                type="button"
-                class="close"
-                data-dismiss="alert"
-                aria-label="Close"
-                @click="formData.isShow = false"
-              >
-                <span aria-hidden="true">
-                  <font-awesome-icon :icon="['fas', 'xmark']" />
-                </span>
-              </button>
+          <div class="flex-row-fluid">
+            <div class="row">
+              <div class="col-md-7 col-lg-12 col-xxl-7">
+                <div class="card card-custom card-stretch gutter-b">
+                  <div class="card-body p-15 pb-20">
+                    <div class="row mb-17">
+                      <div class="col-lg-6 mb-11 mb-xxl-0">
+                        <div class="card card-custom card-stretch">
+                          <div
+                            class="card-body p-0 rounded px-10 py-15 d-flex align-items-center justify-content-center"
+                          >
+                            <img
+                              :src="product.image"
+                              class="mw-100 w-200px"
+                              style="transform: scale(1.6)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 pl-xxl-11">
+                        <h2
+                          class="font-weight-bolder text-dark mb-7"
+                          style="font-size: 32px"
+                        >
+                          {{ product.name }}
+                        </h2>
+                        <div class="font-size-h2 mb-7 text-dark-50">
+                          From
+                          <span class="text-info font-weight-boldest ml-2">
+                            {{ product.price }} VND
+                          </span>
+                        </div>
+                        <div class="line-height-xl">
+                          {{ product.description }}
+                        </div>
+                        <div class="row mb-6 mt-5">
+                          <div class="col-6 col-md-4">
+                            <div class="mb-8 d-flex">
+                              <span class="text-dark font-weight-bold mb-4">
+                                Category:
+                              </span>
+                              <span
+                                class="text-muted font-weight-bolder font-size-lg ml-3"
+                              >
+                                {{ product.category.name }}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse mb-5">
+                      <button
+                        type="button"
+                        class="btn btn-primary font-weight-bolder mr-6 px-6 font-size-sm"
+                      >
+                        New Stock
+                      </button>
+                    </div>
+                    <div class="row mb-6">
+                      <!--begin::Info-->
+                      <div
+                        class="datatable datatable-bordered datatable-head-custom datatable-default datatable-loaded"
+                      >
+                        <table class="datatable-table">
+                          <thead class="datatable-head">
+                            <tr class="datatable-row flex-wrap">
+                              <th
+                                v-for="titleItem in titleItems"
+                                :key="titleItem.title"
+                                class="data-title"
+                              >
+                                <span>{{ titleItem.title }}</span>
+                              </th>
+                              <th class="data-title">
+                                <span>Action</span>
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody class="datatable-body">
+                            <tr
+                              class="datatable-row"
+                              v-for="productAttr in productAttrs"
+                              :key="productAttr?.id"
+                            >
+                              <td class="data-value">
+                                <span>{{ productAttr.id }}</span>
+                              </td>
+                              <td class="data-value">
+                                <span>{{ productAttr.value }}</span>
+                              </td>
+                              <td class="data-value">
+                                <span>{{ productAttr.quantityInStock }}</span>
+                              </td>
+                              <td class="data-value">
+                                <div
+                                  class="btn btn-sm btn-clean btn-icon"
+                                  data-toggle="tooltip"
+                                  title="Delete"
+                                >
+                                  <font-awesome-icon :icon="['fas', 'trash']" />
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!--end::Info-->
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <h1>product details</h1>
         </div>
       </div>
     </div>
@@ -52,89 +139,57 @@
 import { computed, watch } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { GET_CATEGORY, UPDATE_CATEGORY } from "@/constants/";
-import { useQuery, useMutation } from "@vue/apollo-composable";
-import slugify from "slugify";
-import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import {
+  GET_PRODUCT_ATTRS,
+  TITLE_DATA_PRODUCT_ATTR,
+  GET_PRODUCT,
+} from "@/constants/";
+import { useQuery } from "@vue/apollo-composable";
 
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
 
+    const titleItems = reactive(TITLE_DATA_PRODUCT_ATTR);
+
     function backToRoute() {
-      router.push({ name: "Category", params: {} });
+      router.push({ name: "Product", params: {} });
     }
 
-    const formData = reactive({
-      name: "",
-      slug: "",
-      message: "",
-      isShow: true,
+    const { result: dataProductAttrs } = useQuery(GET_PRODUCT_ATTRS, {
+      productId: route.params.id * 1,
     });
 
-    const rules = computed(() => {
-      return {
-        name: { required },
-        slug: { required },
-      };
+    const { result: dataProduct } = useQuery(GET_PRODUCT, {
+      productId: route.params.id * 1,
     });
 
-    const v$ = useVuelidate(rules, formData);
-
-    function renderSlug() {
-      formData.slug = slugify(formData.name, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true,
-      });
-
-      return formData.slug;
-    }
-
-    const { result } = useQuery(GET_CATEGORY, {
-      categoryId: parseInt(route.params.id),
-    });
-
-    watch(result, (value) => {
+    watch(dataProduct, (value) => {
       console.log(value);
-      formData.name = value.category.name;
-      formData.slug = value.category.slug;
-    });
-
-    const { mutate: updateCategory, onDone } = useMutation(
-      UPDATE_CATEGORY,
-      () => ({
-        variables: {
-          categoryId: parseInt(route.params.id),
-          input: {
-            name: formData.name,
-            slug: formData.slug,
-          },
-        },
-      })
-    );
-    onDone(() => {
-      formData.name = "";
-      formData.slug = "";
-      formData.message = "category updated!";
     });
 
     return {
       meta: computed(() => route.meta),
+      product: computed(() => dataProduct.value?.product),
+      productAttrs: computed(() => dataProductAttrs.value?.productAttributes),
       backToRoute,
-      renderSlug,
-      formData,
-      result,
-      v$,
-      updateCategory,
+      titleItems,
     };
   },
 };
 </script>
 
 <style scoped>
+.data-value span {
+  width: 100%;
+}
+.data-value {
+  vertical-align: middle;
+  padding: 1rem 0;
+  font-size: 1rem;
+  width: 250px;
+}
 .input-disable {
   cursor: not-allowed;
 }

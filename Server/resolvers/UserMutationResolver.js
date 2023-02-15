@@ -64,6 +64,38 @@ const UserMutationResolver = {
         }
       })
       return User.findByPk(args.userId)
+    },
+
+    /**
+      * @param {*} args - Update user input
+      * @returns {Promise<import('../models/User').UserEntity>}
+      */
+    async updateProfile (parent, args, context) {
+      const data = args.input
+
+      console.log(data)
+      await User.update({ ...data }, {
+        where: {
+          id: args.userId
+        }
+      })
+      return User.findByPk(args.userId)
+    },
+
+    /**
+      * @param {*} args - Update user input
+      * @returns {Promise<import('../models/User').UserEntity>}
+      */
+    async changePassword (parent, args, context) {
+      const data = args.input
+      const password = await hashPassword(data.password)
+
+      await User.update({ password }, {
+        where: {
+          id: args.userId
+        }
+      })
+      return User.findByPk(args.userId)
     }
   }
 }

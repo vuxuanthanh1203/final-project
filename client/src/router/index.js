@@ -172,7 +172,7 @@ const routes = [
       import(/* webpackChunkName: "user" */ "@/views/edit-user.vue"),
   },
   {
-    path: "/user/profile",
+    path: "/profile",
     name: "Profile",
     meta: {
       title: "Profile",
@@ -181,6 +181,17 @@ const routes = [
     },
     component: () =>
       import(/* webpackChunkName: "user" */ "@/views/profile.vue"),
+  },
+  {
+    path: "/change-password",
+    name: "ChangePassword",
+    meta: {
+      title: "Profile",
+      des: "Your Infomation",
+      requiresAuth: true,
+    },
+    component: () =>
+      import(/* webpackChunkName: "user" */ "@/views/changePassword.vue"),
   },
 ];
 

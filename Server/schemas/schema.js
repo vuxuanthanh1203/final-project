@@ -96,6 +96,10 @@ const typeDefs = gql`
         createUser(input: CreateUserInput!): User!
 
         updateUser(userId: Int!, input: UpdateUserInput!): User!
+       
+        updateProfile(userId: Int!, input: UpdateProfileInput!): User!
+
+        changePassword(userId: Int!, input: ChangePasswordInput!): User!
 
         deleteUser(userId: Int!): DeleteUserResult!
     }
@@ -119,6 +123,7 @@ const typeDefs = gql`
         id: Int!
         name: String!
         slug: String!
+        image: String!
         price: Float!
         description: String!
         category: Category!
@@ -265,6 +270,17 @@ const typeDefs = gql`
         phoneNumber: String, 
         address: String,
         isAdmin: Boolean
+    }
+
+    input UpdateProfileInput {
+        name: String, 
+        userName: String,
+        phoneNumber: String, 
+        address: String
+    }
+    
+    input ChangePasswordInput {
+        password: String,
     }
 
     input CreateCategoryInput {

@@ -44,6 +44,18 @@ export const TITLE_DATA_CATEGORY = [
   },
 ];
 
+export const TITLE_DATA_PRODUCT_ATTR = [
+  {
+    title: "Id",
+  },
+  {
+    title: "Size",
+  },
+  {
+    title: "In Stock",
+  },
+];
+
 export const TITLE_DATA_ORDER = [
   {
     title: "Order Id",
@@ -189,6 +201,7 @@ export const GET_PRODUCT = gql`
       id
       name
       slug
+      image
       price
       description
       category {
@@ -395,6 +408,44 @@ export const PROFILE = gql`
       phoneNumber
       address
       isAdmin
+    }
+  }
+`;
+export const UPDATE_PROFILE = gql`
+  mutation ($userId: Int!, $input: UpdateProfileInput!) {
+    updateProfile(userId: $userId, input: $input) {
+      id
+      name
+      userName
+      email
+      phoneNumber
+      address
+    }
+  }
+`;
+
+export const CHANGE_PASSWORD = gql`
+  mutation ($userId: Int!, $input: ChangePasswordInput!) {
+    changePassword(userId: $userId, input: $input) {
+      id
+      name
+      userName
+      email
+      phoneNumber
+      address
+    }
+  }
+`;
+
+export const GET_PRODUCT_ATTRS = gql`
+  query ($productId: Int!) {
+    productAttributes(productId: $productId) {
+      id
+      value
+      quantityInStock
+      product {
+        name
+      }
     }
   }
 `;
