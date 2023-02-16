@@ -80,8 +80,36 @@
               </button>
             </div>
           </div>
-          <div class="card-body">
-            <form class="form" id="changePassword">
+          <div class="card-body px-7">
+            <div>
+              <div class="tab-pane px-7">
+                <div class="row">
+                  <div class="col-xl-2"></div>
+                  <div class="col-xl-7">
+                    <div class="form-group row">
+                      <label
+                        class="col-form-label col-3 text-lg-right text-left current-text"
+                      >
+                        Current Password
+                      </label>
+                      <div class="col-9">
+                        <input
+                          class="form-control form-control-lg form-control-solid current-value"
+                          type="password"
+                          v-model="formData.checkPassword"
+                          @change="checkPassword"
+                          :disabled="formData.isDisabled"
+                        />
+                        <span class="form-text text-muted text-err current-err">
+                          {{ message }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <form class="form" id="changePassword" v-show="formData.showForm">
               <div class="tab-content">
                 <div class="tab-pane px-7 active">
                   <div class="card-body">
@@ -101,7 +129,7 @@
                               v-model="formData.password"
                             />
                             <span
-                              class="form-text text-muted text-err"
+                              class="form-text text-muted confirm text-err"
                               v-for="error in v$.password.$errors"
                               :key="error.$uid"
                             >
@@ -120,9 +148,10 @@
                               class="form-control form-control-lg form-control-solid"
                               type="password"
                               v-model="formData.confirmPassword"
+                              @change="handleChange"
                             />
                             <span
-                              class="form-text text-muted text-err"
+                              class="form-text text-muted confirm text-err"
                               v-for="error in v$.confirmPassword.$errors"
                               :key="error.$uid"
                             >
@@ -154,22 +183,56 @@
 </template>
 
 <script>
-import { computed } from "@vue/runtime-core";
-import { reactive } from "vue";
-import { CHANGE_PASSWORD } from "@/constants";
-import { useMutation } from "@vue/apollo-composable";
+import { computed, watch } from "@vue/runtime-core";
+// import { computed } from "@vue/runtime-core";
+import { useRouter } from "vue-router";
+import { reactive, ref } from "vue";
+import { CHECK_PASSWORD, CHANGE_PASSWORD } from "@/constants";
+import { useMutation, useQuery } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
 // helpers,
 
 export default {
   setup() {
+    const router = useRouter();
     const formData = reactive({
+      checkPassword: "",
       password: "",
       confirmPassword: "",
       message: "",
       isShow: true,
+      isDisabled: false,
+      showForm: false,
     });
+
+    // Check password
+    const fetchEnabled = ref(false);
+    const userId = localStorage.getItem("userId");
+
+    const { result: checkResult } = useQuery(
+      CHECK_PASSWORD,
+      () => ({
+        userId: userId * 1,
+        input: {
+          password: formData.checkPassword,
+        },
+      }),
+      { enabled: fetchEnabled }
+    );
+
+    watch(checkResult, () => {
+      const message = computed(() => checkResult.value?.checkPassword.message);
+      if (message.value === "Success") {
+        formData.showForm = true;
+        formData.isDisabled = true;
+      }
+    });
+
+    function checkPassword() {
+      fetchEnabled.value = true;
+      // formData.checkPassword = "";
+    }
 
     const rules = computed(() => {
       return {
@@ -180,39 +243,58 @@ export default {
 
     const v$ = useVuelidate(rules, formData);
 
-    const {
-      mutate: changePassword,
-      onError,
-      onDone,
-    } = useMutation(CHANGE_PASSWORD, () => ({
-      variables: {
-        userId: localStorage.getItem("userId") * 1,
-        input: {
-          password: formData.password,
-        },
-      },
-    }));
-
-    onError(async () => {
+    const handleChange = async () => {
       await v$.value.$validate();
-    });
+    };
+
+    const { mutate: changePassword, onDone } = useMutation(
+      CHANGE_PASSWORD,
+      () => ({
+        variables: {
+          userId: localStorage.getItem("userId") * 1,
+          input: {
+            password: formData.confirmPassword,
+          },
+        },
+      })
+    );
+
+    function rederect() {
+      router.push({ name: "Login", params: {} });
+    }
 
     onDone(() => {
-      formData.message = "Password Updated !";
+      formData.message = "Password Updated! Redirecting...";
+      localStorage.clear();
+      setTimeout(rederect, 3000);
       formData.password = "";
       formData.confirmPassword = "";
     });
 
     return {
+      message: computed(() => checkResult.value?.checkPassword.message),
       formData,
       v$,
+      checkResult,
+      checkPassword,
       changePassword,
+      handleChange,
     };
   },
 };
 </script>
 
 <style scoped>
+.current-err {
+  margin-left: 10px;
+}
+.current-value {
+  width: 94%;
+  margin-left: 10px;
+}
+.current-text {
+  left: 10px;
+}
 .nav-link {
   cursor: default;
 }

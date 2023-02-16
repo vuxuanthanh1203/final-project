@@ -68,6 +68,7 @@
                     </div>
                     <div class="d-flex flex-row-reverse mb-5">
                       <button
+                        @click="goToRoute"
                         type="button"
                         class="btn btn-primary font-weight-bolder mr-6 px-6 font-size-sm"
                       >
@@ -136,7 +137,7 @@
 </template>
 
 <script>
-import { computed, watch } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
 import {
@@ -157,6 +158,11 @@ export default {
       router.push({ name: "Product", params: {} });
     }
 
+    function goToRoute() {
+      const id = route.params.id;
+      router.push({ name: "NewAttr", params: { id } });
+    }
+
     const { result: dataProductAttrs } = useQuery(GET_PRODUCT_ATTRS, {
       productId: route.params.id * 1,
     });
@@ -165,15 +171,12 @@ export default {
       productId: route.params.id * 1,
     });
 
-    watch(dataProduct, (value) => {
-      console.log(value);
-    });
-
     return {
       meta: computed(() => route.meta),
       product: computed(() => dataProduct.value?.product),
       productAttrs: computed(() => dataProductAttrs.value?.productAttributes),
       backToRoute,
+      goToRoute,
       titleItems,
     };
   },

@@ -449,3 +449,21 @@ export const GET_PRODUCT_ATTRS = gql`
     }
   }
 `;
+
+export const CHECK_PASSWORD = gql`
+  query ($userId: Int!, $input: CheckPasswordInput!) {
+    checkPassword(userId: $userId, input: $input) {
+      message
+    }
+  }
+`;
+
+export const CREATE_ATTR = gql`
+  mutation ($input: CreateProductAttrInput!) {
+    createProductAttr(input: $input) {
+      id
+      value
+      quantityInStock
+    }
+  }
+`;

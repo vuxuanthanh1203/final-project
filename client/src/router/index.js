@@ -118,6 +118,17 @@ const routes = [
       import(/* webpackChunkName: "product" */ "@/views/product-detail.vue"),
   },
   {
+    path: "/product/:id/new-attribute",
+    name: "NewAttr",
+    meta: {
+      title: "Product Attribute",
+      des: "New Product Attribute",
+      requiresAuth: true,
+    },
+    component: () =>
+      import(/* webpackChunkName: "product" */ "@/views/new-attr.vue"),
+  },
+  {
     path: "/shipping",
     name: "Shipping",
     meta: {

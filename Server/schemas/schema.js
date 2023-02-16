@@ -38,6 +38,8 @@ const typeDefs = gql`
         
         me: User
 
+        checkPassword(userId: Int!, input: CheckPasswordInput!): CheckPassword!
+
         shippingMethods: [ShippingMethod]!
 
     }
@@ -350,6 +352,14 @@ const typeDefs = gql`
     input CreateShippingMethodInput {
         name: String!, 
         price: Float!
+    }
+
+    type CheckPassword {
+        message: String!
+    }
+
+    input CheckPasswordInput {
+        password: String!
     }
 `
 

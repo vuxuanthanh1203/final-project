@@ -73,7 +73,6 @@ const UserMutationResolver = {
     async updateProfile (parent, args, context) {
       const data = args.input
 
-      console.log(data)
       await User.update({ ...data }, {
         where: {
           id: args.userId
