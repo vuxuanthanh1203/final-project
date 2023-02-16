@@ -185,7 +185,7 @@
 <script>
 import { computed, watch } from "@vue/runtime-core";
 // import { computed } from "@vue/runtime-core";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import { CHECK_PASSWORD, CHANGE_PASSWORD } from "@/constants";
 import { useMutation, useQuery } from "@vue/apollo-composable";
@@ -195,7 +195,7 @@ import { required, minLength, sameAs } from "@vuelidate/validators";
 
 export default {
   setup() {
-    const router = useRouter();
+    // const router = useRouter();
     const formData = reactive({
       checkPassword: "",
       password: "",
@@ -259,14 +259,14 @@ export default {
       })
     );
 
-    function rederect() {
-      router.push({ name: "Login", params: {} });
+    function redirect() {
+      window.location.href = "/";
     }
 
     onDone(() => {
       formData.message = "Password Updated! Redirecting...";
       localStorage.clear();
-      setTimeout(rederect, 3000);
+      setTimeout(redirect, 3000);
       formData.password = "";
       formData.confirmPassword = "";
     });

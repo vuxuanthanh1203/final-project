@@ -19,8 +19,8 @@
             </span>
             <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
               <span class="symbol-label font-size-h5 font-weight-bold">
-                {{ charText || "A" }}
-                <!-- A -->
+                <!-- {{ charText || "A" }} -->
+                A
               </span>
             </span>
           </div>
@@ -130,7 +130,7 @@ export default {
   setup() {
     const router = useRouter();
     const userName = localStorage.getItem("userName");
-    const charText = userName.toString().charAt(0).toUpperCase();
+    // const charText = userName.toString().charAt(0).toUpperCase();
 
     function goToProfile() {
       router.push({ name: "Profile", params: {} });
@@ -161,7 +161,7 @@ export default {
       goToChangePassword,
       userName,
       isShow,
-      charText,
+      // charText,
     };
   },
 };

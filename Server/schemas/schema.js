@@ -45,6 +45,8 @@ const typeDefs = gql`
     }
     
     type Mutation {
+        imageUploader(file: Upload!): String!
+
         exportProduct: ExportProduct!
         exportUser: ExportUser!
         exportOrder: ExportOrder!
