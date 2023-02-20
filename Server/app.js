@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const { ApolloServer } = require('apollo-server-express')
 const cors = require('cors')
+const path = require('path')
 
 // Load Schemas & resolves & context
 const typeDefs = require('./schemas/schema')
@@ -11,6 +12,7 @@ const graphqlUploadExpress = require('graphql-upload/graphqlUploadExpress.js')
 const { getUserByToken } = require('./utils/getUserByToken')
 
 const app = express()
+app.use(express.static(path.join(__dirname, './upload')))
 app.use(cors())
 
 const startApolloServer = async (req, res) => {

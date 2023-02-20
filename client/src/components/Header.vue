@@ -136,7 +136,7 @@ export default {
       router.push({ name: "Profile", params: {} });
     }
     function goToChangePassword() {
-      router.push({ name: "ChangePassword", params: {} });
+      router.push({ name: "CheckPassword", params: {} });
     }
 
     function logout() {

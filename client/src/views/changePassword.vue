@@ -81,35 +81,7 @@
             </div>
           </div>
           <div class="card-body px-7">
-            <div>
-              <div class="tab-pane px-7">
-                <div class="row">
-                  <div class="col-xl-2"></div>
-                  <div class="col-xl-7">
-                    <div class="form-group row">
-                      <label
-                        class="col-form-label col-3 text-lg-right text-left current-text"
-                      >
-                        Current Password
-                      </label>
-                      <div class="col-9">
-                        <input
-                          class="form-control form-control-lg form-control-solid current-value"
-                          type="password"
-                          v-model="formData.checkPassword"
-                          @change="checkPassword"
-                          :disabled="formData.isDisabled"
-                        />
-                        <span class="form-text text-muted text-err current-err">
-                          {{ message }}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <form class="form" id="changePassword" v-show="formData.showForm">
+            <form class="form" id="changePassword">
               <div class="tab-content">
                 <div class="tab-pane px-7 active">
                   <div class="card-body">
@@ -183,19 +155,17 @@
 </template>
 
 <script>
-import { computed, watch } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 // import { computed } from "@vue/runtime-core";
-// import { useRouter } from "vue-router";
-import { reactive, ref } from "vue";
-import { CHECK_PASSWORD, CHANGE_PASSWORD } from "@/constants";
-import { useMutation, useQuery } from "@vue/apollo-composable";
+import { reactive } from "vue";
+import { CHANGE_PASSWORD } from "@/constants";
+import { useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, sameAs } from "@vuelidate/validators";
 // helpers,
 
 export default {
   setup() {
-    // const router = useRouter();
     const formData = reactive({
       checkPassword: "",
       password: "",
@@ -207,32 +177,7 @@ export default {
     });
 
     // Check password
-    const fetchEnabled = ref(false);
     const userId = localStorage.getItem("userId");
-
-    const { result: checkResult } = useQuery(
-      CHECK_PASSWORD,
-      () => ({
-        userId: userId * 1,
-        input: {
-          password: formData.checkPassword,
-        },
-      }),
-      { enabled: fetchEnabled }
-    );
-
-    watch(checkResult, () => {
-      const message = computed(() => checkResult.value?.checkPassword.message);
-      if (message.value === "Success") {
-        formData.showForm = true;
-        formData.isDisabled = true;
-      }
-    });
-
-    function checkPassword() {
-      fetchEnabled.value = true;
-      // formData.checkPassword = "";
-    }
 
     const rules = computed(() => {
       return {
@@ -251,7 +196,7 @@ export default {
       CHANGE_PASSWORD,
       () => ({
         variables: {
-          userId: localStorage.getItem("userId") * 1,
+          userId: userId * 1,
           input: {
             password: formData.confirmPassword,
           },
@@ -272,11 +217,8 @@ export default {
     });
 
     return {
-      message: computed(() => checkResult.value?.checkPassword.message),
       formData,
       v$,
-      checkResult,
-      checkPassword,
       changePassword,
       handleChange,
     };

@@ -467,3 +467,9 @@ export const CREATE_ATTR = gql`
     }
   }
 `;
+
+export const UPLOAD_FILE = gql`
+  mutation ($file: Upload!) {
+    imageUploader(file: $file)
+  }
+`;

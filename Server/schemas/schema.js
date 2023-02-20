@@ -300,6 +300,7 @@ const typeDefs = gql`
     input CreateProductInput {
         name: String!, 
         slug: String!, 
+        image: String,
         description: String!,
         price: Float, 
         categoryId: Int!
@@ -308,6 +309,7 @@ const typeDefs = gql`
     input UpdateProductInput {
         name: String, 
         slug: String, 
+        image: String,
         price: Float, 
         description: String,
         categoryId: Int

@@ -6,18 +6,20 @@ const { createWriteStream } = require('fs')
 
 const UploadImageResolver = {
   Mutation: {
-    async imageUploader (parent, { file }, context) {
-      // Time: 15:44
-      const { filename, createReadStream } = await file
-      const stream = createReadStream()
-      let { ext, name } = parse(filename)
+    async imageUploader (parent, args, context) {
+      console.log(args)
+      const pfile = await args.file.file
+      const stream = pfile.createReadStream()
+      let { ext, name } = parse(pfile.filename)
 
       name = name.replace(/([^a-z0-9]+)/gi, '-').replace(' ', '_')
-      const URL = `${process.env.BASE_URL}${process.env.PORT}`
 
-      let serverFile = join(__dirname, `../upload/${name}${ext}`)
+      let serverFile = join(__dirname, `../upload/${name}_${Date.now()}${ext}`)
+
       const writeStream = await createWriteStream(serverFile)
       await stream.pipe(writeStream)
+
+      const URL = `${process.env.BASE_URL}${process.env.PORT}`
       serverFile = `${URL}${serverFile.split('upload')[1]}`
 
       return serverFile

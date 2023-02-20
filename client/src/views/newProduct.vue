@@ -41,7 +41,7 @@
               </button>
             </div>
           </div>
-          <form @submit.prevent>
+          <form @submit.prevent enctype="multipart/form-data">
             <div class="card-body">
               <div class="form-div-wrapper d-flex">
                 <div class="form-group input-width">
@@ -82,16 +82,30 @@
                     {{ error.$message }}
                   </span>
                 </div>
+                <div class="form-group">
+                  <input type="hidden" v-model="formData.image" />
+                </div>
               </div>
               <div class="form-div-wrapper row d-flex">
-                <!-- <div class="form-group col-lg-4">
+                <div class="form-group col-lg-4">
                   <label> Image <span class="text-danger">*</span> </label>
-                  <input type="file" class="form-control" />
-                  <span class="form-text text-muted text-err">
-                    {{ error.$message }}
-                  </span>
-                </div> -->
-                <div class="form-group col-lg-6">
+                  <input
+                    type="file"
+                    id="file"
+                    class="form-control"
+                    ref="imageUploader"
+                    @change="handleChange"
+                  />
+                  <div class="form-group">
+                    <img
+                      class="product-img mt-3"
+                      src="https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
+                      alt="thumbnail"
+                    />
+                    <button @click="log">Log value</button>
+                  </div>
+                </div>
+                <div class="form-group col-lg-4">
                   <label> Price <span class="text-danger">*</span> </label>
                   <input
                     type="number"
@@ -107,15 +121,12 @@
                     {{ error.$message }}
                   </span>
                 </div>
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-4">
                   <label for="category">
                     Category
                     <span class="text-danger">*</span>
                   </label>
-                  <p v-if="error">{{ error }}</p>
-                  <p v-if="loading">Loading...</p>
                   <select
-                    v-else
                     v-model="formData.categoryId"
                     class="form-control"
                     id="category"
@@ -183,7 +194,8 @@
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
+import { CREATE_PRODUCT, GET_ALL_CATEGORIES, UPLOAD_FILE } from "@/constants";
+// import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
@@ -199,12 +211,14 @@ export default {
       router.push({ name: "Product", params: {} });
     }
 
-    const { result, loading, error } = useQuery(GET_ALL_CATEGORIES);
+    const { result } = useQuery(GET_ALL_CATEGORIES);
 
     const formData = reactive({
       name: "",
       slug: "",
       price: "",
+      image: "",
+      fileInput: null,
       description: "",
       categoryId: "",
       message: "",
@@ -233,6 +247,25 @@ export default {
       return formData.slug;
     }
 
+    // const fileInput = ref(null);
+    // let input = null;
+    function getFile() {
+      const file = document.querySelector("#file");
+      formData.fileInput = file.files[0];
+      // input = file.files[0];
+      // console.log(fileInput.value);
+    }
+
+    function log() {
+      console.log(formData.fileInput);
+    }
+
+    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, () => ({
+      variables: {
+        file: formData.fileInput,
+      },
+    }));
+
     const {
       mutate: createProduct,
       onError,
@@ -242,23 +275,31 @@ export default {
         input: {
           name: formData.name,
           slug: formData.slug,
+          image: formData.image,
           price: formData.price,
           categoryId: formData.categoryId,
           description: formData.description,
         },
       },
     }));
+
     onError(async () => {
       await v$.value.$validate();
     });
     onDone(() => {
       formData.name = "";
       formData.slug = "";
+      formData.image = "";
       formData.price = "";
       formData.description = "";
       formData.categoryId = "";
       formData.message = "Product Created  !";
     });
+
+    function handleChange() {
+      getFile();
+      uploadfile();
+    }
 
     return {
       meta: computed(() => route.meta),
@@ -266,16 +307,22 @@ export default {
       formData,
       renderSlug,
       result,
-      loading,
-      error,
       createProduct,
       v$,
+      uploadfile,
+      getFile,
+      handleChange,
+      log,
     };
   },
 };
 </script>
 
 <style scoped>
+.product-img {
+  width: 100%;
+  border-radius: 5px;
+}
 .input-width {
   width: 50%;
 }
