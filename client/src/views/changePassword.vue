@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="card-body px-7">
-            <form class="form" id="changePassword">
+            <form class="form" id="changePassword" @submit.prevent>
               <div class="tab-content">
                 <div class="tab-pane px-7 active">
                   <div class="card-body">
@@ -99,6 +99,7 @@
                               class="form-control form-control-lg form-control-solid"
                               type="password"
                               v-model="formData.password"
+                              :disabled="formData.isDisabled"
                             />
                             <span
                               class="form-text text-muted confirm text-err"
@@ -120,8 +121,9 @@
                               class="form-control form-control-lg form-control-solid"
                               type="password"
                               v-model="formData.confirmPassword"
-                              @change="handleChange"
+                              :disabled="formData.isDisabled"
                             />
+                            <!-- @change="handleChange" -->
                             <span
                               class="form-text text-muted confirm text-err"
                               v-for="error in v$.confirmPassword.$errors"
@@ -138,7 +140,7 @@
               </div>
               <div class="card-footer">
                 <button
-                  type="reset"
+                  type="submit"
                   class="btn btn-primary mr-2"
                   @click="changePassword"
                 >
@@ -211,7 +213,8 @@ export default {
     onDone(() => {
       formData.message = "Password Updated! Redirecting...";
       localStorage.clear();
-      setTimeout(redirect, 3000);
+      setTimeout(redirect, 2000);
+      formData.isDisabled = true;
       formData.password = "";
       formData.confirmPassword = "";
     });

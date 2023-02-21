@@ -247,24 +247,23 @@ export default {
       return formData.slug;
     }
 
-    // const fileInput = ref(null);
-    // let input = null;
     function getFile() {
       const file = document.querySelector("#file");
       formData.fileInput = file.files[0];
-      // input = file.files[0];
-      // console.log(fileInput.value);
     }
 
     function log() {
       console.log(formData.fileInput);
     }
 
-    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, () => ({
-      variables: {
-        file: formData.fileInput,
-      },
-    }));
+    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, () => {
+      // const file = document.querySelector("#file");
+      return {
+        variables: {
+          file: formData.fileInput.value,
+        },
+      };
+    });
 
     const {
       mutate: createProduct,
