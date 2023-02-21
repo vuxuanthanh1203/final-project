@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+// import { parseJwt } from "./getExpiredToken";
 
 const routes = [
   {
@@ -7,8 +8,7 @@ const routes = [
     meta: {
       layout: "auth",
     },
-    component: () =>
-      import(/* webpackChunkName: "login" */ "@/views/login.vue"),
+    component: () => import("@/views/login.vue"),
   },
   {
     path: "/error",
@@ -16,7 +16,7 @@ const routes = [
     meta: {
       layout: "error",
     },
-    component: () => import(/* webpackChunkName: "error" */ "@/views/404.vue"),
+    component: () => import("@/views/404.vue"),
   },
   {
     path: "/overview",
@@ -25,8 +25,7 @@ const routes = [
       title: "Dashboard",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "overview" */ "@/views/overview.vue"),
+    component: () => import("@/views/overview.vue"),
   },
   {
     path: "/category",
@@ -36,8 +35,7 @@ const routes = [
       des: "All of the categories",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "category" */ "@/views/category.vue"),
+    component: () => import("@/views/category.vue"),
   },
   {
     path: "/category/new-category",
@@ -47,30 +45,17 @@ const routes = [
       des: "Fill in new category information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "category" */ "@/views/new-category.vue"),
+    component: () => import("@/views/newCategory.vue"),
   },
   {
-    path: "/category/:id",
+    path: "/category/edit/:id",
     name: "EditCategory",
     meta: {
       title: "Edit Category",
       des: "Fill in category new information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "category" */ "@/views/edit-category.vue"),
-  },
-  {
-    path: "/category/delete/:id",
-    name: "DeleteCategory",
-    meta: {
-      title: "Edit Category",
-      des: "Fill in category information",
-      requiresAuth: true,
-    },
-    component: () =>
-      import(/* webpackChunkName: "category" */ "@/views/category.vue"),
+    component: () => import("@/views/editCategory.vue"),
   },
   {
     path: "/order",
@@ -80,8 +65,7 @@ const routes = [
       des: "All of the orders",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "order" */ "@/views/order.vue"),
+    component: () => import("@/views/order.vue"),
   },
   {
     path: "/product",
@@ -91,8 +75,7 @@ const routes = [
       des: "All of the products",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "product" */ "@/views/product.vue"),
+    component: () => import("@/views/product.vue"),
   },
   {
     path: "/product/new-product",
@@ -102,19 +85,37 @@ const routes = [
       des: "Fill in new product information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "product" */ "@/views/new-product.vue"),
+    component: () => import("@/views/newProduct.vue"),
   },
   {
-    path: "/product/:id",
+    path: "/product/edit/:id",
     name: "Edit Product",
     meta: {
-      title: "Add New Product",
+      title: "Edit Product",
       des: "Fill in new product information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "product" */ "@/views/edit-product.vue"),
+    component: () => import("@/views/editProduct.vue"),
+  },
+  {
+    path: "/product/:id",
+    name: "Product Detail",
+    meta: {
+      title: "Product Detail",
+      des: "Infomation of the product",
+      requiresAuth: true,
+    },
+    component: () => import("@/views/productDetail.vue"),
+  },
+  {
+    path: "/product/:id/new-attribute",
+    name: "NewAttr",
+    meta: {
+      title: "Product Attribute",
+      des: "New Product Attribute",
+      requiresAuth: true,
+    },
+    component: () => import("@/views/newAttr.vue"),
   },
   {
     path: "/shipping",
@@ -124,8 +125,7 @@ const routes = [
       des: "All of the shipping methods",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "shipping" */ "@/views/shipping.vue"),
+    component: () => import("@/views/shipping.vue"),
   },
   {
     path: "/shipping/new-shipping",
@@ -135,8 +135,7 @@ const routes = [
       des: "Fill in new shipping method information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "product" */ "@/views/new-shipping.vue"),
+    component: () => import("@/views/newShipping.vue"),
   },
   {
     path: "/user",
@@ -146,7 +145,7 @@ const routes = [
       des: "All of the users",
       requiresAuth: true,
     },
-    component: () => import(/* webpackChunkName: "user" */ "@/views/user.vue"),
+    component: () => import("@/views/user.vue"),
   },
   {
     path: "/user/new-user",
@@ -156,19 +155,37 @@ const routes = [
       des: "Fill in new user information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "product" */ "@/views/new-user.vue"),
+    component: () => import("@/views/newUser.vue"),
   },
   {
-    path: "/user/:id",
+    path: "/user/edit/:id",
     name: "UpdateUser",
     meta: {
       title: "Update User",
       des: "Fill in user new information",
       requiresAuth: true,
     },
-    component: () =>
-      import(/* webpackChunkName: "user" */ "@/views/edit-user.vue"),
+    component: () => import("@/views/editUser.vue"),
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    meta: {
+      title: "Profile",
+      des: "Your Infomation",
+      requiresAuth: true,
+    },
+    component: () => import("@/views/profile.vue"),
+  },
+  {
+    path: "/change-password",
+    name: "ChangePassword",
+    component: () => import("@/views/changePassword.vue"),
+  },
+  {
+    path: "/check-password",
+    name: "CheckPassword",
+    component: () => import("@/views/checkPassword.vue"),
   },
 ];
 
@@ -179,7 +196,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const isLoggedIn = localStorage.getItem("apollo-token") || null;
+  const isLoggedIn = localStorage.getItem("token") || null;
 
   if (to.meta.requiresAuth && !isLoggedIn) {
     return {

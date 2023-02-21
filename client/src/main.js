@@ -1,12 +1,12 @@
 import { createApp, provide, h } from "vue";
 import { DefaultApolloClient } from "@vue/apollo-composable";
 import { ApolloClient, InMemoryCache } from "@apollo/client/core";
+import Select2 from "vue3-select2-component";
 import App from "./App.vue";
 import router from "./router";
 
 import { registerGlobalComponents } from "./utils/import";
 import "./assets/styles/style.bundle.css";
-// import "./assets/js/scripts.bundle";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle";
 
 // Import FontAwesome
@@ -42,4 +42,5 @@ registerGlobalComponents(app);
 app.use(router);
 app.use(bootstrap);
 app.component("font-awesome-icon", FontAwesomeIcon);
+app.component("Select2", Select2);
 app.mount("#app");

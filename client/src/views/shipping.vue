@@ -62,10 +62,11 @@
                     <span>{{ shippingMethod.price }}</span>
                   </td>
                   <td class="data-value">
-                    <div class="btn btn-sm btn-clean btn-icon mr-2">
-                      <font-awesome-icon :icon="['fas', 'pencil']" />
-                    </div>
-                    <div class="btn btn-sm btn-clean btn-icon">
+                    <div
+                      class="btn btn-sm btn-clean btn-icon"
+                      data-toggle="tooltip"
+                      title="Delete"
+                    >
                       <font-awesome-icon :icon="['fas', 'trash']" />
                     </div>
                   </td>

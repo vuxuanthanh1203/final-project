@@ -1,7 +1,11 @@
 // @ts-check
 'use strict'
 
+// const { default: sequelize } = require('sequelize/types/sequelize')
+const db = require('../models/index')
+
 const Order = require('../models').Order
+const User = require('../models').User
 
 const OrderQueryResolver = {
   Query: {
@@ -90,6 +94,16 @@ const OrderQueryResolver = {
       return result
     }
   }
+
+  // async topOrder (parent, args, context) {
+  //   const topOrder = Order.findAll({
+  //     attributes: ['User.*', 'Order.*', [db.sequelize.fn('COUNT', 'order.id'), 'OrderCount']],
+  //     include: [User]
+  //   })
+  //   console.log(topOrder)
+  //   return topOrder
+  // }
+
 }
 
 module.exports = OrderQueryResolver

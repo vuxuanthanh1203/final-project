@@ -21,6 +21,11 @@ module.exports = {
         field: 'slug',
         type: Sequelize.STRING(191)
       },
+      image: {
+        allowNull: false,
+        field: 'image',
+        type: Sequelize.STRING(191)
+      },
       price: {
         allowNull: false,
         field: 'price',

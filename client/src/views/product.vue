@@ -77,12 +77,9 @@
                 </tr>
               </thead>
               <tbody class="datatable-body">
-                <p v-if="error">{{ error }}</p>
-                <p v-if="loading">Loading...</p>
                 <tr
                   class="datatable-row"
-                  v-else
-                  v-for="product in result.products"
+                  v-for="product in products"
                   :key="product.id"
                 >
                   <td class="data-value">
@@ -107,10 +104,24 @@
                     <router-link
                       :to="`/product/${product.id}`"
                       class="btn btn-sm btn-clean btn-icon mr-2"
+                      data-toggle="tooltip"
+                      title="Detail"
+                    >
+                      <font-awesome-icon :icon="['fas', 'circle-info']" />
+                    </router-link>
+                    <router-link
+                      :to="`/product/edit/${product.id}`"
+                      class="btn btn-sm btn-clean btn-icon mr-2"
+                      data-toggle="tooltip"
+                      title="Edit"
                     >
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
-                    <div class="btn btn-sm btn-clean btn-icon">
+                    <div
+                      class="btn btn-sm btn-clean btn-icon"
+                      data-toggle="tooltip"
+                      title="Delete"
+                    >
                       <font-awesome-icon :icon="['fas', 'trash']" />
                     </div>
                   </td>
@@ -150,7 +161,7 @@ export default {
       router.push({ name: "NewProduct", params: {} });
     }
 
-    const { result, loading, error } = useQuery(GET_ALL_PRODUCT);
+    const { result: dataProduct } = useQuery(GET_ALL_PRODUCT);
 
     const { mutate: exportProduct, onDone } = useMutation(EXPORT_PRODUCT);
 
@@ -162,9 +173,7 @@ export default {
       titleItems,
       meta: computed(() => route.meta),
       goToRoute,
-      result,
-      loading,
-      error,
+      products: computed(() => dataProduct.value?.products),
       exportProduct,
       formData,
     };

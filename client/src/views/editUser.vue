@@ -45,13 +45,10 @@
             <div class="card-body">
               <div class="form-div-wrapper d-flex">
                 <div class="form-group input-width">
-                  <label>
-                    Product Name <span class="text-danger">*</span>
-                  </label>
+                  <label>Name <span class="text-danger">*</span></label>
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="Enter the name of the new product"
                     v-model="formData.name"
                   />
                   <span
@@ -63,92 +60,94 @@
                   </span>
                 </div>
                 <div class="form-group input-width ml-5">
-                  <label>
-                    Product Slug
-                    <span class="text-danger">*</span>
-                  </label>
+                  <label>User Name <span class="text-danger">*</span></label>
                   <input
                     type="text"
-                    class="form-control input-disable"
-                    placeholder="The slug of the product"
-                    disabled="disabled"
-                    :value="renderSlug()"
+                    class="form-control"
+                    v-model="formData.userName"
                   />
                   <span
                     class="form-text text-muted text-err"
-                    v-for="error in v$.slug.$errors"
+                    v-for="error in v$.userName.$errors"
                     :key="error.$uid"
                   >
                     {{ error.$message }}
                   </span>
                 </div>
               </div>
-              <div class="form-div-wrapper row d-flex">
-                <!-- <div class="form-group col-lg-4">
-                  <label> Image <span class="text-danger">*</span> </label>
-                  <input type="file" class="form-control" />
-                  <span class="form-text text-muted text-err">
-                    {{ error.$message }}
-                  </span>
-                </div> -->
-                <div class="form-group col-lg-6">
-                  <label> Price <span class="text-danger">*</span> </label>
+              <div class="form-div-wrapper d-flex">
+                <div class="form-group input-width">
+                  <label>Password <span class="text-danger">*</span></label>
                   <input
-                    type="number"
+                    type="password"
                     class="form-control"
-                    placeholder="Enter the name of the new product"
-                    v-model="formData.price"
+                    placeholder="Enter the name of the new user"
+                    v-model="formData.password"
                   />
                   <span
                     class="form-text text-muted text-err"
-                    v-for="error in v$.price.$errors"
+                    v-for="error in v$.password.$errors"
                     :key="error.$uid"
                   >
                     {{ error.$message }}
                   </span>
                 </div>
-                <div class="form-group col-lg-6">
-                  <label for="category">
-                    Category
-                    <span class="text-danger">*</span>
+                <div class="form-group input-width ml-5">
+                  <label>
+                    Confirm Password <span class="text-danger">*</span>
                   </label>
-                  <p v-if="error">{{ error }}</p>
-                  <p v-if="loading">Loading...</p>
-                  <select
-                    v-else
-                    v-model="formData.categoryId"
+                  <input
+                    type="password"
                     class="form-control"
-                    id="category"
-                  >
-                    <option
-                      v-for="category in result.categories"
-                      :key="category.id"
-                      :value="category.id"
-                    >
-                      {{ category.name }}
-                    </option>
-                  </select>
+                    placeholder="Re-enter the password"
+                    v-model="formData.confirmPassword"
+                  />
                   <span
                     class="form-text text-muted text-err"
-                    v-for="error in v$.categoryId.$errors"
+                    v-for="error in v$.confirmPassword.$errors"
                     :key="error.$uid"
                   >
                     {{ error.$message }}
                   </span>
+                </div>
+              </div>
+              <div class="form-div-wrapper d-flex">
+                <div class="form-group input-width">
+                  <label>Phone Number <span class="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="formData.phoneNumber"
+                  />
+                  <span
+                    class="form-text text-muted text-err"
+                    v-for="error in v$.phoneNumber.$errors"
+                    :key="error.$uid"
+                  >
+                    {{ error.$message }}
+                  </span>
+                </div>
+                <div class="form-group input-width ml-5">
+                  <label>Role</label>
+                  <div class="checkbox-inline mt-3">
+                    <label class="checkbox">
+                      <input type="checkbox" v-model="formData.isAdmin" />
+                      <span></span> Is Admin
+                    </label>
+                  </div>
                 </div>
               </div>
               <div class="form-group">
-                <label>Description <span class="text-danger">*</span></label>
+                <label>Address <span class="text-danger">*</span></label>
                 <textarea
                   rows="5"
                   class="form-control"
-                  placeholder="Enter the address of the new user"
-                  v-model="formData.description"
+                  v-model="formData.address"
                 >
                 </textarea>
                 <span
                   class="form-text text-muted text-err"
-                  v-for="error in v$.description.$errors"
+                  v-for="error in v$.address.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}
@@ -157,9 +156,9 @@
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="createProduct"
+                @click="updateUser"
               >
                 Submit
               </button>
@@ -180,15 +179,14 @@
 </template>
 
 <script>
-import { computed } from "@vue/runtime-core";
+import { computed, watch } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
+import { GET_USER, UPDATE_USER } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
-
-import slugify from "slugify";
+import { required, minLength, sameAs } from "@vuelidate/validators";
+// helpers,
 
 export default {
   setup() {
@@ -196,17 +194,17 @@ export default {
     const router = useRouter();
 
     function backToRoute() {
-      router.push({ name: "Product", params: {} });
+      router.push({ name: "User", params: {} });
     }
-
-    const { result, loading, error } = useQuery(GET_ALL_CATEGORIES);
 
     const formData = reactive({
       name: "",
-      slug: "",
-      price: "",
-      description: "",
-      categoryId: "",
+      userName: "",
+      password: "",
+      confirmPassword: "",
+      phoneNumber: "",
+      isAdmin: false,
+      address: "",
       message: "",
       isShow: true,
     });
@@ -214,62 +212,66 @@ export default {
     const rules = computed(() => {
       return {
         name: { required },
-        slug: { required },
-        price: { required },
-        description: { required },
-        categoryId: { required },
+        userName: { required },
+        password: { required, minLength: minLength(6) },
+        confirmPassword: { required, sameAs: sameAs(formData.password) },
+        phoneNumber: { required },
+        address: { required },
       };
     });
 
     const v$ = useVuelidate(rules, formData);
 
-    function renderSlug() {
-      formData.slug = slugify(formData.name, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true,
-      });
+    const { result: dataUser } = useQuery(GET_USER, {
+      userId: parseInt(route.params.id),
+    });
 
-      return formData.slug;
-    }
+    watch(dataUser, (value) => {
+      formData.name = value.user.name;
+      formData.userName = value.user.userName;
+      formData.phoneNumber = value.user.phoneNumber;
+      formData.address = value.user.phoneNumber;
+    });
 
     const {
-      mutate: createProduct,
+      mutate: updateUser,
       onError,
       onDone,
-    } = useMutation(CREATE_PRODUCT, () => ({
+    } = useMutation(UPDATE_USER, () => ({
       variables: {
+        userId: parseInt(route.params.id),
         input: {
           name: formData.name,
-          slug: formData.slug,
-          price: formData.price,
-          categoryId: formData.categoryId,
-          description: formData.description,
+          userName: formData.userName,
+          password: formData.password,
+          phoneNumber: formData.phoneNumber,
+          isAdmin: formData.isAdmin,
+          address: formData.address,
         },
       },
     }));
+
     onError(async () => {
       await v$.value.$validate();
     });
+
     onDone(() => {
       formData.name = "";
-      formData.slug = "";
-      formData.price = "";
-      formData.description = "";
-      formData.categoryId = "";
-      formData.message = "Product Created  !";
+      formData.userName = "";
+      formData.password = "";
+      formData.confirmPassword = "";
+      formData.phoneNumber = "";
+      formData.address = "";
+      formData.message = "User Updated !";
     });
 
     return {
       meta: computed(() => route.meta),
+      user: computed(() => dataUser.value?.user),
       backToRoute,
       formData,
-      renderSlug,
-      result,
-      loading,
-      error,
-      createProduct,
       v$,
+      updateUser,
     };
   },
 };

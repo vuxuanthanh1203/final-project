@@ -12,14 +12,19 @@
               </span>
             </div>
             <div class="card-toolbar">
-              <div class="dropdown dropdown-inline mr-2">
-                <button
-                  @click="exportUser"
-                  class="btn btn-light-primary font-weight-bolder dropdown-toggle"
-                >
-                  <font-awesome-icon :icon="['fas', 'file-export']" />
-                  Export
-                </button>
+              <div class="form-group mr-2 select-type d-flex">
+                <label for="type"> Type:</label>
+                <select class="form-control ml-2" id="type">
+                  <option>user</option>
+                  <option @click="loadStaff">admin</option>
+                </select>
+              </div>
+              <div
+                @click="exportUser"
+                class="btn btn-primary font-weight-bolder mr-2"
+              >
+                <font-awesome-icon :icon="['fas', 'file-export']" />
+                Export Data
               </div>
               <div
                 @click="goToRoute"
@@ -76,15 +81,12 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="datatable-body">
-                <p v-if="error">{{ error }}</p>
-                <p v-if="loading">Loading...</p>
-                <tr
-                  class="datatable-row"
-                  v-else
-                  v-for="user in result.users"
-                  :key="user.id"
-                >
+              <tbody
+                v-for="user in users"
+                :key="user.id"
+                class="datatable-body"
+              >
+                <tr class="datatable-row" v-if="auth_user != user.id">
                   <td class="data-value">
                     <span>{{ user.id }}</span>
                   </td>
@@ -98,16 +100,25 @@
                     <span>{{ user.phoneNumber }}</span>
                   </td>
                   <td class="data-value">
-                    <span>{{ user.isAdmin }}</span>
-                  </td>
-                  <td class="data-value">
+                    <div class="btn btn-sm btn-clean btn-icon mr-2">
+                      <font-awesome-icon :icon="['fas', 'file']" />
+                    </div>
                     <router-link
-                      :to="`/user/${user.id}`"
+                      v-if="!user.isAdmin"
+                      :to="`/user/edit/${user.id}`"
                       class="btn btn-sm btn-clean btn-icon mr-2"
+                      data-toggle="tooltip"
+                      title="Edit"
                     >
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
-                    <div class="btn btn-sm btn-clean btn-icon">
+                    <div
+                      @click="deleteItem({ userId: user.id })"
+                      v-if="!user.isAdmin"
+                      class="btn btn-sm btn-clean btn-icon"
+                      data-toggle="tooltip"
+                      title="Delete"
+                    >
                       <font-awesome-icon :icon="['fas', 'trash']" />
                     </div>
                   </td>
@@ -126,7 +137,12 @@
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { TITLE_DATA_USER, GET_ALL_USERS, EXPORT_USER } from "@/constants";
+import {
+  TITLE_DATA_USER,
+  GET_ALL_USERS,
+  EXPORT_USER,
+  DELETE_USER,
+} from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
@@ -134,6 +150,9 @@ export default {
     const titleItems = reactive(TITLE_DATA_USER);
     const route = useRoute();
     const router = useRouter();
+
+    const auth_user = localStorage.getItem("userId");
+
     const formData = reactive({
       message: "",
       isShow: true,
@@ -143,7 +162,28 @@ export default {
       router.push({ name: "NewUser", params: {} });
     }
 
-    const { result, loading, error } = useQuery(GET_ALL_USERS);
+    const { result: getAllUsers } = useQuery(GET_ALL_USERS);
+
+    // Delete Item
+    const users = computed(() => getAllUsers.value?.users);
+
+    const { mutate: deleteItem } = useMutation(DELETE_USER);
+    // const { mutate: deleteItem } = useMutation(DELETE_USER, {
+    //   update(cache, { data }) {
+    //     const { listUser } = cache.readQuery({
+    //       query: GET_ALL_USERS,
+    //     });
+
+    //     cache.writeQuery({
+    //       query: GET_ALL_USERS,
+    //       data: {
+    //         listUser: listUser.filter((user) => user.id !== data.deleteItem.id),
+    //       },
+    //     });
+    //   },
+    // });
+
+    // Export Item
 
     const { mutate: exportUser, onDone } = useMutation(EXPORT_USER);
 
@@ -154,18 +194,23 @@ export default {
     return {
       titleItems,
       meta: computed(() => route.meta),
+      users,
       goToRoute,
-      result,
-      loading,
       formData,
+      auth_user,
       exportUser,
-      error,
+      deleteItem,
     };
   },
 };
 </script>
 
 <style scoped>
+.select-type {
+  align-items: center;
+  align-content: center;
+  margin-top: 25px;
+}
 .data-value {
   vertical-align: middle;
   padding: 1rem 0;

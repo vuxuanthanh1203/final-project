@@ -41,14 +41,17 @@
               </button>
             </div>
           </div>
-          <form @submit.prevent>
+          <form @submit.prevent enctype="multipart/form-data">
             <div class="card-body">
               <div class="form-div-wrapper d-flex">
                 <div class="form-group input-width">
-                  <label>Name <span class="text-danger">*</span></label>
+                  <label>
+                    Product Name <span class="text-danger">*</span>
+                  </label>
                   <input
                     type="text"
                     class="form-control"
+                    placeholder="Enter the name of the new product"
                     v-model="formData.name"
                   />
                   <span
@@ -60,94 +63,103 @@
                   </span>
                 </div>
                 <div class="form-group input-width ml-5">
-                  <label>User Name <span class="text-danger">*</span></label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="formData.userName"
-                  />
-                  <span
-                    class="form-text text-muted text-err"
-                    v-for="error in v$.userName.$errors"
-                    :key="error.$uid"
-                  >
-                    {{ error.$message }}
-                  </span>
-                </div>
-              </div>
-              <div class="form-div-wrapper d-flex">
-                <div class="form-group input-width">
-                  <label>Password <span class="text-danger">*</span></label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Enter the name of the new user"
-                    v-model="formData.password"
-                  />
-                  <span
-                    class="form-text text-muted text-err"
-                    v-for="error in v$.password.$errors"
-                    :key="error.$uid"
-                  >
-                    {{ error.$message }}
-                  </span>
-                </div>
-                <div class="form-group input-width ml-5">
                   <label>
-                    Confirm Password <span class="text-danger">*</span>
+                    Product Slug
+                    <span class="text-danger">*</span>
                   </label>
                   <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Re-enter the password"
-                    v-model="formData.confirmPassword"
+                    type="text"
+                    class="form-control input-disable"
+                    placeholder="The slug of the product"
+                    disabled="disabled"
+                    :value="renderSlug()"
                   />
                   <span
                     class="form-text text-muted text-err"
-                    v-for="error in v$.confirmPassword.$errors"
+                    v-for="error in v$.slug.$errors"
                     :key="error.$uid"
                   >
                     {{ error.$message }}
                   </span>
+                </div>
+                <div class="form-group">
+                  <input type="hidden" v-model="formData.image" />
                 </div>
               </div>
-              <div class="form-div-wrapper d-flex">
-                <div class="form-group input-width">
-                  <label>Phone Number <span class="text-danger">*</span></label>
+              <div class="form-div-wrapper row d-flex">
+                <div class="form-group col-lg-4">
+                  <label> Image <span class="text-danger">*</span> </label>
                   <input
-                    type="text"
+                    type="file"
+                    id="file"
                     class="form-control"
-                    v-model="formData.phoneNumber"
+                    ref="imageUploader"
+                    @change="handleChange"
+                  />
+                  <div class="form-group">
+                    <img
+                      class="product-img mt-3"
+                      src="https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
+                      alt="thumbnail"
+                    />
+                    <button @click="log">Log value</button>
+                  </div>
+                </div>
+                <div class="form-group col-lg-4">
+                  <label> Price <span class="text-danger">*</span> </label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Enter the name of the new product"
+                    v-model="formData.price"
                   />
                   <span
                     class="form-text text-muted text-err"
-                    v-for="error in v$.phoneNumber.$errors"
+                    v-for="error in v$.price.$errors"
                     :key="error.$uid"
                   >
                     {{ error.$message }}
                   </span>
                 </div>
-                <div class="form-group input-width ml-5">
-                  <label>Role</label>
-                  <div class="checkbox-inline mt-3">
-                    <label class="checkbox">
-                      <input type="checkbox" v-model="formData.isAdmin" />
-                      <span></span> Is Admin
-                    </label>
-                  </div>
+                <div class="form-group col-lg-4">
+                  <label for="category">
+                    Category
+                    <span class="text-danger">*</span>
+                  </label>
+                  <select
+                    v-model="formData.categoryId"
+                    class="form-control"
+                    id="category"
+                  >
+                    <option
+                      v-for="category in result.categories"
+                      :key="category.id"
+                      :value="category.id"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select>
+                  <span
+                    class="form-text text-muted text-err"
+                    v-for="error in v$.categoryId.$errors"
+                    :key="error.$uid"
+                  >
+                    {{ error.$message }}
+                  </span>
                 </div>
               </div>
               <div class="form-group">
-                <label>Address <span class="text-danger">*</span></label>
+                <label>Description <span class="text-danger">*</span></label>
                 <textarea
                   rows="5"
                   class="form-control"
-                  v-model="formData.address"
+                  placeholder="Enter the address of the new user"
+                  v-model="formData.description"
                 >
                 </textarea>
                 <span
                   class="form-text text-muted text-err"
-                  v-for="error in v$.address.$errors"
+                  v-for="error in v$.description.$errors"
                   :key="error.$uid"
                 >
                   {{ error.$message }}
@@ -156,9 +168,9 @@
             </div>
             <div class="card-footer">
               <button
-                type="submit"
+                type="reset"
                 class="btn btn-primary mr-2"
-                @click="updateUser"
+                @click="createProduct"
               >
                 Submit
               </button>
@@ -182,11 +194,13 @@
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { GET_USER, UPDATE_USER } from "@/constants";
+import { CREATE_PRODUCT, GET_ALL_CATEGORIES, UPLOAD_FILE } from "@/constants";
+// import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, sameAs } from "@vuelidate/validators";
-// helpers,
+import { required } from "@vuelidate/validators";
+
+import slugify from "slugify";
 
 export default {
   setup() {
@@ -194,17 +208,19 @@ export default {
     const router = useRouter();
 
     function backToRoute() {
-      router.push({ name: "User", params: {} });
+      router.push({ name: "Product", params: {} });
     }
+
+    const { result } = useQuery(GET_ALL_CATEGORIES);
 
     const formData = reactive({
       name: "",
-      userName: "",
-      password: "",
-      confirmPassword: "",
-      phoneNumber: "",
-      isAdmin: false,
-      address: "",
+      slug: "",
+      price: "",
+      image: "",
+      fileInput: null,
+      description: "",
+      categoryId: "",
       message: "",
       isShow: true,
     });
@@ -212,57 +228,101 @@ export default {
     const rules = computed(() => {
       return {
         name: { required },
-        userName: { required },
-        password: { required, minLength: minLength(6) },
-        confirmPassword: { required, sameAs: sameAs(formData.password) },
-        phoneNumber: { required },
-        address: { required },
+        slug: { required },
+        price: { required },
+        description: { required },
+        categoryId: { required },
       };
     });
 
     const v$ = useVuelidate(rules, formData);
 
-    const { result } = useQuery(GET_USER, {
-      userId: parseInt(route.params.id),
-    });
+    function renderSlug() {
+      formData.slug = slugify(formData.name, {
+        replacement: "-",
+        remove: /[*+~.()'"!:@]/g,
+        lower: true,
+      });
 
-    const { mutate: updateUser, onDone } = useMutation(UPDATE_USER, () => ({
+      return formData.slug;
+    }
+
+    // const fileInput = ref(null);
+    // let input = null;
+    function getFile() {
+      const file = document.querySelector("#file");
+      formData.fileInput = file.files[0];
+      // input = file.files[0];
+      // console.log(fileInput.value);
+    }
+
+    function log() {
+      console.log(formData.fileInput);
+    }
+
+    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, () => ({
       variables: {
-        userId: parseInt(route.params.id),
+        file: formData.fileInput,
+      },
+    }));
+
+    const {
+      mutate: createProduct,
+      onError,
+      onDone,
+    } = useMutation(CREATE_PRODUCT, () => ({
+      variables: {
         input: {
           name: formData.name,
-          userName: formData.userName,
-          password: formData.password,
-          phoneNumber: formData.phoneNumber,
-          isAdmin: formData.isAdmin,
-          address: formData.address,
+          slug: formData.slug,
+          image: formData.image,
+          price: formData.price,
+          categoryId: formData.categoryId,
+          description: formData.description,
         },
       },
     }));
 
+    onError(async () => {
+      await v$.value.$validate();
+    });
     onDone(() => {
       formData.name = "";
-      formData.userName = "";
-      formData.password = "";
-      formData.confirmPassword = "";
-      formData.phoneNumber = "";
-      formData.address = "";
-      formData.message = "User Updated !";
+      formData.slug = "";
+      formData.image = "";
+      formData.price = "";
+      formData.description = "";
+      formData.categoryId = "";
+      formData.message = "Product Created  !";
     });
+
+    function handleChange() {
+      getFile();
+      uploadfile();
+    }
 
     return {
       meta: computed(() => route.meta),
       backToRoute,
       formData,
+      renderSlug,
       result,
+      createProduct,
       v$,
-      updateUser,
+      uploadfile,
+      getFile,
+      handleChange,
+      log,
     };
   },
 };
 </script>
 
 <style scoped>
+.product-img {
+  width: 100%;
+  border-radius: 5px;
+}
 .input-width {
   width: 50%;
 }

@@ -20,6 +20,11 @@ module.exports = (sequelize, DataTypes) => {
         field: 'slug',
         type: DataTypes.STRING(191)
       },
+      image: {
+        allowNull: false,
+        field: 'image',
+        type: DataTypes.STRING(191)
+      },
       price: {
         allowNull: false,
         field: 'price',

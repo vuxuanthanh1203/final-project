@@ -30,15 +30,23 @@ const typeDefs = gql`
 
         productImgs (productId: Int!): [ProductImg]!
 
-        users: [User]!
+        users: [User]
         
-        user: User
+        staff: [User]!
+        
+        user (userId: Int!): User!
+        
+        me: User
+
+        checkPassword(userId: Int!, input: CheckPasswordInput!): CheckPassword!
 
         shippingMethods: [ShippingMethod]!
 
     }
     
     type Mutation {
+        imageUploader(file: Upload!): String!
+
         exportProduct: ExportProduct!
         exportUser: ExportUser!
         exportOrder: ExportOrder!
@@ -92,6 +100,10 @@ const typeDefs = gql`
         createUser(input: CreateUserInput!): User!
 
         updateUser(userId: Int!, input: UpdateUserInput!): User!
+       
+        updateProfile(userId: Int!, input: UpdateProfileInput!): User!
+
+        changePassword(userId: Int!, input: ChangePasswordInput!): User!
 
         deleteUser(userId: Int!): DeleteUserResult!
     }
@@ -115,6 +127,7 @@ const typeDefs = gql`
         id: Int!
         name: String!
         slug: String!
+        image: String!
         price: Float!
         description: String!
         category: Category!
@@ -263,6 +276,17 @@ const typeDefs = gql`
         isAdmin: Boolean
     }
 
+    input UpdateProfileInput {
+        name: String, 
+        userName: String,
+        phoneNumber: String, 
+        address: String
+    }
+    
+    input ChangePasswordInput {
+        password: String,
+    }
+
     input CreateCategoryInput {
         name: String!,
         slug: String!
@@ -276,6 +300,7 @@ const typeDefs = gql`
     input CreateProductInput {
         name: String!, 
         slug: String!, 
+        image: String,
         description: String!,
         price: Float, 
         categoryId: Int!
@@ -284,6 +309,7 @@ const typeDefs = gql`
     input UpdateProductInput {
         name: String, 
         slug: String, 
+        image: String,
         price: Float, 
         description: String,
         categoryId: Int
@@ -330,6 +356,14 @@ const typeDefs = gql`
     input CreateShippingMethodInput {
         name: String!, 
         price: Float!
+    }
+
+    type CheckPassword {
+        message: String!
+    }
+
+    input CheckPasswordInput {
+        password: String!
     }
 `
 

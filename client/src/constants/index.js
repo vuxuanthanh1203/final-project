@@ -44,6 +44,18 @@ export const TITLE_DATA_CATEGORY = [
   },
 ];
 
+export const TITLE_DATA_PRODUCT_ATTR = [
+  {
+    title: "Id",
+  },
+  {
+    title: "Size",
+  },
+  {
+    title: "In Stock",
+  },
+];
+
 export const TITLE_DATA_ORDER = [
   {
     title: "Order Id",
@@ -92,9 +104,6 @@ export const TITLE_DATA_USER = [
   },
   {
     title: "Phone Number",
-  },
-  {
-    title: "IsAdmin",
   },
 ];
 
@@ -188,7 +197,7 @@ export const GET_ALL_PRODUCT = gql`
 
 export const GET_PRODUCT = gql`
   query ($productId: Int!) {
-    products(productId: $productId) {
+    product(productId: $productId) {
       id
       name
       slug
@@ -215,8 +224,8 @@ export const GET_ALL_SHIPPING = gql`
 `;
 
 export const GET_USER = gql`
-  query {
-    users {
+  query ($userId: Int!) {
+    user(userId: $userId) {
       id
       name
       userName
@@ -230,6 +239,19 @@ export const GET_USER = gql`
 export const GET_ALL_USERS = gql`
   query {
     users {
+      id
+      name
+      userName
+      email
+      phoneNumber
+      address
+      isAdmin
+    }
+  }
+`;
+export const GET_ALL_STAFF = gql`
+  query {
+    staff {
       id
       name
       userName
@@ -365,5 +387,89 @@ export const UPDATE_PRODUCT = gql`
       description
       price
     }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation ($userId: Int!) {
+    deleteUser(userId: $userId) {
+      success
+    }
+  }
+`;
+export const PROFILE = gql`
+  query {
+    me {
+      id
+      name
+      userName
+      email
+      password
+      phoneNumber
+      address
+      isAdmin
+    }
+  }
+`;
+export const UPDATE_PROFILE = gql`
+  mutation ($userId: Int!, $input: UpdateProfileInput!) {
+    updateProfile(userId: $userId, input: $input) {
+      id
+      name
+      userName
+      email
+      phoneNumber
+      address
+    }
+  }
+`;
+
+export const CHANGE_PASSWORD = gql`
+  mutation ($userId: Int!, $input: ChangePasswordInput!) {
+    changePassword(userId: $userId, input: $input) {
+      id
+      name
+      userName
+      email
+      phoneNumber
+      address
+    }
+  }
+`;
+
+export const GET_PRODUCT_ATTRS = gql`
+  query ($productId: Int!) {
+    productAttributes(productId: $productId) {
+      id
+      value
+      quantityInStock
+      product {
+        name
+      }
+    }
+  }
+`;
+
+export const CHECK_PASSWORD = gql`
+  query ($userId: Int!, $input: CheckPasswordInput!) {
+    checkPassword(userId: $userId, input: $input) {
+      message
+    }
+  }
+`;
+
+export const CREATE_ATTR = gql`
+  mutation ($input: CreateProductAttrInput!) {
+    createProductAttr(input: $input) {
+      id
+      value
+      quantityInStock
+    }
+  }
+`;
+
+export const UPLOAD_FILE = gql`
+  mutation ($file: Upload!) {
+    imageUploader(file: $file)
   }
 `;

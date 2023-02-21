@@ -17,12 +17,35 @@ const UserQueryResolver = {
     },
 
     /**
+      * @returns {Promise<Array<import('../models/User').UserEntity>>}
+      */
+    async staff (parent, args, context) {
+      const users = await User.findAll({
+        where: {
+          isAdmin: true
+        }
+      })
+      return users
+    },
+
+    /**
       * @param {{
       *   userId:number
       * }} args - Args of this resolver
       * @returns {Promise<import('../models/User').UserEntity>}
       */
     async user (parent, args, context) {
+      const user = await User.findByPk(args.userId)
+      return user
+    },
+
+    /**
+      * @param {{
+      *   userId:number
+      * }} args - Args of this resolver
+      * @returns {Promise<import('../models/User').UserEntity>}
+      */
+    async me (parent, args, context) {
       return context.auth_user
     },
 
@@ -69,6 +92,28 @@ const UserQueryResolver = {
         user,
         token
       }
+    },
+
+    /**
+      * @param {*} args - check password input
+      * @returns {Promise<CheckPasswordResponse>}
+      */
+    async checkPassword (parent, args, context) {
+      const data = args.input
+
+      let message = 'Success'
+
+      const result = await User.findByPk(args.userId)
+
+      const isPasswordValid = await bcrypt.compare(data.password, result.password)
+
+      if (!isPasswordValid) {
+        message = 'Passwords do not match !!!'
+      }
+
+      return {
+        message
+      }
     }
   }
 }
@@ -80,4 +125,10 @@ module.exports = UserQueryResolver
  *  token: string
  *  user: import('../models/User').UserEntity
  * }} AuthResponse
+ */
+
+/**
+ * @typedef {{
+ *  message: string
+ * }} CheckPasswordResponse
  */

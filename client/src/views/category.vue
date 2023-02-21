@@ -57,8 +57,8 @@
                 <tr
                   class="datatable-row"
                   v-else
-                  v-for="category in result.categories"
-                  :key="category.id"
+                  v-for="category in result?.categories"
+                  :key="category?.id"
                 >
                   <td class="data-value">
                     <span>{{ category.id }}</span>
@@ -71,12 +71,18 @@
                   </td>
                   <td class="data-value">
                     <router-link
-                      :to="`/category/${category.id}`"
+                      :to="`/category/edit/${category?.id}`"
                       class="btn btn-sm btn-clean btn-icon mr-2"
+                      data-toggle="tooltip"
+                      title="Edit"
                     >
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
-                    <div class="btn btn-sm btn-clean btn-icon">
+                    <div
+                      class="btn btn-sm btn-clean btn-icon"
+                      data-toggle="tooltip"
+                      title="Delete"
+                    >
                       <font-awesome-icon :icon="['fas', 'trash']" />
                     </div>
                   </td>
@@ -105,6 +111,10 @@ import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
   setup() {
+    const tooltip = () => {
+      document.querySelectorAll('[data-toggle="tooltip"]').tooltip();
+    };
+
     const titleItems = reactive(TITLE_DATA_CATEGORY);
     const route = useRoute();
     const router = useRouter();
@@ -135,6 +145,7 @@ export default {
       result,
       loading,
       error,
+      tooltip,
       deleteCategory,
     };
   },

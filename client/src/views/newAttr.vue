@@ -43,48 +43,46 @@
           </div>
           <form @submit.prevent>
             <div class="card-body">
-              <div class="form-group">
-                <label>Category Name <span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  class="form-control"
-                  :placeholder="result.category.name"
-                  v-model="formData.name"
-                />
-                <span
-                  class="form-text text-muted text-err"
-                  v-for="error in v$.name.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}
-                </span>
-              </div>
-              <div class="form-group">
-                <label>
-                  Category Slug
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="form-control input-disable"
-                  :placeholder="result.category.slug"
-                  disabled="disabled"
-                  :value="renderSlug()"
-                />
-                <span
-                  class="form-text text-muted text-err"
-                  v-for="error in v$.slug.$errors"
-                  :key="error.$uid"
-                >
-                  {{ error.$message }}
-                </span>
+              <div class="form-div-wrapper d-flex">
+                <div class="form-group input-width">
+                  <label>Size <span class="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Enter the name of the attribute"
+                    v-model="formData.size"
+                  />
+                  <span
+                    class="form-text text-muted text-err"
+                    v-for="error in v$.name.$errors"
+                    :key="error.$uid"
+                  >
+                    {{ error.$message }}
+                  </span>
+                </div>
+                <div class="form-group input-width ml-5">
+                  <label>Quantity <span class="text-danger">*</span></label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Quantity of this attribute"
+                    v-model="formData.quantity"
+                  />
+                  <span
+                    class="form-text text-muted text-err"
+                    v-for="error in v$.quantity.$errors"
+                    :key="error.$uid"
+                  >
+                    {{ error.$message }}
+                  </span>
+                </div>
               </div>
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="updateCategory"
+                @click="createAttr"
               >
                 Submit
               </button>
@@ -108,9 +106,8 @@
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { GET_CATEGORY, UPDATE_CATEGORY } from "@/constants/";
-import { useQuery, useMutation } from "@vue/apollo-composable";
-import slugify from "slugify";
+import { CREATE_ATTR } from "@/constants";
+import { useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 
@@ -118,14 +115,15 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const productId = route.params.id;
 
     function backToRoute() {
-      router.push({ name: "Category", params: {} });
+      router.push({ name: "Product Detail", params: { productId } });
     }
 
     const formData = reactive({
-      name: "",
-      slug: "",
+      size: "",
+      quantity: "",
       message: "",
       isShow: true,
     });
@@ -133,58 +131,50 @@ export default {
     const rules = computed(() => {
       return {
         name: { required },
-        slug: { required },
+        quantity: { required },
       };
     });
 
     const v$ = useVuelidate(rules, formData);
 
-    function renderSlug() {
-      formData.slug = slugify(formData.name, {
-        replacement: "-",
-        remove: /[*+~.()'"!:@]/g,
-        lower: true,
-      });
-
-      return formData.slug;
-    }
-
-    const { result } = useQuery(GET_CATEGORY, {
-      categoryId: parseInt(route.params.id),
-    });
-
-    const { mutate: updateCategory, onDone } = useMutation(
-      UPDATE_CATEGORY,
-      () => ({
-        variables: {
-          categoryId: parseInt(route.params.id),
-          input: {
-            name: formData.name,
-            slug: formData.slug,
-          },
+    const {
+      mutate: createAttr,
+      onError,
+      onDone,
+    } = useMutation(CREATE_ATTR, () => ({
+      variables: {
+        input: {
+          value: formData.size.toUpperCase(),
+          quantityInStock: formData.quantity ? formData.quantity * 1 : "",
+          productId: productId * 1,
         },
-      })
-    );
+      },
+    }));
+
+    onError(async () => {
+      await v$.value.$validate();
+    });
     onDone(() => {
-      formData.name = "";
-      formData.slug = "";
-      formData.message = "category updated!";
+      formData.size = "";
+      formData.quantity = "";
+      formData.message = "Attribute Created !";
     });
 
     return {
       meta: computed(() => route.meta),
       backToRoute,
-      renderSlug,
       formData,
-      result,
       v$,
-      updateCategory,
+      createAttr,
     };
   },
 };
 </script>
 
 <style scoped>
+.input-width {
+  width: 50%;
+}
 .input-disable {
   cursor: not-allowed;
 }

@@ -94,11 +94,6 @@ export default {
     const price = ref("");
     const message = ref("");
 
-    function onsubmit() {
-      console.log("name: " + shipping.value);
-      console.log("price: " + typeof parseFloat(price.value));
-    }
-
     const { mutate: createShippingMethod, onDone } = useMutation(
       CREATE_SHIPPING,
       () => ({
@@ -124,7 +119,6 @@ export default {
       price,
       message,
       createShippingMethod,
-      onsubmit,
     };
   },
 };
