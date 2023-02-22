@@ -101,6 +101,7 @@
                               v-model="formData.password"
                               :disabled="formData.isDisabled"
                             />
+                            <!-- @change="handleChange" -->
                             <span
                               class="form-text text-muted confirm text-err"
                               v-for="error in v$.password.$errors"
@@ -123,7 +124,6 @@
                               v-model="formData.confirmPassword"
                               :disabled="formData.isDisabled"
                             />
-                            <!-- @change="handleChange" -->
                             <span
                               class="form-text text-muted confirm text-err"
                               v-for="error in v$.confirmPassword.$errors"
@@ -142,10 +142,11 @@
                 <button
                   type="submit"
                   class="btn btn-primary mr-2"
-                  @click="changePassword"
+                  @click="handleFunction"
                 >
                   Save
                 </button>
+                <!-- @click="changePassword" -->
               </div>
             </form>
           </div>
@@ -158,7 +159,7 @@
 
 <script>
 import { computed } from "@vue/runtime-core";
-// import { computed } from "@vue/runtime-core";
+// import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import { CHANGE_PASSWORD } from "@/constants";
 import { useMutation } from "@vue/apollo-composable";
@@ -168,6 +169,8 @@ import { required, minLength, sameAs } from "@vuelidate/validators";
 
 export default {
   setup() {
+    // const router = useRouter();
+
     const formData = reactive({
       checkPassword: "",
       password: "",
@@ -206,17 +209,16 @@ export default {
       })
     );
 
-    function redirect() {
-      window.location.href = "/";
+    function handleFunction() {
+      handleChange();
+      changePassword();
     }
 
     onDone(() => {
-      formData.message = "Password Updated! Redirecting...";
       localStorage.clear();
-      setTimeout(redirect, 2000);
+      alert("Password Updated! Redirecting...");
       formData.isDisabled = true;
-      formData.password = "";
-      formData.confirmPassword = "";
+      window.location.href = "/";
     });
 
     return {
@@ -224,6 +226,7 @@ export default {
       v$,
       changePassword,
       handleChange,
+      handleFunction,
     };
   },
 };

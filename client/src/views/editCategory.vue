@@ -164,18 +164,24 @@ export default {
     //   formData.slug = value?.category?.slug;
     // });
 
-    const { mutate: updateCategory, onDone } = useMutation(
-      UPDATE_CATEGORY,
-      () => ({
-        variables: {
-          categoryId: parseInt(route.params.id),
-          input: {
-            name: formData.name,
-            slug: formData.slug,
-          },
+    const {
+      mutate: updateCategory,
+      onDone,
+      onError,
+    } = useMutation(UPDATE_CATEGORY, () => ({
+      variables: {
+        categoryId: parseInt(route.params.id),
+        input: {
+          name: formData.name,
+          slug: formData.slug,
         },
-      })
-    );
+      },
+    }));
+
+    onError(() => {
+      v$.value.$validate();
+    });
+
     onDone(() => {
       formData.name = "";
       formData.slug = "";

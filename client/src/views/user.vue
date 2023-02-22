@@ -86,7 +86,10 @@
                 :key="user.id"
                 class="datatable-body"
               >
-                <tr class="datatable-row" v-if="auth_user != user.id">
+                <tr
+                  class="datatable-row"
+                  v-if="auth_user != user.id && !user.isAdmin"
+                >
                   <td class="data-value">
                     <span>{{ user.id }}</span>
                   </td>
@@ -100,9 +103,6 @@
                     <span>{{ user.phoneNumber }}</span>
                   </td>
                   <td class="data-value">
-                    <div class="btn btn-sm btn-clean btn-icon mr-2">
-                      <font-awesome-icon :icon="['fas', 'file']" />
-                    </div>
                     <router-link
                       v-if="!user.isAdmin"
                       :to="`/user/edit/${user.id}`"
@@ -170,8 +170,10 @@ export default {
 
     const userDelete = ref("");
     const onDeleteClicked = (item) => {
-      userDelete.value = item;
-      deleteUser();
+      if (window.confirm("Delete This User?")) {
+        userDelete.value = item;
+        deleteUser();
+      }
     };
 
     const { mutate: deleteUser } = useMutation(DELETE_USER, () => ({
@@ -203,7 +205,6 @@ export default {
       auth_user,
       exportUser,
       onDeleteClicked,
-      deleteUser,
     };
   },
 };
