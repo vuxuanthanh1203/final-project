@@ -140,7 +140,7 @@
               </div>
               <div class="card-footer">
                 <button
-                  type="submit"
+                  type="button"
                   class="btn btn-primary mr-2"
                   @click="handleFunction"
                 >
@@ -179,6 +179,7 @@ export default {
       isShow: true,
       isDisabled: false,
       showForm: false,
+      checkForm: false,
     });
 
     // Check password
@@ -194,31 +195,38 @@ export default {
     const v$ = useVuelidate(rules, formData);
 
     const handleChange = async () => {
-      await v$.value.$validate();
+      formData.checkForm = await v$.value.$validate();
     };
 
-    const { mutate: changePassword, onDone } = useMutation(
-      CHANGE_PASSWORD,
-      () => ({
-        variables: {
-          userId: userId * 1,
-          input: {
-            password: formData.confirmPassword,
-          },
+    const {
+      mutate: changePassword,
+      onDone,
+      onError,
+    } = useMutation(CHANGE_PASSWORD, () => ({
+      variables: {
+        userId: userId * 1,
+        input: {
+          password: formData.password,
         },
-      })
-    );
+      },
+    }));
 
     function handleFunction() {
       handleChange();
       changePassword();
     }
 
+    onError(async () => {
+      formData.checkForm = await v$.value.$validate();
+    });
+
     onDone(() => {
-      localStorage.clear();
-      alert("Password Updated! Redirecting...");
-      formData.isDisabled = true;
-      window.location.href = "/";
+      if (formData.checkForm) {
+        alert("Password Updated! Redirecting...");
+        localStorage.clear();
+        formData.isDisabled = true;
+        window.location.href = "/";
+      }
     });
 
     return {
