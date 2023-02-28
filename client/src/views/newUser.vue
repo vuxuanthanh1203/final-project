@@ -270,6 +270,7 @@ export default {
       formData.userName = "";
       formData.email = "";
       formData.password = "";
+      formData.phoneNumber = "";
       formData.confirmPassword = "";
       formData.isAdmin = false;
       formData.address = "";

@@ -125,7 +125,6 @@ export default {
     }
 
     const { result, onResult } = useQuery(GET_CATEGORY, {
-      // const { result } = useQuery(GET_CATEGORY, {
       categoryId: route.params.id * 1,
     });
 

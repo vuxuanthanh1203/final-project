@@ -275,14 +275,9 @@ export default {
     });
 
     onDone(() => {
-      // formData.checkForm = true;
-      // formData.name = "";
-      // formData.userName = "";
-      // formData.password = "";
-      // formData.confirmPassword = "";
-      // formData.phoneNumber = "";
-      // formData.address = "";
-      formData.message = "User Updated !";
+      if (formData.checkForm) {
+        formData.message = "User Updated !";
+      }
     });
 
     return {

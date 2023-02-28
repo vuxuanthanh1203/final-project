@@ -17,6 +17,30 @@
           <!-- End Card Header -->
           <!-- -------------------------- -->
           <!-- Begin Form -->
+          <div
+            class="alert alert-custom alert-notice alert-light-primary fade show mb-5"
+            role="alert"
+            v-if="formData.message"
+            v-show="formData.isShow"
+          >
+            <div class="alert-icon">
+              <font-awesome-icon :icon="['fas', 'check']" />
+            </div>
+            <div class="alert-text">{{ formData.message }}</div>
+            <div class="alert-close">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                @click="formData.isShow = false"
+              >
+                <span aria-hidden="true">
+                  <font-awesome-icon :icon="['fas', 'xmark']" />
+                </span>
+              </button>
+            </div>
+          </div>
           <form @submit.prevent>
             <div class="card-body">
               <div class="form-group">
@@ -25,10 +49,14 @@
                   type="text"
                   class="form-control"
                   placeholder="Enter the name of the new category"
-                  v-model="categoryName"
+                  v-model="formData.name"
                 />
-                <span class="form-text text-muted text-err">
-                  This field is required.
+                <span
+                  class="form-text text-muted text-err"
+                  v-for="error in v$.name.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}
                 </span>
               </div>
               <div class="form-group">
@@ -43,16 +71,20 @@
                   disabled="disabled"
                   :value="renderSlug()"
                 />
-                <span class="form-text text-muted text-err">
-                  {{ message }}
+                <span
+                  class="form-text text-muted text-err"
+                  v-for="error in v$.slug.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}
                 </span>
               </div>
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="createCategory"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -75,10 +107,12 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+import { reactive } from "vue";
 import { CREATE_CATEGORY } from "@/constants";
 import { useMutation } from "@vue/apollo-composable";
 import slugify from "slugify";
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 export default {
   setup() {
@@ -89,49 +123,84 @@ export default {
       router.push({ name: "Category", params: {} });
     }
 
-    const categoryName = ref("");
-    const categorySlug = ref("");
-    const message = ref("");
+    const formData = reactive({
+      name: "",
+      slug: "",
+      message: "",
+      isShow: true,
+      checkForm: false,
+    });
+
+    const rules = computed(() => {
+      return {
+        name: { required },
+        slug: { required },
+      };
+    });
+
+    const v$ = useVuelidate(rules, formData);
 
     function renderSlug() {
-      categorySlug.value = slugify(categoryName.value, {
+      formData.slug = slugify(formData.name, {
         replacement: "-",
         remove: /[*+~.()'"!:@]/g,
         lower: true,
       });
 
-      return categorySlug.value;
+      return formData.slug;
     }
 
-    const { mutate: createCategory, onDone } = useMutation(
-      CREATE_CATEGORY,
-      () => ({
-        variables: {
-          input: {
-            name: categoryName.value,
-            slug: categorySlug.value,
-          },
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
+
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        createCategory();
+      }
+    }
+
+    const {
+      mutate: createCategory,
+      onError,
+      onDone,
+    } = useMutation(CREATE_CATEGORY, () => ({
+      variables: {
+        input: {
+          name: formData.name,
+          slug: formData.slug,
         },
-      })
-    );
+      },
+    }));
+
+    onError(async () => {
+      await v$.value.$validate();
+    });
+
     onDone(() => {
-      categoryName.value = "";
-      message.value = "Created category !";
+      formData.name = "";
+      formData.slug = "";
+      formData.message = "Category Created !";
     });
 
     return {
       meta: computed(() => route.meta),
       backToRoute,
-      categoryName,
       renderSlug,
-      message,
-      createCategory,
+      formData,
+      v$,
+      handleFunction,
     };
   },
 };
 </script>
 
 <style scoped>
+.alert {
+  margin: 0 30px;
+}
 .input-disable {
   cursor: not-allowed;
 }
