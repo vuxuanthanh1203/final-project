@@ -386,6 +386,9 @@ export const UPDATE_PRODUCT = gql`
       slug
       description
       price
+      category {
+        name
+      }
     }
   }
 `;
@@ -471,5 +474,33 @@ export const CREATE_ATTR = gql`
 export const UPLOAD_FILE = gql`
   mutation ($file: Upload!) {
     imageUploader(file: $file)
+  }
+`;
+export const DELETE_SHIPPING = gql`
+  mutation ($shippingMethodId: Int!) {
+    deleteShippingMethod(shippingMethodId: $shippingMethodId) {
+      success
+    }
+  }
+`;
+export const DELETE_PRODUCT = gql`
+  mutation ($productId: Int!) {
+    deleteProduct(productId: $productId) {
+      success
+    }
+  }
+`;
+export const DELETE_PRODUCT_ATTR = gql`
+  mutation ($productAttrId: Int!) {
+    deleteProductAttr(productAttrId: $productAttrId) {
+      success
+    }
+  }
+`;
+export const DELETE_ORDER = gql`
+  mutation ($orderId: Int!) {
+    deleteOrder(orderId: $orderId) {
+      success
+    }
   }
 `;

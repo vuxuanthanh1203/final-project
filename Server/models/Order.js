@@ -34,13 +34,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'updated_at',
       type: DataTypes.DATE(3)
+    },
+    deletedAt: {
+      field: 'deleted_at',
+      type: DataTypes.DATE(3)
     }
   },
   {
     tableName: 'orders',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
-    paranoid: false,
+    deletedAt: 'deleted_at',
+    paranoid: true,
     timestamps: true,
     underscored: true
   }

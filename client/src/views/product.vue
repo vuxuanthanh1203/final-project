@@ -118,6 +118,7 @@
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
                     <div
+                      @click="onDeleteClicked(product.id)"
                       class="btn btn-sm btn-clean btn-icon"
                       data-toggle="tooltip"
                       title="Delete"
@@ -139,11 +140,12 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import {
   TITLE_DATA_PRODUCT,
   GET_ALL_PRODUCT,
   EXPORT_PRODUCT,
+  DELETE_PRODUCT,
 } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 
@@ -169,6 +171,30 @@ export default {
       formData.message = "Exported !";
     });
 
+    // Delete Product
+    const productDelete = ref("");
+    const onDeleteClicked = (item) => {
+      if (window.confirm("Delete This Item?")) {
+        productDelete.value = item;
+        deleteProduct();
+      }
+    };
+
+    const { mutate: deleteProduct } = useMutation(DELETE_PRODUCT, () => ({
+      variables: {
+        productId: productDelete.value,
+      },
+      update(cache) {
+        cache.evict({
+          id: cache.identify({
+            id: productDelete.value,
+            __typename: "Product",
+          }),
+        });
+        cache.gc();
+      },
+    }));
+
     return {
       titleItems,
       meta: computed(() => route.meta),
@@ -176,6 +202,7 @@ export default {
       products: computed(() => dataProduct.value?.products),
       exportProduct,
       formData,
+      onDeleteClicked,
     };
   },
 };

@@ -79,6 +79,7 @@
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
                     <div
+                      @click="onDeleteClicked(category.id)"
                       class="btn btn-sm btn-clean btn-icon"
                       data-toggle="tooltip"
                       title="Delete"
@@ -118,7 +119,6 @@ export default {
     const titleItems = reactive(TITLE_DATA_CATEGORY);
     const route = useRoute();
     const router = useRouter();
-    const message = ref("");
 
     function goToRoute() {
       router.push({ name: "NewCategory", params: {} });
@@ -126,17 +126,29 @@ export default {
 
     const { result, loading, error } = useQuery(GET_ALL_CATEGORIES);
 
-    const { mutate: deleteCategory, onDone } = useMutation(
-      DELETE_CATEGORY,
-      () => ({
-        variables: {
-          categoryId: parseInt(route.params.id),
-        },
-      })
-    );
-    onDone(() => {
-      message.value = "category deleted!";
-    });
+    // Delete Category
+    const categoryDelete = ref("");
+    const onDeleteClicked = (item) => {
+      if (window.confirm("Delete This Item?")) {
+        categoryDelete.value = item;
+        deleteCategory();
+      }
+    };
+
+    const { mutate: deleteCategory } = useMutation(DELETE_CATEGORY, () => ({
+      variables: {
+        categoryId: categoryDelete.value,
+      },
+      update(cache) {
+        cache.evict({
+          id: cache.identify({
+            id: categoryDelete.value,
+            __typename: "Category",
+          }),
+        });
+        cache.gc();
+      },
+    }));
 
     return {
       meta: computed(() => route.meta),
@@ -147,6 +159,7 @@ export default {
       error,
       tooltip,
       deleteCategory,
+      onDeleteClicked,
     };
   },
 };

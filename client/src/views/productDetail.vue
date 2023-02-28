@@ -112,6 +112,7 @@
                               </td>
                               <td class="data-value">
                                 <div
+                                  @click="onDeleteClicked(productAttr.id)"
                                   class="btn btn-sm btn-clean btn-icon"
                                   data-toggle="tooltip"
                                   title="Delete"
@@ -139,13 +140,14 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import {
   GET_PRODUCT_ATTRS,
   TITLE_DATA_PRODUCT_ATTR,
   GET_PRODUCT,
+  DELETE_PRODUCT_ATTR,
 } from "@/constants/";
-import { useQuery } from "@vue/apollo-composable";
+import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
   setup() {
@@ -171,6 +173,33 @@ export default {
       productId: route.params.id * 1,
     });
 
+    // Delete Product Attribute
+    const attrDelete = ref("");
+    const onDeleteClicked = (item) => {
+      if (window.confirm("Delete This Item?")) {
+        attrDelete.value = item;
+        deleteProductAttr();
+      }
+    };
+
+    const { mutate: deleteProductAttr } = useMutation(
+      DELETE_PRODUCT_ATTR,
+      () => ({
+        variables: {
+          productAttrId: attrDelete.value,
+        },
+        update(cache) {
+          cache.evict({
+            id: cache.identify({
+              id: attrDelete.value,
+              __typename: "ProductAttr",
+            }),
+          });
+          cache.gc();
+        },
+      })
+    );
+
     return {
       meta: computed(() => route.meta),
       product: computed(() => dataProduct.value?.product),
@@ -178,6 +207,7 @@ export default {
       backToRoute,
       goToRoute,
       titleItems,
+      onDeleteClicked,
     };
   },
 };

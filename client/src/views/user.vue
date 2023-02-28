@@ -181,11 +181,12 @@ export default {
         userId: userDelete.value,
       },
       update(cache) {
-        const normalizedId = cache.evict({
+        // const normalizedId = cache.evict({
+        cache.evict({
           id: cache.identify({ id: userDelete.value, __typename: "User" }),
         });
         cache.gc();
-        console.log("normalizedId: ", normalizedId);
+        // console.log("normalizedId: ", normalizedId);
       },
     }));
 
