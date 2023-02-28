@@ -77,7 +77,11 @@
               </div>
               <div class="form-div-wrapper d-flex">
                 <div class="form-group input-width">
-                  <label>Password <span class="text-danger">*</span></label>
+                  <label>
+                    Password
+                    <span class="password-default">(Default: 12345678)</span>
+                    <span class="text-danger"> *</span>
+                  </label>
                   <input
                     type="password"
                     class="form-control"
@@ -94,7 +98,9 @@
                 </div>
                 <div class="form-group input-width ml-5">
                   <label>
-                    Confirm Password <span class="text-danger">*</span>
+                    Confirm Password
+                    <span class="password-default">(Default: 12345678)</span>
+                    <span class="text-danger"> *</span>
                   </label>
                   <input
                     type="password"
@@ -158,7 +164,7 @@
               <button
                 type="submit"
                 class="btn btn-primary mr-2"
-                @click="updateUser"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -179,7 +185,7 @@
 </template>
 
 <script>
-import { computed, watch } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
 import { GET_USER, UPDATE_USER } from "@/constants";
@@ -197,23 +203,35 @@ export default {
       router.push({ name: "User", params: {} });
     }
 
+    const { result, onResult } = useQuery(GET_USER, {
+      userId: route.params.id * 1,
+    });
+
+    onResult((queryResult) => {
+      formData.name = queryResult.data.user.name;
+      formData.userName = queryResult.data.user.userName;
+      formData.phoneNumber = queryResult.data.user.phoneNumber;
+      formData.isAdmin = queryResult.data.user.isAdmin;
+      formData.address = queryResult.data.user.address;
+    });
+
     const formData = reactive({
-      name: "",
-      userName: "",
-      password: "",
-      confirmPassword: "",
-      phoneNumber: "",
-      isAdmin: false,
-      address: "",
-      message: "",
+      name: result.value?.user?.name,
+      userName: result.value?.user?.userName,
+      password: "12345678",
+      confirmPassword: "12345678",
+      phoneNumber: result.value?.user?.phoneNumber,
+      isAdmin: result.value?.user?.isAdmin,
+      address: result.value?.user?.address,
       isShow: true,
+      checkForm: false,
     });
 
     const rules = computed(() => {
       return {
         name: { required },
         userName: { required },
-        password: { required, minLength: minLength(6) },
+        password: { required, minLength: minLength(8) },
         confirmPassword: { required, sameAs: sameAs(formData.password) },
         phoneNumber: { required },
         address: { required },
@@ -222,16 +240,17 @@ export default {
 
     const v$ = useVuelidate(rules, formData);
 
-    const { result: dataUser } = useQuery(GET_USER, {
-      userId: parseInt(route.params.id),
-    });
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
 
-    watch(dataUser, (value) => {
-      formData.name = value.user.name;
-      formData.userName = value.user.userName;
-      formData.phoneNumber = value.user.phoneNumber;
-      formData.address = value.user.phoneNumber;
-    });
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        updateUser();
+      }
+    }
 
     const {
       mutate: updateUser,
@@ -256,28 +275,28 @@ export default {
     });
 
     onDone(() => {
-      formData.name = "";
-      formData.userName = "";
-      formData.password = "";
-      formData.confirmPassword = "";
-      formData.phoneNumber = "";
-      formData.address = "";
-      formData.message = "User Updated !";
+      if (formData.checkForm) {
+        formData.message = "User Updated !";
+      }
     });
 
     return {
       meta: computed(() => route.meta),
-      user: computed(() => dataUser.value?.user),
       backToRoute,
       formData,
       v$,
-      updateUser,
+      handleFunction,
     };
   },
 };
 </script>
 
 <style scoped>
+.password-default {
+  color: #33333385;
+  font-style: italic;
+  font-size: 12px;
+}
 .input-width {
   width: 50%;
 }

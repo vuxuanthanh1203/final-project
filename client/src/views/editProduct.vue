@@ -112,16 +112,10 @@
                     Category
                     <span class="text-danger">*</span>
                   </label>
-                  <p v-if="error">{{ error }}</p>
-                  <p v-if="loading">Loading...</p>
-                  <select
-                    v-else
-                    v-model="formData.categoryId"
-                    class="form-control"
-                    id="category"
-                  >
+                  <select v-model="formData.categoryId" class="form-control">
+                    <option disabled value="">Please select one</option>
                     <option
-                      v-for="category in result.categories"
+                      v-for="category in categories"
                       :key="category.id"
                       :value="category.id"
                     >
@@ -157,9 +151,9 @@
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="updateProduct"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -183,7 +177,7 @@
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive } from "vue";
-import { UPDATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
+import { UPDATE_PRODUCT, GET_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
@@ -199,16 +193,29 @@ export default {
       router.push({ name: "Product", params: {} });
     }
 
-    const { result, loading, error } = useQuery(GET_ALL_CATEGORIES);
+    const { result: getAllCategories } = useQuery(GET_ALL_CATEGORIES);
+
+    const { result, onResult } = useQuery(GET_PRODUCT, {
+      productId: route.params.id * 1,
+    });
+
+    onResult((queryResult) => {
+      formData.name = queryResult.data.product.name;
+      formData.slug = queryResult.data.product.slug;
+      formData.price = queryResult.data.product.price;
+      formData.description = queryResult.data.product.description;
+      formData.categoryId = queryResult.data.product.category.id;
+    });
 
     const formData = reactive({
-      name: "",
-      slug: "",
-      price: "",
-      description: "",
-      categoryId: "",
+      name: result.value?.product?.name,
+      slug: result.value?.product?.slug,
+      price: result.value?.product?.price,
+      description: result.value?.product?.description,
+      categoryId: result.value?.product?.category.id,
       message: "",
       isShow: true,
+      checkForm: false,
     });
 
     const rules = computed(() => {
@@ -233,13 +240,25 @@ export default {
       return formData.slug;
     }
 
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
+
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        updateProduct();
+      }
+    }
+
     const {
       mutate: updateProduct,
       onError,
       onDone,
     } = useMutation(UPDATE_PRODUCT, () => ({
       variables: {
-        productId: parseInt(route.params.id),
+        productId: route.params.id * 1,
         input: {
           name: formData.name,
           slug: formData.slug,
@@ -253,24 +272,23 @@ export default {
     onError(async () => {
       await v$.value.$validate();
     });
+
     onDone(() => {
-      formData.name = "";
-      formData.slug = "";
-      formData.price = "";
-      formData.description = "";
-      formData.categoryId = "";
-      formData.message = "Product Created  !";
+      if (formData.checkForm) {
+        // alert("Product Updated !");
+        // router.push({ name: "Product", params: {} });
+        formData.message = "Product Updated !";
+      }
     });
 
     return {
       meta: computed(() => route.meta),
+      categories: computed(() => getAllCategories.value?.categories),
       backToRoute,
       formData,
       renderSlug,
       result,
-      loading,
-      error,
-      updateProduct,
+      handleFunction,
       v$,
     };
   },

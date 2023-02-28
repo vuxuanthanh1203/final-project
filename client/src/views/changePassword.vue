@@ -81,7 +81,7 @@
             </div>
           </div>
           <div class="card-body px-7">
-            <form class="form" id="changePassword">
+            <form class="form" id="changePassword" @submit.prevent>
               <div class="tab-content">
                 <div class="tab-pane px-7 active">
                   <div class="card-body">
@@ -99,7 +99,9 @@
                               class="form-control form-control-lg form-control-solid"
                               type="password"
                               v-model="formData.password"
+                              :disabled="formData.isDisabled"
                             />
+                            <!-- @change="handleChange" -->
                             <span
                               class="form-text text-muted confirm text-err"
                               v-for="error in v$.password.$errors"
@@ -120,7 +122,7 @@
                               class="form-control form-control-lg form-control-solid"
                               type="password"
                               v-model="formData.confirmPassword"
-                              @change="handleChange"
+                              :disabled="formData.isDisabled"
                             />
                             <span
                               class="form-text text-muted confirm text-err"
@@ -138,12 +140,13 @@
               </div>
               <div class="card-footer">
                 <button
-                  type="reset"
+                  type="button"
                   class="btn btn-primary mr-2"
-                  @click="changePassword"
+                  @click="handleFunction"
                 >
                   Save
                 </button>
+                <!-- @click="changePassword" -->
               </div>
             </form>
           </div>
@@ -156,7 +159,7 @@
 
 <script>
 import { computed } from "@vue/runtime-core";
-// import { computed } from "@vue/runtime-core";
+// import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import { CHANGE_PASSWORD } from "@/constants";
 import { useMutation } from "@vue/apollo-composable";
@@ -166,6 +169,8 @@ import { required, minLength, sameAs } from "@vuelidate/validators";
 
 export default {
   setup() {
+    // const router = useRouter();
+
     const formData = reactive({
       checkPassword: "",
       password: "",
@@ -174,6 +179,7 @@ export default {
       isShow: true,
       isDisabled: false,
       showForm: false,
+      checkForm: false,
     });
 
     // Check password
@@ -189,31 +195,38 @@ export default {
     const v$ = useVuelidate(rules, formData);
 
     const handleChange = async () => {
-      await v$.value.$validate();
+      formData.checkForm = await v$.value.$validate();
     };
 
-    const { mutate: changePassword, onDone } = useMutation(
-      CHANGE_PASSWORD,
-      () => ({
-        variables: {
-          userId: userId * 1,
-          input: {
-            password: formData.confirmPassword,
-          },
+    const {
+      mutate: changePassword,
+      onDone,
+      onError,
+    } = useMutation(CHANGE_PASSWORD, () => ({
+      variables: {
+        userId: userId * 1,
+        input: {
+          password: formData.password,
         },
-      })
-    );
+      },
+    }));
 
-    function redirect() {
-      window.location.href = "/";
+    function handleFunction() {
+      handleChange();
+      changePassword();
     }
 
+    onError(async () => {
+      formData.checkForm = await v$.value.$validate();
+    });
+
     onDone(() => {
-      formData.message = "Password Updated! Redirecting...";
-      localStorage.clear();
-      setTimeout(redirect, 3000);
-      formData.password = "";
-      formData.confirmPassword = "";
+      if (formData.checkForm) {
+        alert("Password Updated! Redirecting...");
+        localStorage.clear();
+        formData.isDisabled = true;
+        window.location.href = "/";
+      }
     });
 
     return {
@@ -221,6 +234,7 @@ export default {
       v$,
       changePassword,
       handleChange,
+      handleFunction,
     };
   },
 };

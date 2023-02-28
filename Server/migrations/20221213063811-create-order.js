@@ -35,6 +35,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE(3),
         field: 'updated_at'
+      },
+      deletedAt: {
+        type: Sequelize.DATE(3),
+        field: 'deleted_at'
       }
     })
   },

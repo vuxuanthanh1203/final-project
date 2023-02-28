@@ -235,7 +235,7 @@ export default {
         name: { required },
         userName: { required },
         email: { required, email },
-        password: { required, minLength: minLength(6) },
+        password: { required, minLength: minLength(8) },
         confirmPassword: { required, sameAs: sameAs(formData.password) },
         phoneNumber: { required },
         address: { required },
@@ -270,6 +270,7 @@ export default {
       formData.userName = "";
       formData.email = "";
       formData.password = "";
+      formData.phoneNumber = "";
       formData.confirmPassword = "";
       formData.isAdmin = false;
       formData.address = "";

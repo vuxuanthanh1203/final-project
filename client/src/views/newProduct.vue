@@ -94,15 +94,14 @@
                     id="file"
                     class="form-control"
                     ref="imageUploader"
-                    @change="handleChange"
+                    @change="onFileChange"
                   />
                   <div class="form-group">
                     <img
                       class="product-img mt-3"
-                      src="https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg"
+                      :src="imageUrl ? imageUrl : defaultImg"
                       alt="thumbnail"
                     />
-                    <button @click="log">Log value</button>
                   </div>
                 </div>
                 <div class="form-group col-lg-4">
@@ -132,7 +131,7 @@
                     id="category"
                   >
                     <option
-                      v-for="category in result.categories"
+                      v-for="category in categories"
                       :key="category.id"
                       :value="category.id"
                     >
@@ -168,9 +167,9 @@
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="createProduct"
+                @click="handleChange"
               >
                 Submit
               </button>
@@ -193,7 +192,7 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { CREATE_PRODUCT, GET_ALL_CATEGORIES, UPLOAD_FILE } from "@/constants";
 // import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
@@ -206,19 +205,22 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const image = ref("");
+    const imageUrl = ref("");
+    let data = new FormData();
+    const defaultImg =
+      "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
 
     function backToRoute() {
       router.push({ name: "Product", params: {} });
     }
 
-    const { result } = useQuery(GET_ALL_CATEGORIES);
+    const { result: getAllCategories } = useQuery(GET_ALL_CATEGORIES);
 
     const formData = reactive({
       name: "",
       slug: "",
       price: "",
-      image: "",
-      fileInput: null,
       description: "",
       categoryId: "",
       message: "",
@@ -247,24 +249,27 @@ export default {
       return formData.slug;
     }
 
-    // const fileInput = ref(null);
-    // let input = null;
-    function getFile() {
-      const file = document.querySelector("#file");
-      formData.fileInput = file.files[0];
-      // input = file.files[0];
-      // console.log(fileInput.value);
+    const onFileChange = (e) => {
+      image.value = e.target.files[0];
+
+      let fileReader = new FileReader();
+      fileReader.readAsDataURL(image.value);
+      fileReader.addEventListener("load", () => {
+        imageUrl.value = fileReader.result;
+      });
+    };
+
+    function handleChange() {
+      data.append("file", image.value);
+      console.log(data);
+      uploadfile();
     }
 
-    function log() {
-      console.log(formData.fileInput);
-    }
-
-    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, () => ({
+    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, {
       variables: {
-        file: formData.fileInput,
+        file: data,
       },
-    }));
+    });
 
     const {
       mutate: createProduct,
@@ -296,23 +301,20 @@ export default {
       formData.message = "Product Created  !";
     });
 
-    function handleChange() {
-      getFile();
-      uploadfile();
-    }
-
     return {
       meta: computed(() => route.meta),
       backToRoute,
       formData,
       renderSlug,
-      result,
+      categories: computed(() => getAllCategories.value?.categories),
+
       createProduct,
       v$,
       uploadfile,
-      getFile,
+      onFileChange,
       handleChange,
-      log,
+      imageUrl,
+      defaultImg,
     };
   },
 };

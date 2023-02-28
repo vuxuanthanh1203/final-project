@@ -231,16 +231,6 @@ import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
   setup() {
-    const formData = reactive({
-      name: "",
-      userName: "",
-      phoneNumber: "",
-      email: "",
-      address: "",
-      message: "",
-      isShow: true,
-    });
-
     const id = localStorage.getItem("userId");
     const { result, onResult } = useQuery(GET_USER, {
       userId: id * 1,
@@ -252,6 +242,16 @@ export default {
       formData.phoneNumber = queryResult.data.user.phoneNumber;
       formData.email = queryResult.data.user.email;
       formData.address = queryResult.data.user.address;
+    });
+
+    const formData = reactive({
+      name: result.value?.user?.name,
+      userName: result.value?.user?.userName,
+      phoneNumber: result.value?.user?.phoneNumber,
+      email: result.value?.user?.email,
+      address: result.value?.user?.address,
+      message: "",
+      isShow: true,
     });
 
     const { mutate: updateUser, onDone } = useMutation(UPDATE_PROFILE, () => ({

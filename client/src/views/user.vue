@@ -86,7 +86,10 @@
                 :key="user.id"
                 class="datatable-body"
               >
-                <tr class="datatable-row" v-if="auth_user != user.id">
+                <tr
+                  class="datatable-row"
+                  v-if="auth_user != user.id && !user.isAdmin"
+                >
                   <td class="data-value">
                     <span>{{ user.id }}</span>
                   </td>
@@ -100,9 +103,6 @@
                     <span>{{ user.phoneNumber }}</span>
                   </td>
                   <td class="data-value">
-                    <div class="btn btn-sm btn-clean btn-icon mr-2">
-                      <font-awesome-icon :icon="['fas', 'file']" />
-                    </div>
                     <router-link
                       v-if="!user.isAdmin"
                       :to="`/user/edit/${user.id}`"
@@ -113,7 +113,7 @@
                       <font-awesome-icon :icon="['fas', 'pencil']" />
                     </router-link>
                     <div
-                      @click="deleteItem({ userId: user.id })"
+                      @click="onDeleteClicked(user.id)"
                       v-if="!user.isAdmin"
                       class="btn btn-sm btn-clean btn-icon"
                       data-toggle="tooltip"
@@ -136,7 +136,7 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import {
   TITLE_DATA_USER,
   GET_ALL_USERS,
@@ -144,6 +144,7 @@ import {
   DELETE_USER,
 } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
+// import { useQuery, useResult } from "@vue/apollo-composable";
 
 export default {
   setup() {
@@ -167,24 +168,29 @@ export default {
     // Delete Item
     const users = computed(() => getAllUsers.value?.users);
 
-    const { mutate: deleteItem } = useMutation(DELETE_USER);
-    // const { mutate: deleteItem } = useMutation(DELETE_USER, {
-    //   update(cache, { data }) {
-    //     const { listUser } = cache.readQuery({
-    //       query: GET_ALL_USERS,
-    //     });
+    const userDelete = ref("");
+    const onDeleteClicked = (item) => {
+      if (window.confirm("Delete This User?")) {
+        userDelete.value = item;
+        deleteUser();
+      }
+    };
 
-    //     cache.writeQuery({
-    //       query: GET_ALL_USERS,
-    //       data: {
-    //         listUser: listUser.filter((user) => user.id !== data.deleteItem.id),
-    //       },
-    //     });
-    //   },
-    // });
+    const { mutate: deleteUser } = useMutation(DELETE_USER, () => ({
+      variables: {
+        userId: userDelete.value,
+      },
+      update(cache) {
+        // const normalizedId = cache.evict({
+        cache.evict({
+          id: cache.identify({ id: userDelete.value, __typename: "User" }),
+        });
+        cache.gc();
+        // console.log("normalizedId: ", normalizedId);
+      },
+    }));
 
     // Export Item
-
     const { mutate: exportUser, onDone } = useMutation(EXPORT_USER);
 
     onDone(() => {
@@ -199,7 +205,7 @@ export default {
       formData,
       auth_user,
       exportUser,
-      deleteItem,
+      onDeleteClicked,
     };
   },
 };

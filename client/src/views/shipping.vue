@@ -63,6 +63,7 @@
                   </td>
                   <td class="data-value">
                     <div
+                      @click="onDeleteClicked(shippingMethod.id)"
                       class="btn btn-sm btn-clean btn-icon"
                       data-toggle="tooltip"
                       title="Delete"
@@ -84,9 +85,13 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { reactive } from "vue";
-import { TITLE_DATA_SHIPPING, GET_ALL_SHIPPING } from "@/constants";
-import { useQuery } from "@vue/apollo-composable";
+import { reactive, ref } from "vue";
+import {
+  TITLE_DATA_SHIPPING,
+  GET_ALL_SHIPPING,
+  DELETE_SHIPPING,
+} from "@/constants";
+import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
   setup() {
@@ -99,6 +104,30 @@ export default {
     }
 
     const { result, loading, error } = useQuery(GET_ALL_SHIPPING);
+
+    // Delete Shipping
+    const shippingDelete = ref("");
+    const onDeleteClicked = (item) => {
+      if (window.confirm("Delete This Item?")) {
+        shippingDelete.value = item;
+        deleteShipping();
+      }
+    };
+
+    const { mutate: deleteShipping } = useMutation(DELETE_SHIPPING, () => ({
+      variables: {
+        shippingMethodId: shippingDelete.value,
+      },
+      update(cache) {
+        cache.evict({
+          id: cache.identify({
+            id: shippingDelete.value,
+            __typename: "ShippingMethod",
+          }),
+        });
+        cache.gc();
+      },
+    }));
     return {
       titleItems,
       meta: computed(() => route.meta),
@@ -106,6 +135,7 @@ export default {
       goToRoute,
       loading,
       error,
+      onDeleteClicked,
     };
   },
 };

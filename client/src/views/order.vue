@@ -93,6 +93,7 @@
                   </td>
                   <td class="data-value">
                     <div
+                      @click="onDeleteClicked(order.id)"
                       class="btn btn-sm btn-clean btn-icon"
                       data-toggle="tooltip"
                       title="Delete"
@@ -114,8 +115,13 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute } from "vue-router";
-import { reactive } from "vue";
-import { TITLE_DATA_ORDER, GET_ALL_ORDERS, EXPORT_ORDER } from "@/constants";
+import { reactive, ref } from "vue";
+import {
+  TITLE_DATA_ORDER,
+  GET_ALL_ORDERS,
+  EXPORT_ORDER,
+  DELETE_ORDER,
+} from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 
 export default {
@@ -135,6 +141,32 @@ export default {
       formData.message = "Exported !";
     });
 
+    // Delete Product Attribute
+    const orderDelete = ref("");
+    const onDeleteClicked = (item) => {
+      if (window.confirm("Delete This Item?")) {
+        orderDelete.value = item;
+        deleteOrder();
+      }
+    };
+
+    const { mutate: deleteOrder } = useMutation(DELETE_ORDER, () => ({
+      variables: {
+        orderId: orderDelete.value,
+      },
+      update(cache) {
+        // const normalizedId = cache.evict({
+        cache.evict({
+          id: cache.identify({
+            id: orderDelete.value,
+            __typename: "Order",
+          }),
+        });
+        cache.gc();
+        // console.log("normalizedId: ", normalizedId);
+      },
+    }));
+
     return {
       titleItems,
       meta: computed(() => route.meta),
@@ -143,6 +175,7 @@ export default {
       error,
       exportOrder,
       formData,
+      onDeleteClicked,
     };
   },
 };

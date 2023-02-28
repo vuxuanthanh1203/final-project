@@ -51,7 +51,20 @@ const ProductMutationResolver = {
           id: args.productId
         }
       })
-      return Product.findByPk(args.productId)
+      const product = await Product.scope('+Category').findByPk(args.productId)
+      return {
+        id: product.id,
+        name: product.name,
+        slug: product.slug,
+        image: product.image,
+        price: product.price,
+        description: product.description,
+        category: {
+          id: product.Category.id,
+          name: product.Category.name,
+          slug: product.Category.slug
+        }
+      }
     }
   }
 }

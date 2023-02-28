@@ -307,12 +307,12 @@ const typeDefs = gql`
     }
 
     input UpdateProductInput {
-        name: String, 
-        slug: String, 
+        name: String!, 
+        slug: String!, 
         image: String,
         price: Float, 
-        description: String,
-        categoryId: Int
+        description: String!,
+        categoryId: Int!
     }
     
     input CreateProductAttrInput {

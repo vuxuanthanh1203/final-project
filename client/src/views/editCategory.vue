@@ -82,9 +82,9 @@
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="updateCategory"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -124,11 +124,21 @@ export default {
       router.push({ name: "Category", params: {} });
     }
 
+    const { result, onResult } = useQuery(GET_CATEGORY, {
+      categoryId: route.params.id * 1,
+    });
+
+    onResult((queryResult) => {
+      formData.name = queryResult.data.category.name;
+      formData.slug = queryResult.data.category.slug;
+    });
+
     const formData = reactive({
-      name: "",
-      slug: "",
+      name: result.value?.category?.name,
+      slug: result.value?.category?.name,
       message: "",
       isShow: true,
+      checkForm: false,
     });
 
     const rules = computed(() => {
@@ -150,36 +160,42 @@ export default {
       return formData.slug;
     }
 
-    const { result, onResult } = useQuery(GET_CATEGORY, {
-      categoryId: parseInt(route.params.id),
-    });
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
 
-    onResult((queryResult) => {
-      formData.name = queryResult.data.category.name;
-      formData.slug = queryResult.data.category.slug;
-    });
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        updateCategory();
+      }
+    }
 
-    // watch(result, (value) => {
-    //   formData.name = value?.category?.name;
-    //   formData.slug = value?.category?.slug;
-    // });
-
-    const { mutate: updateCategory, onDone } = useMutation(
-      UPDATE_CATEGORY,
-      () => ({
-        variables: {
-          categoryId: parseInt(route.params.id),
-          input: {
-            name: formData.name,
-            slug: formData.slug,
-          },
+    const {
+      mutate: updateCategory,
+      onDone,
+      onError,
+    } = useMutation(UPDATE_CATEGORY, () => ({
+      variables: {
+        categoryId: parseInt(route.params.id),
+        input: {
+          name: formData.name,
+          slug: formData.slug,
         },
-      })
-    );
+      },
+    }));
+
+    onError(() => {
+      v$.value.$validate();
+    });
+
     onDone(() => {
-      formData.name = "";
-      formData.slug = "";
-      formData.message = "category updated!";
+      // if (formData.checkForm) {
+      //   alert("Category Updated !");
+      //   router.push({ name: "Category", params: {} });
+      // }
+      formData.message = "Category Updated !";
     });
 
     return {
@@ -189,7 +205,7 @@ export default {
       formData,
       result,
       v$,
-      updateCategory,
+      handleFunction,
     };
   },
 };

@@ -94,8 +94,13 @@ module.exports = (sequelize, DataTypes) => {
  * id: number
  *  name: string
  *  slug: string
+ *  image: string
  *  price: number
  *  description: string
- *  categoryId: number
+ *  category: {
+ *    id: number
+ *    name: string
+ *    slug: string
+ *  }
  * }} ProductEntity
  */
