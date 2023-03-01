@@ -93,7 +93,7 @@
                     type="file"
                     id="file"
                     class="form-control"
-                    ref="imageUploader"
+                    accept="image/*"
                     @change="onFileChange"
                   />
                   <div class="form-group">
@@ -207,7 +207,6 @@ export default {
     const router = useRouter();
     const image = ref("");
     const imageUrl = ref("");
-    let data = new FormData();
     const defaultImg =
       "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
 
@@ -254,9 +253,11 @@ export default {
       return formData.slug;
     }
 
-    const onFileChange = (e) => {
+    const onFileChange = async (e) => {
       image.value = e.target.files[0];
+      console.log(image.value);
 
+      // Show image
       let fileReader = new FileReader();
       fileReader.readAsDataURL(image.value);
       fileReader.addEventListener("load", () => {
@@ -265,12 +266,14 @@ export default {
     };
 
     function handleChange() {
+      console.log("file: " + image.value);
+
       uploadfile();
     }
 
     const { mutate: uploadfile } = useMutation(UPLOAD_FILE, {
       variables: {
-        file: data,
+        file: image.value,
       },
     });
 
