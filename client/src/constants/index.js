@@ -249,7 +249,7 @@ export const GET_ALL_USERS = gql`
     }
   }
 `;
-export const GET_ALL_STAFF = gql`
+export const GET_ALL_ADMIN = gql`
   query {
     staff {
       id
@@ -471,8 +471,13 @@ export const CREATE_ATTR = gql`
   }
 `;
 
+// export const UPLOAD_FILE = gql`
+//   mutation ($file: Upload!) {
+//     imageUploader(file: $file)
+//   }
+// `;
 export const UPLOAD_FILE = gql`
-  mutation ($file: Upload!) {
+  mutation ($file: String!) {
     imageUploader(file: $file)
   }
 `;

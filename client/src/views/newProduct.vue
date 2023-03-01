@@ -194,10 +194,12 @@ import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { reactive, ref } from "vue";
 import { CREATE_PRODUCT, GET_ALL_CATEGORIES, UPLOAD_FILE } from "@/constants";
-// import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
+
+import axios from "axios";
+import { print } from "graphql";
 
 import slugify from "slugify";
 
@@ -205,7 +207,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const image = ref("");
+    const image = ref(null);
     const imageUrl = ref("");
     const defaultImg =
       "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
@@ -253,7 +255,7 @@ export default {
       return formData.slug;
     }
 
-    const onFileChange = async (e) => {
+    const onFileChange = (e) => {
       image.value = e.target.files[0];
       console.log(image.value);
 
@@ -267,8 +269,20 @@ export default {
 
     function handleChange() {
       console.log("file: " + image.value);
+      axios
+        .post("http://localhost:4000/graphql", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          query: print(UPLOAD_FILE),
+          variables: {
+            file: image.value,
+          },
+        })
+        .then((res) => console.log("res:", res))
+        .catch((err) => console.log("err: ", err));
 
-      uploadfile();
+      // uploadfile();
     }
 
     const { mutate: uploadfile } = useMutation(UPLOAD_FILE, {

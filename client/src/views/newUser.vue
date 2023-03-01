@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="formData.isShow = false"
+                @click="closeMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -178,7 +178,7 @@
               <button
                 type="submit"
                 class="btn btn-primary mr-2"
-                @click="createUser"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -227,7 +227,8 @@ export default {
       isAdmin: false,
       address: "",
       message: "",
-      isShow: true,
+      isShow: false,
+      checkForm: false,
     });
 
     const rules = computed(() => {
@@ -243,6 +244,18 @@ export default {
     });
 
     const v$ = useVuelidate(rules, formData);
+
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
+
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        createUser();
+      }
+    }
 
     const {
       mutate: createUser,
@@ -262,29 +275,49 @@ export default {
       },
     }));
 
-    onError(async (error) => {
-      const errMessage = error.toString().split(": ")[1];
-      alert(errMessage);
+    onError(async () => {
+      await v$.value.$validate();
     });
 
     onDone(() => {
-      formData.name = "";
-      formData.userName = "";
-      formData.email = "";
-      formData.password = "";
-      formData.phoneNumber = "";
-      formData.confirmPassword = "";
-      formData.isAdmin = false;
-      formData.address = "";
-      formData.message = "Created User !";
+      if (formData.checkForm) {
+        formData.name = "";
+        formData.userName = "";
+        formData.email = "";
+        formData.password = "";
+        formData.phoneNumber = "";
+        formData.confirmPassword = "";
+        formData.isAdmin = false;
+        formData.address = "";
+        formData.message = "User Created !";
+        formData.isShow = !formData.isShow;
+      }
     });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
+
+    // onDone(() => {
+    //   formData.name = "";
+    //   formData.userName = "";
+    //   formData.email = "";
+    //   formData.password = "";
+    //   formData.phoneNumber = "";
+    //   formData.confirmPassword = "";
+    //   formData.isAdmin = false;
+    //   formData.address = "";
+    //   formData.message = "Created User !";
+    // });
 
     return {
       meta: computed(() => route.meta),
       backToRoute,
       formData,
       v$,
-      createUser,
+      handleFunction,
+      closeMessage,
     };
   },
 };

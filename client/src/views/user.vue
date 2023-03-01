@@ -12,13 +12,13 @@
               </span>
             </div>
             <div class="card-toolbar">
-              <div class="form-group mr-2 select-type d-flex">
+              <!-- <div class="form-group mr-2 select-type d-flex">
                 <label for="type"> Type:</label>
                 <select class="form-control ml-2" id="type">
                   <option>user</option>
                   <option @click="loadStaff">admin</option>
                 </select>
-              </div>
+              </div> -->
               <div
                 @click="exportUser"
                 class="btn btn-primary font-weight-bolder mr-2"
@@ -86,10 +86,7 @@
                 :key="user.id"
                 class="datatable-body"
               >
-                <tr
-                  class="datatable-row"
-                  v-if="auth_user != user.id && !user.isAdmin"
-                >
+                <tr class="datatable-row" v-if="!user.isAdmin">
                   <td class="data-value">
                     <span>{{ user.id }}</span>
                   </td>

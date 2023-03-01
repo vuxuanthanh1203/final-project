@@ -247,6 +247,7 @@ export default {
 
     async function handleFunction() {
       const checkValidate = await handleChange();
+      console.log(checkValidate);
       if (checkValidate) {
         updateUser();
       }
