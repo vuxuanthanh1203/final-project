@@ -262,9 +262,11 @@ export default {
       },
     }));
 
-    onError(async () => {
-      await v$.value.$validate();
+    onError(async (error) => {
+      const errMessage = error.toString().split(": ")[1];
+      alert(errMessage);
     });
+
     onDone(() => {
       formData.name = "";
       formData.userName = "";

@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="formData.isShow = false"
+                @click="closeMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -137,7 +137,7 @@ export default {
       name: result.value?.category?.name,
       slug: result.value?.category?.name,
       message: "",
-      isShow: true,
+      isShow: false,
       checkForm: false,
     });
 
@@ -191,12 +191,16 @@ export default {
     });
 
     onDone(() => {
-      // if (formData.checkForm) {
-      //   alert("Category Updated !");
-      //   router.push({ name: "Category", params: {} });
-      // }
-      formData.message = "Category Updated !";
+      if (formData.checkForm) {
+        formData.message = "Category Updated !";
+        formData.isShow = !formData.isShow;
+      }
     });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
 
     return {
       meta: computed(() => route.meta),
@@ -206,6 +210,7 @@ export default {
       result,
       v$,
       handleFunction,
+      closeMessage,
     };
   },
 };

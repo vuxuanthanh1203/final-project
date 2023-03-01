@@ -7,9 +7,9 @@ const { createWriteStream } = require('fs')
 const UploadImageResolver = {
   Mutation: {
     async imageUploader (parent, { file }, context) {
+      console.log(file)
       const pfile = await file.file
       const stream = pfile.createReadStream()
-      console.log(stream)
       let { ext, name } = parse(pfile.filename)
 
       name = name.replace(/([^a-z0-9]+)/gi, '-').replace(' ', '_')

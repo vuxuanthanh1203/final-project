@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="formData.isShow = false"
+                @click="showMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -237,6 +237,11 @@ export default {
       };
     });
 
+    const showMessage = () => {
+      formData.isShow = !formData.isShow;
+      formData.message = "";
+    };
+
     const v$ = useVuelidate(rules, formData);
 
     function renderSlug() {
@@ -260,8 +265,6 @@ export default {
     };
 
     function handleChange() {
-      data.append("file", image.value);
-      console.log(data);
       uploadfile();
     }
 
@@ -306,8 +309,8 @@ export default {
       backToRoute,
       formData,
       renderSlug,
+      showMessage,
       categories: computed(() => getAllCategories.value?.categories),
-
       createProduct,
       v$,
       uploadfile,

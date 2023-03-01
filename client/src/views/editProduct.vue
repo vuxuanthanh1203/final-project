@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="formData.isShow = false"
+                @click="closeMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -214,7 +214,7 @@ export default {
       description: result.value?.product?.description,
       categoryId: result.value?.product?.category.id,
       message: "",
-      isShow: true,
+      isShow: false,
       checkForm: false,
     });
 
@@ -275,11 +275,16 @@ export default {
 
     onDone(() => {
       if (formData.checkForm) {
-        // alert("Product Updated !");
-        // router.push({ name: "Product", params: {} });
         formData.message = "Product Updated !";
+
+        formData.isShow = !formData.isShow;
       }
     });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
 
     return {
       meta: computed(() => route.meta),
@@ -290,6 +295,7 @@ export default {
       result,
       handleFunction,
       v$,
+      closeMessage,
     };
   },
 };
