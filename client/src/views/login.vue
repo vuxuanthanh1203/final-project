@@ -136,8 +136,7 @@ export default {
       { enabled: fetchEnabled }
     );
 
-    onError(async (error) => {
-      // await v$.value.$validate();
+    onError((error) => {
       alert(error.graphQLErrors[0].message);
       formData.email = "";
       formData.password = "";

@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="formData.isShow = false"
+                @click="closeMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -223,7 +223,7 @@ export default {
       phoneNumber: result.value?.user?.phoneNumber,
       isAdmin: result.value?.user?.isAdmin,
       address: result.value?.user?.address,
-      isShow: true,
+      isShow: false,
       checkForm: false,
     });
 
@@ -247,6 +247,7 @@ export default {
 
     async function handleFunction() {
       const checkValidate = await handleChange();
+      console.log(checkValidate);
       if (checkValidate) {
         updateUser();
       }
@@ -277,8 +278,14 @@ export default {
     onDone(() => {
       if (formData.checkForm) {
         formData.message = "User Updated !";
+        formData.isShow = !formData.isShow;
       }
     });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
 
     return {
       meta: computed(() => route.meta),
@@ -286,6 +293,7 @@ export default {
       formData,
       v$,
       handleFunction,
+      closeMessage,
     };
   },
 };

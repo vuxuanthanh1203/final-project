@@ -157,7 +157,8 @@ export default {
     onDone(() => {
       formData.size = "";
       formData.quantity = "";
-      formData.message = "Attribute Created !";
+      // formData.message = "Attribute Created !";
+      alert("Attribute Created !");
     });
 
     return {
