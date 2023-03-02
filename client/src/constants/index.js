@@ -471,16 +471,12 @@ export const CREATE_ATTR = gql`
   }
 `;
 
-// export const UPLOAD_FILE = gql`
-//   mutation ($file: Upload!) {
-//     imageUploader(file: $file)
-//   }
-// `;
 export const UPLOAD_FILE = gql`
-  mutation ($file: String!) {
+  mutation ($file: Upload!) {
     imageUploader(file: $file)
   }
 `;
+
 export const DELETE_SHIPPING = gql`
   mutation ($shippingMethodId: Int!) {
     deleteShippingMethod(shippingMethodId: $shippingMethodId) {

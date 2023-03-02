@@ -2,6 +2,11 @@
 'use strict'
 
 const { mergeResolvers } = require('@graphql-tools/merge')
+const GraphQLUpload = require('graphql-upload/GraphQLUpload.js')
+
+const customResolvers = {
+  Upload: GraphQLUpload
+}
 
 // Import Query
 const CategoryQueryResolver = require('./CategoryQueryResolver')
@@ -34,6 +39,7 @@ const ImportUserMutationResolver = require('./ImportUserMutationResolver')
 const UploadImageResolver = require('./UploadImageResolver')
 
 const resolvers = [
+  customResolvers,
   CategoryQueryResolver,
   OrderQueryResolver,
   OrderProductAttrQueryResolver,

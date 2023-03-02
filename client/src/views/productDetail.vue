@@ -74,6 +74,13 @@
                       >
                         New Stock
                       </button>
+                      <button
+                        @click="goToUpload"
+                        type="button"
+                        class="btn btn-primary font-weight-bolder mr-6 px-6 font-size-sm"
+                      >
+                        New Image
+                      </button>
                     </div>
                     <div class="row mb-6">
                       <!--begin::Info-->
@@ -153,6 +160,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const id = route.params.id;
 
     const titleItems = reactive(TITLE_DATA_PRODUCT_ATTR);
 
@@ -161,8 +169,10 @@ export default {
     }
 
     function goToRoute() {
-      const id = route.params.id;
       router.push({ name: "NewAttr", params: { id } });
+    }
+    function goToUpload() {
+      router.push({ name: "Upload File", params: { id } });
     }
 
     const { result: dataProductAttrs } = useQuery(GET_PRODUCT_ATTRS, {
@@ -208,6 +218,7 @@ export default {
       goToRoute,
       titleItems,
       onDeleteClicked,
+      goToUpload,
     };
   },
 };

@@ -82,29 +82,9 @@
                     {{ error.$message }}
                   </span>
                 </div>
-                <div class="form-group">
-                  <input type="hidden" v-model="formData.image" />
-                </div>
               </div>
               <div class="form-div-wrapper row d-flex">
-                <div class="form-group col-lg-4">
-                  <label> Image <span class="text-danger">*</span> </label>
-                  <input
-                    type="file"
-                    id="file"
-                    class="form-control"
-                    accept="image/*"
-                    @change="onFileChange"
-                  />
-                  <div class="form-group">
-                    <img
-                      class="product-img mt-3"
-                      :src="imageUrl ? imageUrl : defaultImg"
-                      alt="thumbnail"
-                    />
-                  </div>
-                </div>
-                <div class="form-group col-lg-4">
+                <div class="form-group col-lg-6">
                   <label> Price <span class="text-danger">*</span> </label>
                   <input
                     type="number"
@@ -120,7 +100,7 @@
                     {{ error.$message }}
                   </span>
                 </div>
-                <div class="form-group col-lg-4">
+                <div class="form-group col-lg-6">
                   <label for="category">
                     Category
                     <span class="text-danger">*</span>
@@ -192,14 +172,11 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { reactive, ref } from "vue";
-import { CREATE_PRODUCT, GET_ALL_CATEGORIES, UPLOAD_FILE } from "@/constants";
+import { reactive } from "vue";
+import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-
-import axios from "axios";
-import { print } from "graphql";
 
 import slugify from "slugify";
 
@@ -207,10 +184,6 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const image = ref(null);
-    const imageUrl = ref("");
-    const defaultImg =
-      "https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg";
 
     function backToRoute() {
       router.push({ name: "Product", params: {} });
@@ -255,42 +228,6 @@ export default {
       return formData.slug;
     }
 
-    const onFileChange = (e) => {
-      image.value = e.target.files[0];
-      console.log(image.value);
-
-      // Show image
-      let fileReader = new FileReader();
-      fileReader.readAsDataURL(image.value);
-      fileReader.addEventListener("load", () => {
-        imageUrl.value = fileReader.result;
-      });
-    };
-
-    function handleChange() {
-      console.log("file: " + image.value);
-      axios
-        .post("http://localhost:4000/graphql", {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          query: print(UPLOAD_FILE),
-          variables: {
-            file: image.value,
-          },
-        })
-        .then((res) => console.log("res:", res))
-        .catch((err) => console.log("err: ", err));
-
-      // uploadfile();
-    }
-
-    const { mutate: uploadfile } = useMutation(UPLOAD_FILE, {
-      variables: {
-        file: image.value,
-      },
-    });
-
     const {
       mutate: createProduct,
       onError,
@@ -330,11 +267,6 @@ export default {
       categories: computed(() => getAllCategories.value?.categories),
       createProduct,
       v$,
-      uploadfile,
-      onFileChange,
-      handleChange,
-      imageUrl,
-      defaultImg,
     };
   },
 };
