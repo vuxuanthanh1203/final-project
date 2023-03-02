@@ -187,6 +187,11 @@ const routes = [
     name: "CheckPassword",
     component: () => import("@/views/checkPassword.vue"),
   },
+  {
+    path: "/product/:id/upload-image",
+    name: "Upload File",
+    component: () => import("@/views/uploadFile.vue"),
+  },
 ];
 
 const router = createRouter({

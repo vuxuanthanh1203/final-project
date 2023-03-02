@@ -8,7 +8,7 @@ const UploadImageResolver = {
   Mutation: {
     async imageUploader (parent, { file }, context) {
       console.log(file)
-      const myfile = await file.promise
+      const myfile = await file
       const stream = myfile.createReadStream()
       let { ext, name } = parse(myfile.filename)
 
