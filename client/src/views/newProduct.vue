@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="showMessage"
+                @click="closeMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -89,7 +89,7 @@
                   <input
                     type="number"
                     class="form-control"
-                    placeholder="Enter the name of the new product"
+                    placeholder="Enter the price of the new product"
                     v-model="formData.price"
                   />
                   <span
@@ -110,6 +110,7 @@
                     class="form-control"
                     id="category"
                   >
+                    <option disabled value="">Please select one</option>
                     <option
                       v-for="category in categories"
                       :key="category.id"
@@ -132,7 +133,7 @@
                 <textarea
                   rows="5"
                   class="form-control"
-                  placeholder="Enter the address of the new user"
+                  placeholder="Enter the description of the new product"
                   v-model="formData.description"
                 >
                 </textarea>
@@ -149,7 +150,7 @@
               <button
                 type="submit"
                 class="btn btn-primary mr-2"
-                @click="handleChange"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -198,7 +199,8 @@ export default {
       description: "",
       categoryId: "",
       message: "",
-      isShow: true,
+      isShow: false,
+      checkForm: false,
     });
 
     const rules = computed(() => {
@@ -211,12 +213,19 @@ export default {
       };
     });
 
-    const showMessage = () => {
-      formData.isShow = !formData.isShow;
-      formData.message = "";
+    const v$ = useVuelidate(rules, formData);
+
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
     };
 
-    const v$ = useVuelidate(rules, formData);
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        createProduct();
+      }
+    }
 
     function renderSlug() {
       formData.slug = slugify(formData.name, {
@@ -256,16 +265,23 @@ export default {
       formData.description = "";
       formData.categoryId = "";
       formData.message = "Product Created  !";
+      formData.checkForm = true;
+      formData.isShow = !formData.isShow;
     });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
 
     return {
       meta: computed(() => route.meta),
+      categories: computed(() => getAllCategories.value?.categories),
       backToRoute,
       formData,
       renderSlug,
-      showMessage,
-      categories: computed(() => getAllCategories.value?.categories),
-      createProduct,
+      closeMessage,
+      handleFunction,
       v$,
     };
   },

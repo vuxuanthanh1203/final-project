@@ -22,10 +22,16 @@
               </div>
               <div
                 @click="goToRoute"
-                class="btn btn-primary font-weight-bolder"
+                class="btn btn-primary font-weight-bolder mr-2"
               >
                 <font-awesome-icon :icon="['fas', 'record-vinyl']" />
                 New Record
+              </div>
+              <div
+                @click="refetch()"
+                class="btn btn-warning font-weight-bolder"
+              >
+                <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
             </div>
             <!-- End Card Header -->
@@ -124,7 +130,7 @@ export default {
       router.push({ name: "NewCategory", params: {} });
     }
 
-    const { result, loading, error } = useQuery(GET_ALL_CATEGORIES);
+    const { result, loading, error, refetch } = useQuery(GET_ALL_CATEGORIES);
 
     // Delete Category
     const categoryDelete = ref("");
@@ -160,6 +166,7 @@ export default {
       tooltip,
       deleteCategory,
       onDeleteClicked,
+      refetch,
     };
   },
 };

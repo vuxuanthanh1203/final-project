@@ -7,8 +7,8 @@ const { createWriteStream } = require('fs')
 const UploadImageResolver = {
   Mutation: {
     async imageUploader (parent, { file }, context) {
-      console.log(file)
       const myfile = await file
+      console.log(myfile)
       const stream = myfile.createReadStream()
       let { ext, name } = parse(myfile.filename)
 
