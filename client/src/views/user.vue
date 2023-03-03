@@ -28,10 +28,16 @@
               </div>
               <div
                 @click="goToRoute"
-                class="btn btn-primary font-weight-bolder"
+                class="btn btn-primary font-weight-bolder mr-2"
               >
                 <font-awesome-icon :icon="['fas', 'record-vinyl']" />
                 New Record
+              </div>
+              <div
+                @click="refetch()"
+                class="btn btn-warning font-weight-bolder"
+              >
+                <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
             </div>
             <!-- End Card Header -->
@@ -160,7 +166,9 @@ export default {
       router.push({ name: "NewUser", params: {} });
     }
 
-    const { result: getAllUsers } = useQuery(GET_ALL_USERS);
+    const { result: getAllUsers, refetch } = useQuery(GET_ALL_USERS, {
+      fetchPolicy: "cache-and-network",
+    });
 
     // Delete Item
     const users = computed(() => getAllUsers.value?.users);
@@ -203,6 +211,7 @@ export default {
       auth_user,
       exportUser,
       onDeleteClicked,
+      refetch,
     };
   },
 };

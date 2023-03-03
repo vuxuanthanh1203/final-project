@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         allowNull: false,
         field: 'image',
-        type: DataTypes.STRING(191)
+        type: DataTypes.STRING(191),
+        defaultValue: 'https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg'
       },
       price: {
         allowNull: false,

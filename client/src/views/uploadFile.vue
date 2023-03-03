@@ -52,13 +52,13 @@
                   accept="image/*"
                   @change="onFileChange"
                 />
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <img
                     class="product-img mt-3"
                     :src="imageUrl ? imageUrl : defaultImg"
                     alt="thumbnail"
                   />
-                </div>
+                </div> -->
               </div>
             </div>
 
@@ -88,8 +88,10 @@
 
 <script>
 // import { useMutation } from "@vue/apollo-composable";
+import { useRoute, useRouter } from "vue-router";
 import { UPLOAD_FILE } from "@/constants";
-// import axios from "axios";
+import axios from "axios";
+import { print } from "graphql";
 
 export default {
   data() {
@@ -103,13 +105,26 @@ export default {
     },
 
     async onUpload() {
-      console.log(this);
-      let { data } = await this.$apollo.mutate({
-        mutation: UPLOAD_FILE,
-        variables: { file: this.selectedFile },
-      });
+      console.log(this.selectedFile);
+      axios
+        .post("http://localhost:4000/graphql", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          query: print(UPLOAD_FILE),
+          variables: {
+            file: this.selectedFile,
+          },
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+    },
 
-      console.log("Data: ", data);
+    backToRoute() {
+      const route = useRoute();
+      const router = useRouter();
+      const id = route.params.id;
+      router.push({ name: "Product Detail", params: { id } });
     },
   },
 };

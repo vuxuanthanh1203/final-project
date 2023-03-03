@@ -14,10 +14,16 @@
             <div class="card-toolbar">
               <div
                 @click="goToRoute"
-                class="btn btn-primary font-weight-bolder"
+                class="btn btn-primary font-weight-bolder mr-2"
               >
                 <font-awesome-icon :icon="['fas', 'record-vinyl']" />
                 New Record
+              </div>
+              <div
+                @click="refetch()"
+                class="btn btn-warning font-weight-bolder"
+              >
+                <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
             </div>
             <!-- End Card Header -->
@@ -114,20 +120,23 @@ export default {
       }
     };
 
-    const { mutate: deleteShipping } = useMutation(DELETE_SHIPPING, () => ({
-      variables: {
-        shippingMethodId: shippingDelete.value,
-      },
-      update(cache) {
-        cache.evict({
-          id: cache.identify({
-            id: shippingDelete.value,
-            __typename: "ShippingMethod",
-          }),
-        });
-        cache.gc();
-      },
-    }));
+    const { mutate: deleteShipping, refetch } = useMutation(
+      DELETE_SHIPPING,
+      () => ({
+        variables: {
+          shippingMethodId: shippingDelete.value,
+        },
+        update(cache) {
+          cache.evict({
+            id: cache.identify({
+              id: shippingDelete.value,
+              __typename: "ShippingMethod",
+            }),
+          });
+          cache.gc();
+        },
+      })
+    );
     return {
       titleItems,
       meta: computed(() => route.meta),
@@ -136,6 +145,7 @@ export default {
       loading,
       error,
       onDeleteClicked,
+      refetch,
     };
   },
 };

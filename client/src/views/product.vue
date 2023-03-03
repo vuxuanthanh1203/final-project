@@ -23,10 +23,16 @@
               </div>
               <div
                 @click="goToRoute"
-                class="btn btn-primary font-weight-bolder"
+                class="btn btn-primary font-weight-bolder mr-2"
               >
                 <font-awesome-icon :icon="['fas', 'record-vinyl']" />
                 New Record
+              </div>
+              <div
+                @click="refetch()"
+                class="btn btn-warning font-weight-bolder"
+              >
+                <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
             </div>
             <!-- End Card Header -->
@@ -163,7 +169,7 @@ export default {
       router.push({ name: "NewProduct", params: {} });
     }
 
-    const { result: dataProduct } = useQuery(GET_ALL_PRODUCT);
+    const { result: dataProduct, refetch } = useQuery(GET_ALL_PRODUCT);
 
     const { mutate: exportProduct, onDone } = useMutation(EXPORT_PRODUCT);
 
@@ -203,6 +209,7 @@ export default {
       exportProduct,
       formData,
       onDeleteClicked,
+      refetch,
     };
   },
 };

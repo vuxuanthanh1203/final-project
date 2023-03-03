@@ -67,20 +67,28 @@
                       </div>
                     </div>
                     <div class="d-flex flex-row-reverse mb-5">
-                      <button
+                      <div
+                        @click="refetch()"
+                        class="btn btn-warning font-weight-bolder"
+                        data-toggle="tooltip"
+                        title="Reload"
+                      >
+                        <font-awesome-icon :icon="['fas', 'rotate-right']" />
+                      </div>
+                      <div
                         @click="goToRoute"
                         type="button"
-                        class="btn btn-primary font-weight-bolder mr-6 px-6 font-size-sm"
+                        class="btn btn-primary font-weight-bolder mr-2 px-6 font-size-sm"
                       >
                         New Stock
-                      </button>
-                      <button
+                      </div>
+                      <div
                         @click="goToUpload"
                         type="button"
-                        class="btn btn-primary font-weight-bolder mr-6 px-6 font-size-sm"
+                        class="btn btn-primary font-weight-bolder mr-2 px-6 font-size-sm"
                       >
                         New Image
-                      </button>
+                      </div>
                     </div>
                     <div class="row mb-6">
                       <!--begin::Info-->
@@ -175,7 +183,7 @@ export default {
       router.push({ name: "Upload File", params: { id } });
     }
 
-    const { result: dataProductAttrs } = useQuery(GET_PRODUCT_ATTRS, {
+    const { result: dataProductAttrs, refetch } = useQuery(GET_PRODUCT_ATTRS, {
       productId: route.params.id * 1,
     });
 
@@ -219,6 +227,7 @@ export default {
       titleItems,
       onDeleteClicked,
       goToUpload,
+      refetch,
     };
   },
 };
