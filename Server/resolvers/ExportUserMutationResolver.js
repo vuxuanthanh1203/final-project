@@ -25,12 +25,13 @@ const ExportUserMutationResolver = {
         isAdmin: item.isAdmin
       }))
 
-      const baseDerectory = path.join(__dirname, '../../Server/public/')
+      const baseDerectory = path.join(__dirname, '../export')
 
       const fileName = Date.now() + '_users.csv'
-      const fileUrl = path.join(baseDerectory, fileName)
+      const URL = `${process.env.BASE_URL}${process.env.PORT}`
+      const fileUrl = `${URL}/${baseDerectory.split('export')[1]}${fileName}`
 
-      const ws = fs.createWriteStream(`public/${fileName}`)
+      const ws = fs.createWriteStream(`export/${fileName}`)
 
       fastCsv
         .write(dataUser, { headers: true })

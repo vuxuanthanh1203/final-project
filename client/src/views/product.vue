@@ -30,7 +30,7 @@
               </div>
               <div
                 @click="refetch()"
-                class="btn btn-warning font-weight-bolder"
+                class="btn btn-primary font-weight-bolder"
               >
                 <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
@@ -154,6 +154,9 @@ import {
   DELETE_PRODUCT,
 } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
+import axios from "axios";
+import { print } from "graphql";
+import { URI } from "../constants";
 
 export default {
   setup() {
@@ -171,11 +174,27 @@ export default {
 
     const { result: dataProduct, refetch } = useQuery(GET_ALL_PRODUCT);
 
-    const { mutate: exportProduct, onDone } = useMutation(EXPORT_PRODUCT);
+    // Export Data
+    function exportProduct() {
+      axios
+        .post(URI, {
+          query: print(EXPORT_PRODUCT),
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = res.data.data.exportProduct.fileUrl;
 
-    onDone(() => {
-      formData.message = "Exported !";
-    });
+          const link = document.createElement("a");
+          link.href = url;
+
+          const fileName = `${+new Date()}.csv`;
+          link.setAttribute("download", fileName);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+        .catch((err) => console.log("err: ", err));
+    }
 
     // Delete Product
     const productDelete = ref("");

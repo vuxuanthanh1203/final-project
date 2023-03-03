@@ -12,19 +12,14 @@
               </span>
             </div>
             <div class="card-toolbar">
-              <!-- <div class="form-group mr-2 select-type d-flex">
-                <label for="type"> Type:</label>
-                <select class="form-control ml-2" id="type">
-                  <option>user</option>
-                  <option @click="loadStaff">admin</option>
-                </select>
-              </div> -->
-              <div
-                @click="exportUser"
-                class="btn btn-primary font-weight-bolder mr-2"
-              >
-                <font-awesome-icon :icon="['fas', 'file-export']" />
-                Export Data
+              <div class="dropdown dropdown-inline mr-2">
+                <button
+                  @click="exportUser"
+                  class="btn btn-light-primary font-weight-bolder dropdown-toggle"
+                >
+                  <font-awesome-icon :icon="['fas', 'file-export']" />
+                  Export
+                </button>
               </div>
               <div
                 @click="goToRoute"
@@ -35,7 +30,7 @@
               </div>
               <div
                 @click="refetch()"
-                class="btn btn-warning font-weight-bolder"
+                class="btn btn-primary font-weight-bolder"
               >
                 <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
@@ -147,7 +142,9 @@ import {
   DELETE_USER,
 } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
-// import { useQuery, useResult } from "@vue/apollo-composable";
+import axios from "axios";
+import { print } from "graphql";
+import { URI } from "../constants";
 
 export default {
   setup() {
@@ -196,11 +193,26 @@ export default {
     }));
 
     // Export Item
-    const { mutate: exportUser, onDone } = useMutation(EXPORT_USER);
+    function exportUser() {
+      axios
+        .post(URI, {
+          query: print(EXPORT_USER),
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = res.data.data.exportUser.fileUrl;
 
-    onDone(() => {
-      formData.message = "Exported !";
-    });
+          const link = document.createElement("a");
+          link.href = url;
+
+          const fileName = `${+new Date()}.csv`;
+          link.setAttribute("download", fileName);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+        .catch((err) => console.log("err: ", err));
+    }
 
     return {
       titleItems,

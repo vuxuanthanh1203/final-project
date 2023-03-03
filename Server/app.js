@@ -13,6 +13,7 @@ const { getUserByToken } = require('./utils/getUserByToken')
 
 const app = express()
 app.use(express.static(path.join(__dirname, './upload')))
+app.use(express.static(path.join(__dirname, './export')))
 app.use(cors())
 
 const startApolloServer = async (req, res) => {

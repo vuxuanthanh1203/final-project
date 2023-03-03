@@ -21,7 +21,7 @@
               </div>
               <div
                 @click="refetch()"
-                class="btn btn-warning font-weight-bolder"
+                class="btn btn-primary font-weight-bolder"
               >
                 <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
@@ -109,7 +109,7 @@ export default {
       router.push({ name: "NewShipping", params: {} });
     }
 
-    const { result, loading, error } = useQuery(GET_ALL_SHIPPING);
+    const { result, loading, error, refetch } = useQuery(GET_ALL_SHIPPING);
 
     // Delete Shipping
     const shippingDelete = ref("");
@@ -120,23 +120,20 @@ export default {
       }
     };
 
-    const { mutate: deleteShipping, refetch } = useMutation(
-      DELETE_SHIPPING,
-      () => ({
-        variables: {
-          shippingMethodId: shippingDelete.value,
-        },
-        update(cache) {
-          cache.evict({
-            id: cache.identify({
-              id: shippingDelete.value,
-              __typename: "ShippingMethod",
-            }),
-          });
-          cache.gc();
-        },
-      })
-    );
+    const { mutate: deleteShipping } = useMutation(DELETE_SHIPPING, () => ({
+      variables: {
+        shippingMethodId: shippingDelete.value,
+      },
+      update(cache) {
+        cache.evict({
+          id: cache.identify({
+            id: shippingDelete.value,
+            __typename: "ShippingMethod",
+          }),
+        });
+        cache.gc();
+      },
+    }));
     return {
       titleItems,
       meta: computed(() => route.meta),

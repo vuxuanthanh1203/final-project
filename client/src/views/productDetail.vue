@@ -69,7 +69,7 @@
                     <div class="d-flex flex-row-reverse mb-5">
                       <div
                         @click="refetch()"
-                        class="btn btn-warning font-weight-bolder"
+                        class="btn btn-primary font-weight-bolder"
                         data-toggle="tooltip"
                         title="Reload"
                       >

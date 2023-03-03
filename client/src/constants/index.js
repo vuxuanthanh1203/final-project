@@ -342,7 +342,7 @@ export const EXPORT_ORDER = gql`
 `;
 export const EXPORT_PRODUCT = gql`
   mutation {
-    exportOrder {
+    exportProduct {
       fileUrl
     }
   }
