@@ -32,8 +32,10 @@ const ExportProductMutationResolver = {
 
       const ws = fs.createWriteStream(`export/${fileName}`)
 
+      const csvOptions = { writeBOM: true, headers: true }
+
       fastCsv
-        .write(dataProduct, { headers: true })
+        .write(dataProduct, csvOptions)
         .on('finish', () => console.log('Exported!'))
         .on('error', () => console.log('Error!'))
         .pipe(ws)

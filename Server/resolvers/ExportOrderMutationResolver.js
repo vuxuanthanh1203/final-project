@@ -32,8 +32,10 @@ const ExportOrderMutationResolver = {
 
       const ws = fs.createWriteStream(`export/${fileName}`)
 
+      const csvOptions = { writeBOM: true, headers: true }
+
       fastCsv
-        .write(dataOrder, { headers: true })
+        .write(dataOrder, csvOptions)
         .on('finish', () => console.log('Exported!'))
         .on('error', () => console.log('Error!'))
         .pipe(ws)

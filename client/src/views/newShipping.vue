@@ -170,6 +170,7 @@ export default {
         formData.name = "";
         formData.price = "";
         formData.message = "Method Created !";
+        v$.$reset();
         formData.isShow = !formData.isShow;
       }
     });

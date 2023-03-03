@@ -33,8 +33,10 @@ const ExportUserMutationResolver = {
 
       const ws = fs.createWriteStream(`export/${fileName}`)
 
+      const csvOptions = { writeBOM: true, headers: true }
+
       fastCsv
-        .write(dataUser, { headers: true })
+        .write(dataUser, csvOptions)
         .on('finish', () => console.log('Exported!'))
         .on('error', () => console.log('Error!'))
         .pipe(ws)
