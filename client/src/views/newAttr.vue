@@ -33,7 +33,7 @@
                 class="close"
                 data-dismiss="alert"
                 aria-label="Close"
-                @click="formData.isShow = false"
+                @click="closeMessage"
               >
                 <span aria-hidden="true">
                   <font-awesome-icon :icon="['fas', 'xmark']" />
@@ -43,46 +43,44 @@
           </div>
           <form @submit.prevent>
             <div class="card-body">
-              <div class="form-div-wrapper d-flex">
-                <div class="form-group input-width">
-                  <label>Size <span class="text-danger">*</span></label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter the name of the attribute"
-                    v-model="formData.size"
-                  />
-                  <span
-                    class="form-text text-muted text-err"
-                    v-for="error in v$.name.$errors"
-                    :key="error.$uid"
-                  >
-                    {{ error.$message }}
-                  </span>
-                </div>
-                <div class="form-group input-width ml-5">
-                  <label>Quantity <span class="text-danger">*</span></label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Quantity of this attribute"
-                    v-model="formData.quantity"
-                  />
-                  <span
-                    class="form-text text-muted text-err"
-                    v-for="error in v$.quantity.$errors"
-                    :key="error.$uid"
-                  >
-                    {{ error.$message }}
-                  </span>
-                </div>
+              <div class="form-group">
+                <label>Size <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter the name of the new attribute"
+                  v-model="formData.size"
+                />
+                <span
+                  class="form-text text-muted text-err"
+                  v-for="error in v$.size.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}
+                </span>
+              </div>
+              <div class="form-group">
+                <label>Quantity <span class="text-danger">*</span></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter the quantity of the attribute"
+                  v-model="formData.quantity"
+                />
+                <span
+                  class="form-text text-muted text-err"
+                  v-for="error in v$.quantity.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}
+                </span>
               </div>
             </div>
             <div class="card-footer">
               <button
                 type="submit"
                 class="btn btn-primary mr-2"
-                @click="createAttr"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -109,33 +107,48 @@ import { reactive } from "vue";
 import { CREATE_ATTR } from "@/constants";
 import { useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { required, numeric } from "@vuelidate/validators";
+// helpers,
 
 export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const productId = route.params.id;
+    const id = route.params.id;
 
     function backToRoute() {
-      router.push({ name: "Product Detail", params: { productId } });
+      router.push({ name: "Product Detail", params: { id } });
     }
 
     const formData = reactive({
       size: "",
       quantity: "",
       message: "",
-      isShow: true,
+      isShow: false,
+      checkForm: false,
     });
 
     const rules = computed(() => {
       return {
-        name: { required },
-        quantity: { required },
+        size: { required },
+        quantity: { required, numeric },
       };
     });
 
     const v$ = useVuelidate(rules, formData);
+
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
+
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        createAttr();
+        v$.value.$reset();
+      }
+    }
 
     const {
       mutate: createAttr,
@@ -145,8 +158,8 @@ export default {
       variables: {
         input: {
           value: formData.size.toUpperCase(),
-          quantityInStock: formData.quantity ? formData.quantity * 1 : "",
-          productId: productId * 1,
+          quantityInStock: formData.quantity * 1,
+          productId: id * 1,
         },
       },
     }));
@@ -154,19 +167,28 @@ export default {
     onError(async () => {
       await v$.value.$validate();
     });
+
     onDone(() => {
-      formData.size = "";
-      formData.quantity = "";
-      // formData.message = "Attribute Created !";
-      alert("Attribute Created !");
+      if (formData.checkForm) {
+        formData.size = "";
+        formData.quantity = "";
+        formData.message = "Attribute Created !";
+        formData.isShow = !formData.isShow;
+      }
     });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
 
     return {
       meta: computed(() => route.meta),
       backToRoute,
       formData,
       v$,
-      createAttr,
+      handleFunction,
+      closeMessage,
     };
   },
 };

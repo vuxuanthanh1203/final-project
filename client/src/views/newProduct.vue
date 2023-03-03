@@ -224,6 +224,7 @@ export default {
       const checkValidate = await handleChange();
       if (checkValidate) {
         createProduct();
+        v$.value.$reset();
       }
     }
 
@@ -247,7 +248,7 @@ export default {
           name: formData.name,
           slug: formData.slug,
           image: formData.image,
-          price: formData.price,
+          price: parseFloat(formData.price),
           categoryId: formData.categoryId,
           description: formData.description,
         },

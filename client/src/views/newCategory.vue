@@ -159,6 +159,7 @@ export default {
       const checkValidate = await handleChange();
       if (checkValidate) {
         createCategory();
+        v$.value.$reset();
       }
     }
 

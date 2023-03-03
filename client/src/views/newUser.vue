@@ -254,6 +254,7 @@ export default {
       const checkValidate = await handleChange();
       if (checkValidate) {
         createUser();
+        v$.value.$reset();
       }
     }
 

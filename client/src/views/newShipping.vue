@@ -145,6 +145,7 @@ export default {
       const checkValidate = await handleChange();
       if (checkValidate) {
         createShippingMethod();
+        v$.value.$reset();
       }
     }
 
@@ -170,7 +171,6 @@ export default {
         formData.name = "";
         formData.price = "";
         formData.message = "Method Created !";
-        v$.$reset();
         formData.isShow = !formData.isShow;
       }
     });
