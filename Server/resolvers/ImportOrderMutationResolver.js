@@ -5,9 +5,12 @@ const fastCsv = require('fast-csv')
 const Order = require('../models').Order
 const ImportOrderMutationResolver = {
   Mutation: {
-
-    async importOrder (parent, { file }, context) {
-      const myfile = await file
+    /**
+      * @param {*} args - csv file input
+      * @returns { Promise<ImportResult>}
+      */
+    async importOrder (parent, args, context) {
+      const myfile = await args.file
       const totalRecords = []
 
       myfile.createReadStream()

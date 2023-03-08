@@ -5,9 +5,12 @@ const fastCsv = require('fast-csv')
 const User = require('../models').User
 const ImportUserMutationResolver = {
   Mutation: {
-
-    async importUser (parent, { file }, context) {
-      const myfile = await file
+    /**
+      * @param {*} args - csv file input
+      * @returns { Promise<ImportResult>}
+      */
+    async importUser (parent, args, context) {
+      const myfile = await args.file
       const totalRecords = []
 
       myfile.createReadStream()
