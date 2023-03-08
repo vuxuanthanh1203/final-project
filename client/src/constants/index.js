@@ -505,3 +505,11 @@ export const DELETE_ORDER = gql`
     }
   }
 `;
+
+export const IMPORT_USER = gql`
+  mutation ($file: Upload!) {
+    importUser(file: $file) {
+      message
+    }
+  }
+`;

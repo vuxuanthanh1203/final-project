@@ -51,9 +51,9 @@ const typeDefs = gql`
         exportUser: ExportUser!
         exportOrder: ExportOrder!
 
-        importUser (fileName: String!): ImportResult!
-        importProduct (fileName: String!): ImportResult!
-        importOrder (fileName: String!): ImportResult!
+        importUser (file: Upload!): ImportResult!
+        importProduct (file: Upload!): ImportResult!
+        importOrder (file: Upload!): ImportResult!
         
         createCategory(input: CreateCategoryInput!): Category!
 
