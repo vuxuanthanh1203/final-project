@@ -123,6 +123,9 @@ import {
   DELETE_ORDER,
 } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
+import axios from "axios";
+import { print } from "graphql";
+import { URI } from "../constants";
 
 export default {
   setup() {
@@ -135,11 +138,27 @@ export default {
 
     const { result, loading, error } = useQuery(GET_ALL_ORDERS);
 
-    const { mutate: exportOrder, onDone } = useMutation(EXPORT_ORDER);
+    // Export Data
+    function exportOrder() {
+      axios
+        .post(URI, {
+          query: print(EXPORT_ORDER),
+          responseType: "blob",
+        })
+        .then((res) => {
+          const url = res.data.data.exportOrder.fileUrl;
 
-    onDone(() => {
-      formData.message = "Exported !";
-    });
+          const link = document.createElement("a");
+          link.href = url;
+
+          const fileName = `${+new Date()}.csv`;
+          link.setAttribute("download", fileName);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+        .catch((err) => console.log("err: ", err));
+    }
 
     // Delete Product Attribute
     const orderDelete = ref("");

@@ -24,15 +24,18 @@ const ExportOrderMutationResolver = {
         shippingMethod: item.shippingMethod.name
       }))
 
-      const baseDerectory = path.join(__dirname, '../../Server/public/')
+      const baseDerectory = path.join(__dirname, '../export')
 
       const fileName = Date.now() + '_orders.csv'
-      const fileUrl = path.join(baseDerectory, fileName)
+      const URL = `${process.env.BASE_URL}${process.env.PORT}`
+      const fileUrl = `${URL}/${baseDerectory.split('export')[1]}${fileName}`
 
-      const ws = fs.createWriteStream(`public/${fileName}`)
+      const ws = fs.createWriteStream(`export/${fileName}`)
+
+      const csvOptions = { writeBOM: true, headers: true }
 
       fastCsv
-        .write(dataOrder, { headers: true })
+        .write(dataOrder, csvOptions)
         .on('finish', () => console.log('Exported!'))
         .on('error', () => console.log('Error!'))
         .pipe(ws)

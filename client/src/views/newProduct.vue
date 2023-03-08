@@ -87,7 +87,7 @@
                 <div class="form-group col-lg-6">
                   <label> Price <span class="text-danger">*</span> </label>
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
                     placeholder="Enter the price of the new product"
                     v-model="formData.price"
@@ -177,7 +177,7 @@ import { reactive } from "vue";
 import { CREATE_PRODUCT, GET_ALL_CATEGORIES } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
+import { required, numeric } from "@vuelidate/validators";
 
 import slugify from "slugify";
 
@@ -207,7 +207,7 @@ export default {
       return {
         name: { required },
         slug: { required },
-        price: { required },
+        price: { required, numeric },
         description: { required },
         categoryId: { required },
       };
@@ -224,6 +224,7 @@ export default {
       const checkValidate = await handleChange();
       if (checkValidate) {
         createProduct();
+        v$.value.$reset();
       }
     }
 
@@ -247,7 +248,7 @@ export default {
           name: formData.name,
           slug: formData.slug,
           image: formData.image,
-          price: formData.price,
+          price: parseFloat(formData.price),
           categoryId: formData.categoryId,
           description: formData.description,
         },

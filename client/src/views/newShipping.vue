@@ -17,43 +17,70 @@
           <!-- End Card Header -->
           <!-- -------------------------- -->
           <!-- Begin Form -->
+          <div
+            class="alert alert-custom alert-notice alert-light-primary fade show mb-5"
+            role="alert"
+            v-if="formData.message"
+            v-show="formData.isShow"
+          >
+            <div class="alert-icon">
+              <font-awesome-icon :icon="['fas', 'check']" />
+            </div>
+            <div class="alert-text">{{ formData.message }}</div>
+            <div class="alert-close">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                @click="closeMessage"
+              >
+                <span aria-hidden="true">
+                  <font-awesome-icon :icon="['fas', 'xmark']" />
+                </span>
+              </button>
+            </div>
+          </div>
           <form @submit.prevent>
             <div class="card-body">
               <div class="form-group">
-                <label>
-                  Shipping Method <span class="text-danger">*</span>
-                </label>
+                <label>Name <span class="text-danger">*</span></label>
                 <input
                   type="text"
                   class="form-control"
-                  placeholder="Enter the name of the shipping method"
-                  v-model="shipping"
+                  placeholder="Enter the name of the new method"
+                  v-model="formData.name"
                 />
-                <span class="form-text text-muted text-err">
-                  This field is required.
+                <span
+                  class="form-text text-muted text-err"
+                  v-for="error in v$.name.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}
                 </span>
               </div>
               <div class="form-group">
-                <label>
-                  Price
-                  <span class="text-danger">*</span>
-                </label>
+                <label>Price <span class="text-danger">*</span></label>
                 <input
-                  type="number"
+                  type="text"
                   class="form-control"
-                  placeholder="The price of this method"
-                  v-model="price"
+                  placeholder="Enter the price of the method"
+                  v-model="formData.price"
                 />
-                <span class="form-text text-muted text-err">
-                  {{ message }}
+                <span
+                  class="form-text text-muted text-err"
+                  v-for="error in v$.price.$errors"
+                  :key="error.$uid"
+                >
+                  {{ error.$message }}
                 </span>
               </div>
             </div>
             <div class="card-footer">
               <button
-                type="reset"
+                type="submit"
                 class="btn btn-primary mr-2"
-                @click="createShippingMethod"
+                @click="handleFunction"
               >
                 Submit
               </button>
@@ -76,13 +103,15 @@
 <script>
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
-import { ref, reactive } from "vue";
-import { TITLE_DATA_CATEGORY, CREATE_SHIPPING } from "@/constants";
+import { reactive } from "vue";
+import { CREATE_SHIPPING } from "@/constants";
 import { useMutation } from "@vue/apollo-composable";
+import useVuelidate from "@vuelidate/core";
+import { required, numeric } from "@vuelidate/validators";
+// helpers,
 
 export default {
   setup() {
-    const titleItems = reactive(TITLE_DATA_CATEGORY);
     const route = useRoute();
     const router = useRouter();
 
@@ -90,41 +119,83 @@ export default {
       router.push({ name: "Shipping", params: {} });
     }
 
-    const shipping = ref("");
-    const price = ref("");
-    const message = ref("");
-
-    const { mutate: createShippingMethod, onDone } = useMutation(
-      CREATE_SHIPPING,
-      () => ({
-        variables: {
-          input: {
-            name: shipping.value,
-            price: parseFloat(price.value),
-          },
-        },
-      })
-    );
-    onDone(() => {
-      shipping.value = "";
-      price.value = "";
-      message.value = "Created Successfully !";
+    const formData = reactive({
+      name: "",
+      price: "",
+      message: "",
+      isShow: false,
+      checkForm: false,
     });
 
+    const rules = computed(() => {
+      return {
+        name: { required },
+        price: { required, numeric },
+      };
+    });
+
+    const v$ = useVuelidate(rules, formData);
+
+    const handleChange = async () => {
+      formData.checkForm = await v$.value.$validate();
+      return formData.checkForm;
+    };
+
+    async function handleFunction() {
+      const checkValidate = await handleChange();
+      if (checkValidate) {
+        createShippingMethod();
+        v$.value.$reset();
+      }
+    }
+
+    const {
+      mutate: createShippingMethod,
+      onError,
+      onDone,
+    } = useMutation(CREATE_SHIPPING, () => ({
+      variables: {
+        input: {
+          name: formData.name,
+          price: parseFloat(formData.price),
+        },
+      },
+    }));
+
+    onError(async () => {
+      await v$.value.$validate();
+    });
+
+    onDone(() => {
+      if (formData.checkForm) {
+        formData.name = "";
+        formData.price = "";
+        formData.message = "Method Created !";
+        formData.isShow = !formData.isShow;
+      }
+    });
+
+    function closeMessage() {
+      formData.message = "";
+      formData.isShow = !formData.isShow;
+    }
+
     return {
-      titleItems,
       meta: computed(() => route.meta),
       backToRoute,
-      shipping,
-      price,
-      message,
-      createShippingMethod,
+      formData,
+      v$,
+      handleFunction,
+      closeMessage,
     };
   },
 };
 </script>
 
 <style scoped>
+.input-width {
+  width: 50%;
+}
 .input-disable {
   cursor: not-allowed;
 }
@@ -158,5 +229,9 @@ export default {
   margin-top: 90px;
   position: absolute;
   width: 80%;
+}
+
+.alert {
+  margin: 0 30px;
 }
 </style>

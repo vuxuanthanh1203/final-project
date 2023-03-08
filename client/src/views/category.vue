@@ -12,14 +12,6 @@
               </span>
             </div>
             <div class="card-toolbar">
-              <div class="dropdown dropdown-inline mr-2">
-                <button
-                  class="btn btn-light-primary font-weight-bolder dropdown-toggle"
-                >
-                  <font-awesome-icon :icon="['fas', 'file-export']" />
-                  Export
-                </button>
-              </div>
               <div
                 @click="goToRoute"
                 class="btn btn-primary font-weight-bolder mr-2"
@@ -29,7 +21,7 @@
               </div>
               <div
                 @click="refetch()"
-                class="btn btn-warning font-weight-bolder"
+                class="btn btn-primary font-weight-bolder"
               >
                 <font-awesome-icon :icon="['fas', 'rotate-right']" />
               </div>
