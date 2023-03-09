@@ -1,27 +1,32 @@
 // @ts-check
 'use strict'
 
+const fs = require('fs')
+const path = require('path')
 const fastCsv = require('fast-csv')
+
 const User = require('../models').User
+
 const ImportUserMutationResolver = {
   Mutation: {
-    /**
-      * @param {*} args - csv file input
-      * @returns { Promise<ImportResult>}
-      */
+
     async importUser (parent, args, context) {
-      const myfile = await args.file
+      const fileName = args.fileName
       const totalRecords = []
 
-      myfile.createReadStream()
-        .pipe(fastCsv.parse({ headers: true }))
-        .on('error', error => console.error(error))
-        .on('data', row => totalRecords.push(row))
-        .on('end', async rowCount => {
-          await User.bulkCreate(totalRecords)
-        })
-      return {
-        message: 'Imported !'
+      try {
+        fs.createReadStream(path.join(__dirname, `../public/import/${fileName}`))
+          .pipe(fastCsv.parse({ headers: true }))
+          .on('error', error => console.error(error))
+          .on('data', row => totalRecords.push(row))
+          .on('end', async rowCount => {
+            await User.bulkCreate(totalRecords)
+          })
+        return {
+          success: true
+        }
+      } catch (error) {
+        throw new Error(error)
       }
     }
   }
@@ -31,6 +36,6 @@ module.exports = ImportUserMutationResolver
 
 /**
  * @typedef {{
- *  message: string
+ *  success: Boolean!
  * }} ImportResult
  */

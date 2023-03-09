@@ -51,9 +51,9 @@ const typeDefs = gql`
         exportUser: ExportUser!
         exportOrder: ExportOrder!
 
-        importUser (file: Upload!): ImportResult!
-        importProduct (file: Upload!): ImportResult!
-        importOrder (file: Upload!): ImportResult!
+        importUser (fileName: String!): ImportResult!
+        importProduct (fileName: String!): ImportResult!
+        importOrder (fileName: String!): ImportResult!
         
         createCategory(input: CreateCategoryInput!): Category!
 
@@ -249,7 +249,7 @@ const typeDefs = gql`
     }
 
     type ImportResult {
-        message: String!
+        success: Boolean!
     }
 
     input LoginInput {
