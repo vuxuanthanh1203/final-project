@@ -13,7 +13,7 @@ const ImportOrderMutationResolver = {
      * @param {{
      *  fileName: string
      * }} args - Args of this resolver
-    * @returns {Promise<ImportResult>}
+     * @returns {Promise<ImportResult>}
      */
     async importOrder (parent, args, context) {
       const fileName = args.fileName

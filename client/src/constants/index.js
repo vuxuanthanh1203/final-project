@@ -428,8 +428,8 @@ export const UPDATE_PROFILE = gql`
 `;
 
 export const CHANGE_PASSWORD = gql`
-  mutation ($userId: Int!, $input: ChangePasswordInput!) {
-    changePassword(userId: $userId, input: $input) {
+  mutation ($email: String!, $input: ChangePasswordInput!) {
+    changePassword(email: $email, input: $input) {
       id
       name
       userName

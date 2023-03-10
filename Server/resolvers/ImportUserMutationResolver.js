@@ -9,7 +9,12 @@ const User = require('../models').User
 
 const ImportUserMutationResolver = {
   Mutation: {
-
+    /**
+     * @param {{
+     *  fileName: string
+     * }} args - Args of this resolver
+     * @returns {Promise<ImportResult>}
+     */
     async importUser (parent, args, context) {
       const fileName = args.fileName
       const totalRecords = []

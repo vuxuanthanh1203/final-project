@@ -3,6 +3,7 @@
 
 const User = require('../models').User
 const hashPassword = require('../utils/hashPassword')
+const sendEmail = require('../utils/sendEmail')
 
 const UserMutationResolver = {
   Mutation: {
@@ -91,10 +92,13 @@ const UserMutationResolver = {
 
       await User.update({ password }, {
         where: {
-          id: args.userId
+          email: args.email
         }
       })
-      return User.findByPk(args.userId)
+      const text = 'Your password has been changed successfully !'
+      sendEmail(args.email, text)
+
+      return User.findOne({ where: { email: args.email } })
     }
   }
 }
