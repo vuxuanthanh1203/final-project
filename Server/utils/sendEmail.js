@@ -3,11 +3,11 @@ const domain = process.env.MAILGUN_DOMAIN
 // @ts-ignore
 const mailgun = require('mailgun-js')({ apiKey, domain })
 
-const sendEmail = (email, text) => {
+const sendEmail = (email, subject, text) => {
   const mailData = {
     from: 'admin@gmail.com',
     to: email,
-    subject: 'Change Password Successfully',
+    subject,
     text
   }
 

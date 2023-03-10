@@ -95,8 +95,10 @@ const UserMutationResolver = {
           email: args.email
         }
       })
+
+      const subject = 'Change Password Successfully'
       const text = 'Your password has been changed successfully !'
-      sendEmail(args.email, text)
+      sendEmail(args.email, subject, text)
 
       return User.findOne({ where: { email: args.email } })
     }
