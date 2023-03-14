@@ -428,8 +428,8 @@ export const UPDATE_PROFILE = gql`
 `;
 
 export const CHANGE_PASSWORD = gql`
-  mutation ($userId: Int!, $input: ChangePasswordInput!) {
-    changePassword(userId: $userId, input: $input) {
+  mutation ($email: String!, $input: ChangePasswordInput!) {
+    changePassword(email: $email, input: $input) {
       id
       name
       userName
@@ -502,6 +502,14 @@ export const DELETE_ORDER = gql`
   mutation ($orderId: Int!) {
     deleteOrder(orderId: $orderId) {
       success
+    }
+  }
+`;
+
+export const IMPORT_USER = gql`
+  mutation ($file: Upload!) {
+    importUser(file: $file) {
+      message
     }
   }
 `;

@@ -35,6 +35,8 @@ const ExportProductMutationResolver = require('./ExportProductMutationResolver')
 const ExportOrderMutationResolver = require('./ExportOrderMutationResolver')
 
 const ImportUserMutationResolver = require('./ImportUserMutationResolver')
+const ImportProductMutationResolver = require('./ImportProductMutationResolver')
+const ImportOrderMutationResolver = require('./ImportOrderMutationResolver')
 
 const UploadImageResolver = require('./UploadImageResolver')
 
@@ -62,6 +64,8 @@ const resolvers = [
   ExportProductMutationResolver,
   ExportOrderMutationResolver,
   ImportUserMutationResolver,
+  ImportProductMutationResolver,
+  ImportOrderMutationResolver,
   UploadImageResolver
 ]
 

@@ -13,6 +13,14 @@
             </div>
             <div class="card-toolbar">
               <div class="dropdown dropdown-inline mr-2">
+                <input
+                  type="file"
+                  name="file"
+                  accept=".csv"
+                  @change="importUser"
+                />
+              </div>
+              <div class="dropdown dropdown-inline mr-2">
                 <button
                   @click="exportUser"
                   class="btn btn-light-primary font-weight-bolder dropdown-toggle"
@@ -140,6 +148,7 @@ import {
   GET_ALL_USERS,
   EXPORT_USER,
   DELETE_USER,
+  IMPORT_USER,
 } from "@/constants";
 import { useQuery, useMutation } from "@vue/apollo-composable";
 import axios from "axios";
@@ -214,6 +223,22 @@ export default {
         .catch((err) => console.log("err: ", err));
     }
 
+    function importUser(event) {
+      const file = event.target.files[0];
+      axios
+        .post("http://localhost:4000/graphql", {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          query: print(IMPORT_USER),
+          variables: {
+            file: file,
+          },
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => console.log(err));
+    }
+
     return {
       titleItems,
       meta: computed(() => route.meta),
@@ -224,6 +249,7 @@ export default {
       exportUser,
       onDeleteClicked,
       refetch,
+      importUser,
     };
   },
 };

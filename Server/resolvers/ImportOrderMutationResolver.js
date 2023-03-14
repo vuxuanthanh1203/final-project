@@ -13,15 +13,14 @@ const ImportOrderMutationResolver = {
      * @param {{
      *  fileName: string
      * }} args - Args of this resolver
-    * @returns {Promise<ImportResult>}
+     * @returns {Promise<ImportResult>}
      */
-    async importUser (parent, args, context) {
+    async importOrder (parent, args, context) {
       const fileName = args.fileName
-
       const totalRecords = []
+
       try {
-        // console.log(path.join(__dirname, '../../Server/public/' + fileName))
-        fs.createReadStream(path.join(__dirname, '../../Server/public/import' + fileName))
+        fs.createReadStream(path.join(__dirname, `../public/import/${fileName}`))
           .pipe(fastCsv.parse({ headers: true }))
           .on('error', error => console.error(error))
           .on('data', row => totalRecords.push(row))

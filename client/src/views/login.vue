@@ -147,6 +147,7 @@ export default {
       localStorage.setItem("token", value.login.token);
       localStorage.setItem("userId", value.login.user.id);
       localStorage.setItem("userName", value.login.user.userName);
+      localStorage.setItem("email", value.login.user.email);
       router.push({ name: "Dashboard", params: {} });
     });
 

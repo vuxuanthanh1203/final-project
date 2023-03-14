@@ -103,7 +103,7 @@ const typeDefs = gql`
        
         updateProfile(userId: Int!, input: UpdateProfileInput!): User!
 
-        changePassword(userId: Int!, input: ChangePasswordInput!): User!
+        changePassword(email: String!, input: ChangePasswordInput!): User!
 
         deleteUser(userId: Int!): DeleteUserResult!
     }
@@ -249,7 +249,7 @@ const typeDefs = gql`
     }
 
     type ImportResult {
-        message: String!
+        success: Boolean!
     }
 
     input LoginInput {

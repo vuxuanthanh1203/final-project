@@ -183,7 +183,8 @@ export default {
     });
 
     // Check password
-    const userId = localStorage.getItem("userId");
+    // const userId = localStorage.getItem("userId");
+    const email = localStorage.getItem("email");
 
     const rules = computed(() => {
       return {
@@ -204,7 +205,7 @@ export default {
       onError,
     } = useMutation(CHANGE_PASSWORD, () => ({
       variables: {
-        userId: userId * 1,
+        email: email,
         input: {
           password: formData.password,
         },
